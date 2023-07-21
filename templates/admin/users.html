@@ -48,6 +48,7 @@
           <tr>
             <th>id</th>
             <th>Name</th>
+            <th>email</th>
             <th>Mobile</th>
             <th>Address</th>
             <th>Status</th>
@@ -58,26 +59,21 @@
           {%for s in stu%}
           <tr>
             <td>
-              <span class="badge badge-success rounded-pill d-inline"
+              <span class="badge"
                 >{{s.id}}</span
               >
             </td>
             <td>
               <div class="d-flex align-items-center">
-                <img
-                  src="https://mdbootstrap.com/img/new/avatars/8.jpg"
-                  alt=""
-                  style="width: 45px; height: 45px"
-                  class="rounded-circle border border-success"
-                />
+                <img src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp" class="rounded-circle shadow-4" style="width: 30px;" alt="Avatar" />
                 <div class="ms-3">
-                  <p class="fw-bold mb-1">{{s.name}}</p>
-                  <p class="text-muted mb-0">{{s.email}}</p>
+                  <p class="fw-bold mb-1">{{ s.name }}</p>
                 </div>
               </div>
             </td>
+            <td><p class="text-muted mb-0">{{s.email}}</p></td>
             <td>
-              <p class="fw-normal mb-1">{{s.mobile}}</p>
+              <p class="fw-normal mb-1">{{s.phone_number}}</p>
               <p class="text-muted mb-0"></p>
             </td>
             <td>
@@ -97,7 +93,7 @@
             <td>
               {% if s.is_active %}
               <form
-                action="{% url 'user_block' s.id %}"
+                action="{% url 'user_block' s.id %}" 
                 method="post"
                 class="d-inline"
               >

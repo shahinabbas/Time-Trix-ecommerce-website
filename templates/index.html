@@ -123,13 +123,22 @@
         <!--? Gallery Area Start -->
         <div class="video-area">
             <div class="container-fluid">
+              <div class="row align-items-center">
+                <div class="col-lg-12">
+                  <img src="{% static 'assets/img/logo/2.jpg' %}" alt="Image" class="img-fluid">
+                </div>
+              </div>
+            </div>
+          </div>
+        {% comment %} <div class="video-area">
+            <div class="container-fluid">
                 <div class="row align-items-center">
-                    {% comment %} <div class="col-lg-12"> {% endcomment %}
-                        {% comment %} <img src={% static "assets/img/logo/center.png" %} alt="Image" width="1848" height="700">  {% endcomment %}
+                     <div class="col-lg-12"> 
+                        <img src={% static "assets/img/logo/center.png" %} alt="Image" width="1848" height="700">  
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>  {% endcomment %}
         
         {% comment %} <div class="gallery-area">
             <div class="container-fluid p-0 fix">
@@ -307,7 +316,7 @@
                 </div>
             </div>
         </div> {% endcomment %}
-        <div class="video-area">
+        {% comment %} <div class="video-area">
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col-lg-12">
@@ -315,8 +324,17 @@
                     </div>
                 </div>
             </div>
-        </div>
-        
+        </div> {% endcomment %}
+        <div class="video-area">
+            <div class="container-fluid">
+              <div class="row align-items-center">
+                <div class="col-lg-12">
+                  <img src="{% static 'assets/img/logo/center.png' %}" alt="Image" class="img-fluid">
+                </div>
+              </div>
+            </div>
+          </div>
+          
         <!-- Video Area End -->
         <!--? Watch Choice  Start-->
         {% comment %} <div class="watch-area section-padding30">

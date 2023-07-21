@@ -3,6 +3,11 @@ from django.shortcuts import render,redirect
 # from .models import Customer
 from django.contrib import messages
 from .models import CustomUser
+import random 
+from twilio.rest import Client
+import os
+# from email import message
+# from.forms import Aforms
 
 def index(request):
     return render(request, 'index.html')
@@ -42,46 +47,102 @@ def elementspage(request):
 
 
 
-def forgot_passwordpage(request):
-    return render(request, 'forgot_password.html')
+# def forgot_passwordpage(request):
+#     return render(request, 'forgot_password.html')
 
 
-def enter_otppage(request):
-    return render(request, 'enter_otp.html')
+
+    
 
 def signuppage(request):
     if request.method == "POST":
-        # first_name=request.POST["first_name"]
-        # last_name=request.POST["last_name"]
-        name = request.POST['name']
-        email = request.POST['email']
-        phone = request.POST['phone_number']
-        pass1 = request.POST['password']
-        pass2 = request.POST['confirm_password']
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone_number')
+        pass1 = request.POST.get('password')
+        pass2 = request.POST.get('confirm_password')
+        print(email)
+        print(name)
+        print(pass1)
+        print(pass2)
+        if not name:
+            messages.error(request, "Name field cannot be empty")
+            return redirect('/signup')
         if CustomUser.objects.filter(name=name):
             messages.error(request,"Username already Registered!!")
             return redirect('/signup')
-
+        # if CustomUser.objects.filter(phone_number=phone):
+        #     messages.error(request,"Number already Registered!!")
+        #     return redirect('/signup')
         if pass1 == pass2:
-            myuser = CustomUser.objects.create_user(name=name,email=email,phone_number=phone,password=pass1)
-            myuser.save()
-            return redirect("/login")
+            CustomUser.objects.create_user(name=name,email=email,phone_number=phone,password=pass1)
+            # myuser.save()
+            print('created')
+            return redirect("verify_otp")
         else:
             messages.error(request,"your password and confirm password incorrect")
             return redirect("/signup")
     return render(request,"signup.html")   
 
+def verify_otppage(request):
+    if request.method == 'POST':
+        phone_number=request.POST.get('phone_number')
+        user_phone=CustomUser.objects.filter(phone_number=phone_number)
+        otp=''.join([str(random.randint(0,9)) for _ in range(6)])
+        if user_phone.exists():
+            user=user_phone.first()
+            user.otp=otp
+            user.save()
+            request.session['phone_number']=phone_number
+
+            account_sid = 'AC2052f7894a67013c46526f408871da08'
+            auth_token = '02d4acb2f861128d177bb663db6e5d2c'
+
+
+            client = Client(account_sid, auth_token)
+            message = client.messages.create(
+              body=' welcome to TIME TRIX Your OTP is: ' + otp,
+              from_='+12342616521',
+              to=phone_number
+            )
+            return render(request,'enter_otp.html')
+        else:
+            messages.warning(request,"No user registered with the provided mobile number")
+    return render(request, 'verify_otp.html')
+
+def enter_otppage(request):
+    if request.method == 'POST':
+        entered_otp = request.POST.get('otp')
+        phone_number = request.session.get('phone_number')
+
+        user_phone = CustomUser.objects.filter(phone_number=phone_number)
+        if user_phone.exists():
+            user = user_phone.first()
+            if entered_otp == user.otp:
+                # OTP verification successful
+                user.is_otp_verified = True
+                user.save()
+                del request.session['phone_number']
+                login(request, user)
+                return redirect('/login')
+            else:
+               messages.error(request, 'Invalid OTP')
+               return render(request, 'enter_otp.html')
+
+    return redirect('send_otp')  # Redirect to the O
+
 
 def loginpage(request):
-    if request.user.is_authenticated:
-        return redirect('/index_after_login')
+    # if request.user.is_authenticated:
+    #     return redirect('/index_after_login')
+    # else:
     if request.method=="POST":
         email=request.POST.get("email")
         password=request.POST.get("password")
         print(email)
         print(password)
         user=authenticate(request, email=email, password=password)
-        print('hi')
+        print(user)
         if user is not None:
             login(request,user)
             return redirect("/index_after_login")
@@ -101,18 +162,18 @@ def logoutpage(request):
 
 def admin_signinpage(request):
     if request.user.is_authenticated:
-        return redirect('/home')
+        return redirect('/users')
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        print("Received name:", email)
-        print("Received password:", password)
+        # print("Received name:", email)
+        # print("Received password:", password)
         user = authenticate(request, email=email, password=password)
-        print("Authentication result:", user)
+        # print("Authentication result:", user)
         # if user is not None:
         if user.is_superuser:
             login(request, user)
-            return redirect('/home')
+            return redirect('/users')
         else:
             messages.error(request, "User email or password is incorrect")
             return redirect('/admin_signin')
@@ -127,5 +188,32 @@ def admin_logoutpage(request):
     messages.success(request, "Logged Out Successfully!!")
     return redirect('admin_signin')
 
-def homepage(request):
-    return render(request, 'admin/home.html')
+
+
+def userspage(request):
+    # if request.method == "POST":
+    #     fm = Aforms(request.POST)
+    #     if fm.is_valid():
+    #         fm.save()
+    #     fm = Aforms()
+    # else:
+    #     fm = Aforms()
+    stu =CustomUser.objects.all()
+    return render(request,"admin/users.html",{'stu':stu})
+#    return render(request,"admin/users.html",{'fm':fm,'stu':stu})
+
+def user_blockpage(request,id):
+    if request.method == 'POST':
+         user = CustomUser.objects.get(pk=id)
+         user.is_active =False
+         user.save()
+    return redirect('users')
+
+def user_unblockpage(request,id):
+    if request.method == 'POST':
+         user = CustomUser.objects.get(pk=id)
+         user.is_active =True
+         user.save()
+    return redirect('users')
+    
+

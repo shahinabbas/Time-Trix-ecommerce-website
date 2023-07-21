@@ -41,7 +41,7 @@ class CustomUser(AbstractUser):
     username = None
     email = models.EmailField(_('email'), unique=True)
     name = models.CharField(_('name'), max_length=30, blank=True)
-    phone_number = models.IntegerField(_('phone_number'), blank=True, null=True)
+    phone_number = models.BigIntegerField(_('phone_number'), blank=True, null=True)
     otp = models.CharField(_('OTP'), max_length=6, blank=True)
 
 

@@ -22,28 +22,28 @@
         
 		<div class="wrapper" style="background-image: url('{% static 'assets/img/s_images/croped1.png' %}');">
 			<div class="inner">
-				<form action="" method="post" style="padding-top: 100px;">
+				<form action="{% url 'signup' %}" method="post" style="padding-top: 100px;">
 					{% csrf_token %}
 					<h3>OTP Login</h3>
 					<div class="form-wrapper" style="padding-top: 20px;">
-						<input type="text" placeholder="Enter OTP"  class="form-control" name="email" required>
+						<input type="text" placeholder="Enter Phone Number"  class="form-control" name="phone_number" required>
 					</div>
-					<a href="{% url 'signup' %}"><p style="font-size: 10px; text-align: right;">Not received your code? Resend code</p></a>
+					<br>
+                        Enter your phone number to verify,
+                        you will receive an sms message </br>
 				<div style="padding-top: 20px;">
-                    <button>Login
+                    <button>Send OTP
 						<i class="zmdi zmdi-arrow-right"></i>
 					</button>
+
+					
 				</div>
-					{% comment %} <div class="form-wrapper" style="padding-top: 60px;">
-						<input type="password" placeholder="Enter OTP" class="form-control" name="password" required>
-						<i class="zmdi zmdi-lock"></i>
-					</div>
-                    <a href="{% url 'login' %}"><p style="font-size: 10px; text-align: right;">Forgot Password?</p></a>
-					<button>Login
-						<i class="zmdi zmdi-arrow-right"></i>
-					</button> {% endcomment %}
+				<br>
+                <a href="{% url 'login' %}"><p style="font-size: 10px; text-align: right;">Have an account?Login</p></a>
 				</form>
+				
                 <div class="image-holder">
+					
 					<img src="{% static 'assets/img/s_images/post-4.png' %}" alt="">
 				</div>
 			</div>

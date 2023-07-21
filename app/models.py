@@ -55,3 +55,10 @@ class CustomUser(AbstractUser):
     
     groups = models.ManyToManyField(Group, blank=True, related_name='custom_users', help_text='The groups this user belongs to.')
     user_permissions = models.ManyToManyField(Permission, blank=True, related_name='custom_users', help_text='Specific permissions for this user.')
+
+
+class category(models.Model):
+    categories = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.categories

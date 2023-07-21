@@ -20,7 +20,9 @@ urlpatterns = [
     path('users/',views.userspage,name='users'),
     path('user_block/<int:id>',views.user_blockpage,name="user_block"),
     path('user_unblock/<int:id>',views.user_unblockpage,name="user_unblock"),
-
+    path('category/',views.categorypage,name='category'),
+    path('category_list/',views.category_listpage,name='category_list'),
+    path('delete_category/<int:id>',views.delete_categorypage,name="delete_category"),
 
 
 

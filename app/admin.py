@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser
+from .models import CustomUser,category
 
 class CustomUserAdmin(admin.ModelAdmin):
     # Customize the way the model is displayed in the admin site
@@ -7,3 +7,4 @@ class CustomUserAdmin(admin.ModelAdmin):
 
 # Register your CustomUser model with the custom admin class
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(category)

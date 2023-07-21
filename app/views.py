@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import render,redirect
 # from .models import Customer
 from django.contrib import messages
-from .models import CustomUser
+from .models import CustomUser,category
 import random 
 from twilio.rest import Client
 import os
@@ -217,3 +217,26 @@ def user_unblockpage(request,id):
     return redirect('users')
     
 
+def categorypage(request):
+    if request.method == 'POST':
+        category_name = request.POST['categoryname']
+        if category.objects.filter(categories=category_name).exists():
+            error_message = 'Category name already exists.'
+            return render(request, 'admin/category.html', {'error_message': error_message})
+        else:
+            Category = category.objects.create(categories=category_name)
+            stu=category.objects.all()
+            return render(request,'admin/category.html',{'stu':stu})
+    return render(request,"admin/category.html")
+
+def category_listpage(request):
+    stu=category.objects.all()
+    return render(request, "admin/category.html",{'stu':stu})
+
+def delete_categorypage(request,id):
+    if request.method == 'POST':
+        co=category.objects.filter(pk=id).first()
+        if co:
+            co.delete()
+        return redirect('/category_list')
+    

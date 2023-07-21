@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import render,redirect
 # from .models import Customer
 from django.contrib import messages
-from .models import CustomUser,category
+from .models import CustomUser,category,Product,ProductSize
 import random 
 from twilio.rest import Client
 import os
@@ -240,3 +240,43 @@ def delete_categorypage(request,id):
             co.delete()
         return redirect('/category_list')
     
+
+def productspage(request):
+    stu=category.objects.all()
+    products=Product.objects.all()
+    product_sizes = ProductSize.objects.all()
+    return render(request,'admin/products.html',{'products':products})
+
+
+def add_productpage(request):
+    categories = category.objects.all()
+    if request.method == 'POST':
+        # Retrieve data from the form
+
+        product_name = request.POST.get('productName')
+        category_name=request.POST.get('category')
+        Product_Image = request.FILES.get('image')
+        category = category.objects.get(categories=category_name)
+        Category_id = category.pk
+        description = request.POST.get('description')
+        shapes = [ 'Square', 'Oval','Round']
+        print('product image:',Product_Image)
+        if Product.objects.filter(Product_name=product_name):
+            return render(request,'admin/add_product.html')
+        else:
+        # Create the product object
+             product = Product(Product_name=product_name, category=category,description=description,Product_Image=Product_Image)
+             product.save()
+        for shape in shapes:
+            checkbox = request.POST.get(f'checkbox-{shape}')
+            if checkbox:
+                price = request.POST.get(f'price-{shape}')
+                offer_price = request.POST.get(f'offer-price-{shape}')
+                quantity = request.POST.get(f'productCount-{shape}')
+                product_shape = ProductSize(product_id=product, shape=shape, price=price,offer_price=offer_price,Quantity=quantity,)
+                product_shape.save()
+    return render(request,"admin/add_product.html",{'categories':categories})
+
+
+# def add_product(request):
+#     if request.method=='POST':

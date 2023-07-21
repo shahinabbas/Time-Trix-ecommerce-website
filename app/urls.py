@@ -24,7 +24,8 @@ urlpatterns = [
     path('category_list/',views.category_listpage,name='category_list'),
     path('delete_category/<int:id>',views.delete_categorypage,name="delete_category"),
 
-
+    path('products/',views.productspage,name='products'),
+    path('add_product/',views.add_productpage,name='add_product'),
 
 
 

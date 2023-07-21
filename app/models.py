@@ -62,3 +62,28 @@ class category(models.Model):
 
     def __str__(self):
         return self.categories
+    
+
+class Product(models.Model):
+    Product_name = models.CharField(max_length=255)
+    description = models.TextField()
+    Product_Image = models.ImageField(upload_to='product_images')
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    is_deleted = models.BooleanField(default=False)
+
+    def soft_delete(self):
+        self.is_deleted = True
+        self.save()
+
+    def __str__(self):
+        return self.Product_name
+
+class ProductSize(models.Model):
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=8, decimal_places=2,default=0)
+    offer_price = models.DecimalField(max_digits=8, decimal_places=2,default=0)
+    Quantity = models.IntegerField(default=0)
+    shape = models.CharField(max_length=50)
+
+    def __str__(self) -> str:
+        return self.size

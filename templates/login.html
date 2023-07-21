@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="{% static 'assets/s_fonts/material-design-iconic-font/css/material-design-iconic-font.min.css' %}">
 
 		<!-- STYLE CSS -->
+        
 		<link rel="stylesheet" href="{% static 'assets/s_css/style.css' %}">
 	</head>
 
@@ -22,11 +23,11 @@
         
 		<div class="wrapper" style="background-image: url('{% static 'assets/img/s_images/croped1.png' %}');">
 			<div class="inner">
-				<form action="" method="post" style="padding-top: 120px;">
+				<form action="#" method="post" style="padding-top: 120px;">
 					{% csrf_token %}
 					<h3>Login</h3>
 					<div class="form-wrapper">
-						<input type="text" placeholder="Username" class="form-control" name="name" required>
+						<input type="email" placeholder="Email" class="form-control" name="email" required>
 						<i class="zmdi zmdi-email"></i>
 					</div>
 					<div class="form-wrapper">

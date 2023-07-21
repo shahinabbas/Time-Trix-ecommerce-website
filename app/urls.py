@@ -16,8 +16,11 @@ urlpatterns = [
     path('elements/',views.elementspage,name='elements'),
     path('signup/',views.signuppage,name='signup'),
     path('logout/',views.logoutpage,name='logout'),
-    path('admin_signin/',views.admin_signinpage,name='admin_signin'),
     path('forgot_password/',views.forgot_passwordpage,name='forgot_password'),
     path('enter_otp/',views.enter_otppage,name='enter_otp'),
     
+
+    path('admin_signin/',views.admin_signinpage,name='admin_signin'),
+    path('admin_logout/',views.admin_logoutpage,name='admin_logout'),
+    path('home/',views.homepage,name='home'),
 ]

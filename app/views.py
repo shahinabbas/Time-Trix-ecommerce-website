@@ -41,8 +41,6 @@ def elementspage(request):
     return render(request, 'elements.html')
 
 
-def admin_signinpage(request):
-    return render(request, 'admin_signin.html')
 
 def forgot_passwordpage(request):
     return render(request, 'forgot_password.html')
@@ -71,25 +69,63 @@ def signuppage(request):
         else:
             messages.error(request,"your password and confirm password incorrect")
             return redirect("/signup")
-    return render(request,"signup.html")      
+    return render(request,"signup.html")   
+
+
 def loginpage(request):
-    # if request.user.is_authenticated:
-    #     return redirect('/index_after_login')
-    # if request.method=="POST":
-    #     uname=request.POST.get("username")
-    #     pass1=request.POST.get("passord")
-    #     myuser=authenticate(username=uname,password=pass1)
-    #     if myuser is not None:
-    #         login(request,myuser)
-    #         messages.success(request,"Login Success")
-    #         return redirect('/index_after_login')
-    #     else:
-    #         messages.error(request,"Invalid Credentails")
-    #         return redirect('/login')
+    if request.user.is_authenticated:
+        return redirect('/index_after_login')
+    if request.method=="POST":
+        email=request.POST.get("email")
+        password=request.POST.get("password")
+        print(email)
+        print(password)
+        user=authenticate(request, email=email, password=password)
+        print('hi')
+        if user is not None:
+            login(request,user)
+            return redirect("/index_after_login")
+        else:
+            messages.error(request,"User name or password is incorect")
     return render(request, 'login.html')
+
 
 def logoutpage(request):
     logout(request)
     request.session.flush()
     messages.success(request,"Logout success")
     return redirect('/index')
+
+
+
+
+def admin_signinpage(request):
+    if request.user.is_authenticated:
+        return redirect('/home')
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        print("Received name:", email)
+        print("Received password:", password)
+        user = authenticate(request, email=email, password=password)
+        print("Authentication result:", user)
+        # if user is not None:
+        if user.is_superuser:
+            login(request, user)
+            return redirect('/home')
+        else:
+            messages.error(request, "User email or password is incorrect")
+            return redirect('/admin_signin')
+        # else:
+        #     messages.error(request, "The email or password you entered is incorrect.")
+        #     return redirect('/admin_signin')
+    return render(request, 'admin/admin_signin.html')
+
+
+def admin_logoutpage(request):
+    logout(request)
+    messages.success(request, "Logged Out Successfully!!")
+    return redirect('admin_signin')
+
+def homepage(request):
+    return render(request, 'admin/home.html')

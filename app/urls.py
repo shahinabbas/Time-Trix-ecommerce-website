@@ -26,9 +26,10 @@ urlpatterns = [
 
     path('products/',views.productspage,name='products'),
     path('add_product/',views.add_productpage,name='add_product'),
+    path('add_product1/',views.add_product1page,name='add_product1'),
 
-
-
+    path('product_details/',views.product_detailspage,name='product_details'),
+    
 
     path('about/',views.aboutpage,name='about'),
     path('blog/',views.blogpage,name='blog'),

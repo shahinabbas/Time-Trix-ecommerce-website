@@ -125,8 +125,8 @@
             <label for="category" style="color: white;">Category:</label>
             <select class="form-control" id="category" name="category">
                 <option value="">Select category</option>
-                {% for categ in categories %}
-                <option value="{{ categ.categoryes}}">{{ categ.categoryes }}</option>
+                {% for s in stu %}
+                <option value="{{ s.category}}">{{ s.category }}</option>
                 {% endfor %}
             </select>
         </div>

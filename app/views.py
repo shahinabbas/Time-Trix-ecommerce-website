@@ -144,10 +144,11 @@ def loginpage(request):
         user=authenticate(request, email=email, password=password)
         print(user)
         if user is not None:
-            login(request,user)
-            return redirect("/index_after_login")
-        else:
-            messages.error(request,"User name or password is incorect")
+            if user.is_active:
+                login(request,user)
+                return redirect("/index_after_login")
+            else:
+                messages.error(request,"User name or password is incorect")
     return render(request, 'login.html')
 
 
@@ -211,11 +212,13 @@ def user_blockpage(request,id):
 
 def user_unblockpage(request,id):
     if request.method == 'POST':
-         user = CustomUser.objects.get(pk=id)
-         user.is_active =True
-         user.save()
+        user = CustomUser.objects.get(pk=id)
+        user.is_active =True
+        user.save()
     return redirect('users')
     
+def admin_indexpage(request):
+    return render(request, "admin/admin_index.html")
 
 def categorypage(request):
     if request.method == 'POST':
@@ -249,33 +252,33 @@ def productspage(request):
 
 
 def add_productpage(request):
-    categories = category.objects.all()
-    if request.method == 'POST':
-        # Retrieve data from the form
+    # categories = category.objects.all()
+    # if request.method == 'POST':
+    #     # Retrieve data from the form
 
-        product_name = request.POST.get('productName')
-        category_name=request.POST.get('category')
-        Product_Image = request.FILES.get('image')
-        category = category.objects.get(categories=category_name)
-        Category_id = category.pk
-        description = request.POST.get('description')
-        shapes = [ 'Square', 'Oval','Round']
-        print('product image:',Product_Image)
-        if Product.objects.filter(Product_name=product_name):
-            return render(request,'admin/add_product.html')
-        else:
-        # Create the product object
-             product = Product(Product_name=product_name, category=category,description=description,Product_Image=Product_Image)
-             product.save()
-        for shape in shapes:
-            checkbox = request.POST.get(f'checkbox-{shape}')
-            if checkbox:
-                price = request.POST.get(f'price-{shape}')
-                offer_price = request.POST.get(f'offer-price-{shape}')
-                quantity = request.POST.get(f'productCount-{shape}')
-                product_shape = ProductSize(product_id=product, shape=shape, price=price,offer_price=offer_price,Quantity=quantity,)
-                product_shape.save()
-    return render(request,"admin/add_product.html",{'categories':categories})
+    #     product_name = request.POST.get('productName')
+    #     category_name=request.POST.get('category')
+    #     Product_Image = request.FILES.get('image')
+    #     category = category.objects.get(categories=category_name)
+    #     Category_id = category.pk
+    #     description = request.POST.get('description')
+    #     shapes = [ 'Square', 'Oval','Round']
+    #     print('product image:',Product_Image)
+    #     if Product.objects.filter(Product_name=product_name):
+    #         return render(request,'admin/add_product.html')
+    #     else:
+    #     # Create the product object
+    #          product = Product(Product_name=product_name, category=category,description=description,Product_Image=Product_Image)
+    #          product.save()
+    #     for shape in shapes:
+    #         checkbox = request.POST.get(f'checkbox-{shape}')
+    #         if checkbox:
+    #             price = request.POST.get(f'price-{shape}')
+    #             offer_price = request.POST.get(f'offer-price-{shape}')
+    #             quantity = request.POST.get(f'productCount-{shape}')
+    #             product_shape = ProductSize(product_id=product, shape=shape, price=price,offer_price=offer_price,Quantity=quantity,)
+    #             product_shape.save()  ,{'categories':categories}
+    return render(request,"admin/add_product.html")
 
 
 # def add_product(request):

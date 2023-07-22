@@ -9,7 +9,7 @@ urlpatterns = [
     # path('send_otp/',views.send_otppage,name='send_otp'),
     path('enter_otp/',views.enter_otppage,name='enter_otp'),
     
-
+    path('admin_index/',views.admin_indexpage,name='admin_index'),
     path('admin_signin/',views.admin_signinpage,name='admin_signin'),
     path('admin_logout/',views.admin_logoutpage,name='admin_logout'),
     path('login/',views.loginpage,name='login'),

@@ -1,0 +1,164 @@
+{% extends 'admin/navbar.html' %}
+
+{% block title %}Products{% endblock %}
+{% block additional_styles %}  
+
+  <style>
+    .custom-font {
+        font-family: "Blinker", sans-serif;
+    }
+    .navbar {
+        height: 70px; 
+    }
+    .navbar-nav .nav-link:hover {
+        color: yellow;
+    }
+    body {
+        background-color:#E2AC13;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding-top: 80px; /* Add top padding to body */
+    }
+    .container {
+        max-width: 500px;
+        width: 100%;
+        padding: 20px;
+        background-color:  rgb(255 238 7 / 70%);
+    }
+    .image-upload-container {
+        background-color: bisque;
+        position: relative;
+        width: 200px;
+        height: 200px;
+        border: 2px dashed #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    .image-upload-container:hover {
+        border-color: #34A853;
+    }
+    .image-upload-container input[type="file"] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+    .image-upload-icon {
+        font-size: 80px;
+        color: #888;
+    }
+    .image-upload-label {
+        margin-top: 10px;
+        text-align: center;
+        color: #888;
+    }
+    .product-count-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    .product-count-input {
+        width: 50px;
+        text-align: center;
+    }
+    .product-count-buttons {
+        display: flex;
+        align-items: center;
+    }
+    .product-count-button {
+        border: 1px solid #ccc;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .product-count-button:hover {
+        background-color: #ccc;
+    }
+    .product-count-button.minus {
+        color: red;
+        background-color:white;
+    }
+    .product-count-button.plus {
+        color: green;
+    }
+    .product-count-buttons button {
+        margin-right: 5px;
+    }
+    .add-product-button {
+        color: black;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        margin: 20px auto;
+    }
+    
+</style>{% endblock %}
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-center">Add Product</h2>
+    <form action={% url 'add_product' %} method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="productName" style="color: white;">Product Name:</label>
+            <input type="text" class="form-control" id="productName" name="productName">
+        </div>
+        <div class="form-group">
+            <label for="description" style="color: white;">Description:</label>
+            <textarea class="form-control" id="description" name="description"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="image" style="color: white;">Image:</label>
+            <div class="image-upload-container">
+                <input type="file" id="image" name="image">
+                <span class="image-upload-icon"><i class="fas fa-camera"></i></span>
+            </div>
+            <p class="image-upload-label" style="color: white;">Click to select an image</p>
+        </div>
+        <div class="form-group">
+            <label for="category" style="color: white;">Category:</label>
+            <select class="form-control" id="category" name="category">
+                <option value="">Select category</option>
+                {% for categ in categories %}
+                <option value="{{ categ.categoryes}}">{{ categ.categoryes }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="checkbox-medium" name="checkbox-medium">
+            <label for="size-medium" style="color: white;"> medium</label>
+            <div class="d-flex">
+                <input type="number" class="form-control mx-2" id="price-medium" name="price-medium"  min="0" placeholder="Price for medium size">
+                <input type="number" class="form-control mx-2" id="offer-price-medium" name="offer-price-medium"  min="0" placeholder="Offer price for medium size">
+                <input type="number" class="form-control mx-2" id="productCount"  min="0" name="productCount-medium" value="1">
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="checkbox-large" name="checkbox-large">
+            <label for="size-large"> Large</label>
+            <div class="d-flex">
+                <input type="number" class="form-control mx-2" id="price-large" name="price-large"  min="0" placeholder="Price for large size">
+                <input type="number" class="form-control mx-2" id="offer-price-large" name="offer-price-large"  min="0" placeholder="Offer price for large size">
+                <input type="number" class="form-control mx-2" id="productCount"  min="0" name="productCount-large" value="1">
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="checkbox-xl" name="checkbox-xl">
+            <label for="size-xl"> Xtra Large</label>
+            <div class="d-flex">
+                <input type="number" class="form-control mx-2" id="price-xl" name="price-xl"  min="0" placeholder="Price for xl size">
+                <input type="number" class="form-control mx-2" id="offer-price-xl" name="offer-price-xl"  min="0" placeholder="Offer price for xl size">
+                <input type="number" class="form-control mx-2" id="productCount-xl"  min="0" name="productCount-xl" value="1">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-warning btn-outline-info add-product-button">Add Product</button>
+    </form>
+</div>
+
+{% endblock body %}

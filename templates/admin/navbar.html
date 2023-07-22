@@ -22,7 +22,7 @@
   <body style="background-color: #080742">
     <nav class="navbar navbar-expand-md navbar-dark bg-info">
       <div class="container">
-        <a class="navbar-brand mr-auto">TIME TRIX</a>
+        <a class="navbar-brand">TIME TRIX</a>
         <button
   class="navbar-toggler"
   type="button"
@@ -37,7 +37,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <a class="nav-link mr-3" href="#">Home</a>
+              <a class="nav-link mr-3" href="{% url 'admin_index' %}">Home</a>
             </li>
             <li class="nav-item mr-3">
               <a class="nav-link" href="#">Dashboard</a>
@@ -47,6 +47,9 @@
             </li>
             <li class="nav-item mr-3">
               <a class="nav-link" href="{% url 'products' %}">Product</a>
+            </li>
+            <li class="nav-item mr-3">
+              <a class="nav-link" href="{% url 'add_product' %}">Add Product</a>
             </li>
             <li class="nav-item mr-3">
               <a class="nav-link" href="{% url 'category' %}">Category</a>

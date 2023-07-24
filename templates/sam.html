@@ -1,0 +1,20 @@
+def enter_otp(request):
+    if request.method == 'POST':
+        entered_otp = request.POST.get('otp')
+        mobile = request.session.get('mobilenumber')
+
+        user_number = CustomUser.objects.filter(mobile=mobile)
+        if user_number.exists():
+            user = user_number.first()
+            if entered_otp == user.otp:
+                # OTP verification successful
+                user.is_otp_verified = True
+                user.save()
+                del request.session['mobilenumber']
+                login(request, user)
+                return redirect('home')
+            else:
+               messages.error(request, 'Invalid OTP')
+               return render(request, 'user/enter_otp.html')
+
+    return redirect('send_otp')  # Redirect to the O

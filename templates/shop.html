@@ -21,19 +21,17 @@
 
     <main>
         <!-- Hero Area Start-->
-        <div class="slider-area ">
-            <div class="single-slider slider-height2 d-flex align-items-center">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="hero-cap text-center">
-                                <h2>Watch Shop</h2>
-                            </div>
-                        </div>
-                    </div>
+        <div class="slider-area" style="margin-top: 50px;">
+            <div class="container">
+              <div class="row">
+                <div class="col-xl-12">
+                  <div class="hero-cap text-center">
+                    <h2>Explore More</h2>
+                  </div>
                 </div>
+              </div>
             </div>
-        </div>
+          </div>
         <!-- Hero Area End-->
         <!-- Latest Products Start -->
         <section class="popular-items latest-padding">
@@ -54,7 +52,7 @@
                     <div class="grid-list-view">
                     </div>
                     <!-- Select items -->
-                    <div class="select-this">
+                    {% comment %} <div class="select-this">
                         <form action="#">
                             <div class="select-itms">
                                 <select name="select" id="select1">
@@ -65,7 +63,7 @@
                                 </select>
                             </div>
                         </form>
-                    </div>
+                    </div> {% endcomment %}
                 </div>
                 <!-- Nav Card -->
                 <div class="tab-content" id="nav-tabContent">
@@ -75,7 +73,7 @@
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                 <div class="single-popular-items mb-50 text-center">
                                     <div class="popular-img">
-                                        <img src="assets/img/gallery/popular1.png" alt="">
+                                        <img src={% static "assets/img/gallery/popular1.png" %} alt="">
                                         <div class="img-cap">
                                             <span>Add to cart</span>
                                         </div>
@@ -92,7 +90,7 @@
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                 <div class="single-popular-items mb-50 text-center">
                                     <div class="popular-img">
-                                        <img src="assets/img/gallery/popular2.png" alt="">
+                                        <img src={% static "assets/img/gallery/popular2.png" %} alt="">
                                         <div class="img-cap">
                                             <span>Add to cart</span>
                                         </div>
@@ -109,7 +107,7 @@
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                 <div class="single-popular-items mb-50 text-center">
                                     <div class="popular-img">
-                                        <img src="assets/img/gallery/popular3.png" alt="">
+                                        <img src={% static "assets/img/gallery/popular3.png" %} alt="">
                                         <div class="img-cap">
                                             <span>Add to cart</span>
                                         </div>
@@ -126,7 +124,7 @@
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                 <div class="single-popular-items mb-50 text-center">
                                     <div class="popular-img">
-                                        <img src="assets/img/gallery/popular4.png" alt="">
+                                        <img src={% static "assets/img/gallery/popular4.png" %} alt="">
                                         <div class="img-cap">
                                             <span>Add to cart</span>
                                         </div>
@@ -143,7 +141,7 @@
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                 <div class="single-popular-items mb-50 text-center">
                                     <div class="popular-img">
-                                        <img src="assets/img/gallery/popular5.png" alt="">
+                                        <img src={% static "assets/img/gallery/popular5.png" %} alt="">
                                         <div class="img-cap">
                                             <span>Add to cart</span>
                                         </div>
@@ -160,7 +158,7 @@
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                 <div class="single-popular-items mb-50 text-center">
                                     <div class="popular-img">
-                                        <img src="assets/img/gallery/popular6.png" alt="">
+                                        <img src={% static "assets/img/gallery/popular6.png" %} alt="">
                                         <div class="img-cap">
                                             <span>Add to cart</span>
                                         </div>

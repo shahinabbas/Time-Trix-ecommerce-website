@@ -5,7 +5,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Signup</title>
+		<title>Send OTP</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
 		<!-- MATERIAL DESIGN ICONIC FONT -->
@@ -22,12 +22,15 @@
         
 		<div class="wrapper" style="background-image: url('{% static 'assets/img/s_images/croped1.png' %}');">
 			<div class="inner">
-				<form action="{% url 'signup' %}" method="post" style="padding-top: 100px;">
-					{% csrf_token %}
-					<h3>OTP Login</h3>
+				<form method="post" action="{% url 'send_otp' %}">
+					<!-- Your form fields here -->
+			
+				{% csrf_token %}
+					<h3>Send OTP</h3>
 					<div class="form-wrapper" style="padding-top: 20px;">
 						<input type="text" placeholder="Enter Phone Number"  class="form-control" name="phone_number" required>
 					</div>
+					
 					<br>
                         Enter your phone number to verify,
                         you will receive an sms message </br>

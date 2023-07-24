@@ -14,7 +14,7 @@ urlpatterns = [
     path('admin_logout/',views.admin_logoutpage,name='admin_logout'),
     path('login/',views.loginpage,name='login'),
     path('signup/',views.signuppage,name='signup'),
-    path('verify_otp/',views.verify_otppage,name='verify_otp'),
+    path('send_otp/',views.send_otppage,name='send_otp'),
 
 
     path('users/',views.userspage,name='users'),
@@ -26,9 +26,10 @@ urlpatterns = [
 
     path('products/',views.productspage,name='products'),
     path('add_product/',views.add_productpage,name='add_product'),
-    path('add_product1/',views.add_product1page,name='add_product1'),
+    path('edit_product/',views.productspage,name='edit_product'),
+    path('delete_product/',views.productspage,name='delete_product'),
 
-    path('product_details/',views.product_detailspage,name='product_details'),
+
     
 
     path('about/',views.aboutpage,name='about'),

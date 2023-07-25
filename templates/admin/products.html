@@ -1,121 +1,189 @@
-{% load static %}
-{% include 'admin/navbar.html' %}
-{% block title %}products{% endblock %}
-{% block additional_styles %}  
-.mt-5{
-    margin-top:6rem!important;
-    
-}
-nav{
-    background-color:  rgb(255 238 7 / 70%);
-
-}
-
+{% load static %} 
+{% include 'admin/navbar.html' %} 
+{% block title %}products{% endblock %} 
+{% block additional_styles %} .mt-5{ margin-top:6rem!important; }nav{ background-color: rgb(255 238 7 / 70%); } 
 {% endblock %}
-{% block body %}
+ {% block body %}
 
 <div class="container mt-5">
-{% comment %} <nav class="navbar navbar-expand-lg navbar-light  ">
-    <div class="container-fluid ">
-      <a class="navbar-brand " href="#"><i class="fa fa-cart-plus " aria-hidden="true"></i></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  {% comment %}
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"
+        ><i class="fa fa-cart-plus" aria-hidden="true"></i
+      ></a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item px-4">
-            <a class="nav-link active" aria-current="page" href="{% url 'products'%}"><b>PRODUCT LIST</b></a>
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="{% url 'products'%}"
+              ><b>PRODUCT LIST</b></a
+            >
           </li>
           <li class="nav-item px-4">
-            <a class="nav-link" href="{% url 'products'%}"><b>ADD PRODUCT</b></a>
+            <a class="nav-link" href="{% url 'products'%}"
+              ><b>ADD PRODUCT</b></a
+            >
           </li>
           <li class="nav-item px-4">
-            <a class="nav-link " href="{% url 'category_list'%}" ><b>CATEGORY</b> </a>
+            <a class="nav-link" href="{% url 'category_list'%}"
+              ><b>CATEGORY</b>
+            </a>
           </li>
         </ul>
-        <form class="d-flex px-4 ">
-          <input class="form-control me-2 rounded-pill border-success" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success " type="submit">  <i class="fas fa-search"></i></button>
+        <form class="d-flex px-4">
+          <input
+            class="form-control me-2 rounded-pill border-success"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
         </form>
       </div>
     </div>
-  </nav> {% endcomment %}
-
-  <table class="table align-middle mb-0 bg-white mt-2 ">
+  </nav>
+  {% endcomment %}
+  <table class="table align-middle mb-0 bg-white mt-2">
     <thead class="bg-light">
       <tr>
         <th>Product_id</th>
         <th>Product name</th>
         <th>Category</th>
         <th>Discription</th>
-        <th>Sizes</th>
+        <th>Shape</th>
         <th>Prices</th>
+        <th>Offer Prices</th>
         <th>Quantity</th>
         <th>Status</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      {% for product in products %}  
+      {% for product in products %}
       <tr>
         <td>{{product.id}}</td>
         <td>
-          <div class="d-flex align-items-center ">
-            {% if product.Product_Image %}
-            <img
-                src="{{product.Product_Image.url}}"
+          <div class="d-flex align-items-center">
+            
+       
+            {% if product.product_Image %}
+              <img
+                src="{{product.product_Image.url}}"
                 alt=""
-                style="width: 45px; height: 45px"
-                class="rounded-circle border border-success "
-                />
-              {% endif%}
+                style="width: 45px; height: 45px; object-fit: cover; border: 1px solid #28a745;"
+              />
+            {% endif %}
+
+         
             <div class="ms-3">
-              <p class="fw-bold mb-1">{{product.Product_name}}</p>
-              <p class="text-muted mb-0"><i class="fa fa-star warning" style="color:gold" aria-hidden="true"></i><i class="fa fa-star" style="color:gold" aria-hidden="true"></i><i class="fa fa-star" style="color:gold" aria-hidden="true"></i><i class="fa fa-star" style="color:gold" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></p>
+              <p class="fw-bold mb-1">{{product.product_name}}</p>
+              <p class="text-muted mb-0">
+                <i
+                  class="fa fa-star warning"
+                  style="color: gold"
+                  aria-hidden="true"
+                ></i
+                ><i
+                  class="fa fa-star"
+                  style="color: gold"
+                  aria-hidden="true"
+                ></i
+                ><i
+                  class="fa fa-star"
+                  style="color: gold"
+                  aria-hidden="true"
+                ></i
+                ><i
+                  class="fa fa-star"
+                  style="color: gold"
+                  aria-hidden="true"
+                ></i
+                ><i class="fa fa-star" aria-hidden="true"></i>
+              </p>
             </div>
           </div>
         </td>
         <td>
-          <p class="fw-normal mb-1">{{product.category.categoryes}}</p>
+          <p class="fw-normal mb-1">{{product.category.categories}}</p>
           <p class="text-muted mb-0"></p>
         </td>
-        <td><p>{{product.description}}<br></p>
         <td>
-          {% for size in product.productsize_set.all %}
-            <p class="fw-bold mb-1">{{size.size}}</p>
-            {% endfor %}
+          <p>{{product.description}}<br /></p>
+        </td>
         <td>
-          {% for size in product.productsize_set.all %}
-            <p class="fw-bold mb-1">{{size.price}}</p>
-            {% endfor %}
+          <p class="fw-bold mb-1">{{product.shape}}</p>
+        </td>
+
         <td>
-          {% for size in product.productsize_set.all %}
-            <p class="fw-bold mb-1 badge badge-success  ">{{size.Quantity}}</p><br>
-            {% endfor %}
+          <p class="fw-bold mb-1">{{product.price}}</p>
+        </td>
+
+        <td>
+          <p class="fw-bold mb-1">{{product.offer_price}}</p>
+        </td>
+
+        <td>
+          <p class="fw-bold mb-1 ">{{product.stock}}</p>
+          <br />
         </td>
         <td>
           {% if product.is_deleted %}
-          <span class="badge badge-danger rounded-pill d-inline">Un Avilable</span>
+          <span class="badge badge-danger rounded-pill d-inline"
+            >Un Avilable</span
+          >
           {% else %}
-          <span class="badge badge-success rounded-pill d-inline">Avilable</span>
+          <span class="badge badge-success rounded-pill d-inline"
+            >Avilable</span
+          >
           {% endif %}
         </td>
+
         <td>
-          <form action="{% url 'edit_product' product.id %}" class="d-inline">{% csrf_token %}
-            <button type="submit" class="btn btn-success"><i class="fas fa-edit"></i></button>
+          <form action="{% url 'edit_product' product.id %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">
+              <i class="fas fa-edit"></i>Edit
+            </button>
           </form>
+
           {% if product.is_deleted %}
-          <form action="{% url 'undo' product.id %}" method="post" class="d-inline">{% csrf_token %}
-            <button type="submit" class="btn btn-danger"><i class="fa fa-undo" aria-hidden="true"></i></button>
+          <form action="{% url 'undo_product' product.id %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">
+              <i class="fa fa-undo" aria-hidden="true"></i>Undo
+            </button>
           </form>
           {% else %}
-          <form action="{% url 'delete_product' product.id %}" method="post" class="d-inline">{% csrf_token %}
-            <button type="submit" class="btn btn-danger"><i class="fa fa-ban" aria-hidden="true"></i>
-          </button>
+          <form
+            action="{% url 'delete_product' product.id %}"
+            method="post"
+            class="d-inline"
+          >
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">
+              <i class="fa fa-ban" aria-hidden="true"></i>Delete
+            </button>
           </form>
           {% endif %}
         </td>
         {% endfor %}
+      </tr>
     </tbody>
   </table>
 </div>

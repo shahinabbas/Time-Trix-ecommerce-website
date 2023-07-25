@@ -19,14 +19,27 @@
 		<!-- Header Start -->
         {% include 'inc/navbar.html' %}
         <!-- Header End -->
-        
+		{% for message in messages %}
+		<div
+		  class="alert alert-{{message.tags}} alert-dismissible fade show"
+		  role="alert"
+		>
+		  {{message}}
+		  <button
+			type="button"
+			class="btn-close"
+			data-bs-dismiss="alert"
+			aria-label="Close"
+		  ></button>
+		</div>
+		{% endfor %}
 		<div class="wrapper" style="background-image: url('{% static 'assets/img/s_images/croped1.png' %}');">
 			<div class="inner">
 				<form action="{% url 'enter_otp' %}" method="post" style="padding-top: 100px;">
 					{% csrf_token %}
 					<h3>OTP Verification</h3>
 					<div class="form-wrapper" style="padding-top: 20px;">
-						<input type="text" placeholder="Enter OTP"  class="form-control" name="email" required>
+						<input type="text" placeholder="Enter OTP"  class="form-control" name="otp" required>
 					</div>
 					<a href="{% url 'signup' %}"><p style="font-size: 10px; text-align: right;">Not received your code? Resend code</p></a>
 				<div style="padding-top: 20px;">

@@ -129,15 +129,20 @@
 </head>
 <body> {% endcomment %}
   <div class="product-container" style="padding-top: 150px;">
-    <div class="product-image" >
-      <img src={% static "assets/img/logo/dij2.png" %} alt="Product Image" style="width: 400px; height: 400px;">
-    </div>
+ <div class="product-image" >
+      <img src={{product.Product_Image.url}} alt="Product Image" style="width: 400px; height: 400px;">
+    </div>  
     <div class="product-details" style="float: left; padding-left: 180px;">
-      <h1 class="product-title">G-Shock</h1>
+      <h1 class="product-title">{{product.product_name}}</h1>
       <p class="product-price">
-        ₹ 1000</p>
-      <p class="product-description">
-        One of Casio's most popular watch lines is G-shock, short for Gravitational Shock watch. They are the ideal accessory for anybody who prioritizes accuracy, toughness, and flexibility because they have been designed to withstand the toughest situations, from severe temperatures to strong impact.</p>
+        ₹{{product.offer_price}} &nbsp&nbsp  <s>₹{{product.price}}</s></p>
+        <p class="shape">
+          {{product.shape}}</p>
+          <p class="product_category">
+            {{product.category.categories}}</p>
+        <p class="description">
+        {{product.description}}</p>
+        
       <button class="add-to-cart">Add to Cart</button>
       <button class="add-to-cart">Buy Now</button>
     </div>

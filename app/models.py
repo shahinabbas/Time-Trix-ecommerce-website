@@ -43,6 +43,7 @@ class CustomUser(AbstractUser):
     name = models.CharField(_('name'), max_length=30, blank=True)
     phone_number = models.BigIntegerField(_('phone_number'), blank=True, null=True)
     otp = models.CharField(_('OTP'), max_length=6, blank=True)
+    is_otp_verified = models.BooleanField(default=False)
 
 
     USERNAME_FIELD = 'email'
@@ -73,11 +74,11 @@ class Product(models.Model):
     product_Image = models.ImageField(upload_to='product_images')
     shape = models.CharField(max_length=50)
     category = models.ForeignKey('category', on_delete=models.CASCADE)
-    # is_deleted = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
 
-    # def soft_delete(self):
-    #     self.is_deleted = True
-    #     self.save()
+    def soft_delete(self):
+        self.is_deleted = True
+        self.save()
 
     def __str__(self):
         return self.product_name

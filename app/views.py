@@ -52,7 +52,7 @@ def send_otppage(request):
             request.session['phone_number'] = phone_number
             print(phone_number)
             account_sid = 'AC2052f7894a67013c46526f408871da08'
-            auth_token = '3e35602aa550348d34e39ce13fd518b4'
+            auth_token = '5bfbffe61c4c0c8cad4078ef7ee131f9'
 
             try:
                 client = Client(account_sid, auth_token)
@@ -97,6 +97,38 @@ def enter_otppage(request):
     phone_number = request.session.get('phone_number')
     return render(request, 'enter_otp.html', {'phone_number': phone_number})
 
+# def enter_otppage(request,id,phone_number):
+#     if request.method == "POST":
+#         entered_otp=request.POST.get('otp')
+#         if verify.check(phone_number, entered_otp):
+#             user_id = CustomUser.objects.filter(id=id).update(is_verified=True)
+#             return redirect('/index_after_login')
+#         else:
+#             user_id=CustomUser.objects.get(id=id)
+#             user_id.delete()
+#             return redirect('index')
+#     else:
+#         return render(request,'enter_otp.html')
+
+
+
+
+    #     phone_number = request.session.get('phone_number')
+    #     user_phone = CustomUser.objects.filter(phone_number=phone_number)
+    #     if user_phone.exists():
+    #         user = user_phone.first()
+    #         if entered_otp == user.otp:
+    #             print('sup')
+    #             user.is_otp_verified = True
+    #             user.save()
+
+    #             del request.session['phone_number']
+    #             login(request, user)
+    #             return redirect('/index_after_login')
+    #         else:
+    #             messages.error(request, 'Invalid OTP')
+    #             return render(request, 'enter_otp.html')
+    # return redirect('send_otp') 
 
 @never_cache
 def loginpage(request):
@@ -245,9 +277,6 @@ def add_productpage(request):
 
 
 
-
-
-
 def delete_productpage(request, id):
     if request.method == 'POST':
         product = get_object_or_404(Product, pk=id)
@@ -317,11 +346,10 @@ def shoppage(request):
 
 
 def index(request):
-    return render(request, 'index.html')
-
-
-
-
+    if request.user.is_authenticated:
+        return render(request,'index.html') 
+    else:
+        return redirect('send_otp')
 
 def aboutpage(request):
     return render(request, 'about.html')

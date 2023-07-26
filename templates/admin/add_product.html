@@ -40,14 +40,10 @@
     <div class="form-group mb-3">
       <label for="category" style="color: white">Category</label>
       <select class="custom-select tm-select-accounts" id="category" name="category">
-
         <option value="" selected>Select category</option>
-        <option value="">Smart</option>
-        <option value="">Digital</option>
-        <option value="">Analog</option>
-        {% comment %} {% for s in stu %}
-        <option value="{{ s.category }}">{{ s.category }}</option>
-        {% endfor %} {% endcomment %}
+        {% for s in categories %}
+        <option value="{{ s.categories }}">{{ s.categories }}</option>
+        {% endfor %} 
       </select>
     </div>
     <div class="row">

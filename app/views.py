@@ -8,7 +8,6 @@ import os
 from django.contrib.auth.models import auth
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseNotFound
-from . import verify
 
 
 
@@ -73,30 +72,6 @@ def send_otppage(request):
 
 
 
-# def enter_otppage(request):
-#     if request.method == 'POST':
-#         entered_otp = request.POST.get('otp')
-#         phone_number = request.session.get('phone_number')
-
-#         user_number = CustomUser.objects.filter(phone_number=phone_number)
-#         if user_number.exists():
-#             user = user_number.first()
-#             if entered_otp == user.otp:
-#                 # OTP verification successful
-#                 user.is_otp_verified = True
-#                 user.save()
-#                 del request.session['phone_number']
-#                 login(request, user)
-#                 return redirect('/index')
-#             else:
-#                messages.error(request, 'Invalid OTP')
-#                return render(request, 'enter_otp.html')
-
-#     return redirect('/send_otp')  # Redirect to the O
-
-
-from django.contrib import messages
-
 def enter_otppage(request):
     if request.method == 'POST':
         entered_otp = request.POST.get('otp')
@@ -114,7 +89,7 @@ def enter_otppage(request):
                     user.save()
                     del request.session['phone_number']
                     login(request, user)
-                    return redirect('index_after_login')
+                    return redirect('/')
                 else:
                     messages.error(request, 'Invalid OTP')
         else:
@@ -122,38 +97,6 @@ def enter_otppage(request):
     phone_number = request.session.get('phone_number')
     return render(request, 'enter_otp.html', {'phone_number': phone_number})
 
-# def enter_otppage(request,id,phone_number):
-#     if request.method == "POST":
-#         entered_otp=request.POST.get('otp')
-#         if verify.check(phone_number, entered_otp):
-#             user_id = CustomUser.objects.filter(id=id).update(is_verified=True)
-#             return redirect('/index_after_login')
-#         else:
-#             user_id=CustomUser.objects.get(id=id)
-#             user_id.delete()
-#             return redirect('index')
-#     else:
-#         return render(request,'enter_otp.html')
-
-
-
-
-    #     phone_number = request.session.get('phone_number')
-    #     user_phone = CustomUser.objects.filter(phone_number=phone_number)
-    #     if user_phone.exists():
-    #         user = user_phone.first()
-    #         if entered_otp == user.otp:
-    #             print('sup')
-    #             user.is_otp_verified = True
-    #             user.save()
-
-    #             del request.session['phone_number']
-    #             login(request, user)
-    #             return redirect('/index_after_login')
-    #         else:
-    #             messages.error(request, 'Invalid OTP')
-    #             return render(request, 'enter_otp.html')
-    # return redirect('send_otp') 
 
 @never_cache
 def loginpage(request):
@@ -165,7 +108,7 @@ def loginpage(request):
         if user is not None:
             if user.is_active:
                 auth.login(request, user)
-                return redirect("/index_after_login")
+                return redirect("/")
             else:
                 messages.error(request, "User name or password is incorect")
     return render(request, 'login.html')
@@ -176,7 +119,7 @@ def logoutpage(request):
     logout(request)
     request.session.flush()
     messages.success(request, "Logout success")
-    return redirect('/index')
+    return redirect('/')
 
 
 def admin_signinpage(request):
@@ -303,56 +246,6 @@ def add_productpage(request):
 
 
 
-# def edit_productpage(request):
-#     try:
-#         product = Product.objects.get(pk=id)
-#         shape = product.productsize_set.all()
-#         category=category.objects.all()
-#         context={
-#             'product':product,
-#             'shape':shape,
-#             'categories':category
-#         }
-#     except Product.DoesNotExist:
-#         return HttpResponseNotFound("Product not found")
-
-#     if request.method == 'POST':
-#         product_name = request.POST.get('productName')
-#         print(request.POST.get('categoryId'))
-#         category_id = request.POST.get('categoryId')
-#         category = get_object_or_404(category, pk=category_id)        
-#         description = request.POST.get('description')
-#         if request.FILES.get('image'):
-#             photo = request.FILES.get('image')
-#         else:
-#             photo = product.Product_Image
-#         sizes = ['medium', 'large','xl']
-#         # Update the product details
-#         product.Product_name = product_name
-#         product.category  = category
-#         product.description = description
-#         product.Product_Image=photo
-#         product.save()
-        
-#         for s in shape:
-#             checkbox = request.POST.get(f'checkbox-{shape}')
-#             if checkbox:
-#                 price = request.POST.get(f'price-{size}')
-#                 offer_price = request.POST.get(f'offer-price-{size}')
-#                 count = request.POST.get(f'productCount-{size}')
-#                     # Update or create the product size
-#                 product_size, _ = ProductSize.objects.get_or_create(product_id=product, size=size)
-#                 product_size.price = price
-#                 product_size.offer_price =offer_price
-#                 product_size.Quantity = count
-#                 product_size.save()
-
-
-#         return redirect('products')  # Redirect to a success page or product list view
-#     # If the request method is not POST, render the edit product form with the current product details
-#     return render(request,"admin/edit_product.html",context)
-
-
 
 
 def delete_productpage(request, id):
@@ -406,13 +299,9 @@ def edit_productpage(request, id):
 
 
 def listpage(request, id):
-    product = Product.objects.get(pk=id) 
-    all_categories = category.objects.all()
-    context = {
-              'product': product, 
-              "Category":all_categories,
-    }
-    return render(request,'list.html',context)
+    return render(request,'list.html')
+
+
 
 def product_detailspage(request, product_id):
     try:
@@ -421,12 +310,17 @@ def product_detailspage(request, product_id):
         product = None
     return render(request, 'product_details.html', {'product': product})
 
+
+def shoppage(request):
+    product=Product.objects.all()
+    return render(request,'shop.html',{'product': product})
+
+
 def index(request):
     return render(request, 'index.html')
 
 
-def index_after_login(request):
-    return render(request, 'index_after_login.html')
+
 
 
 def aboutpage(request):
@@ -449,8 +343,6 @@ def checkoutpage(request):
     return render(request, 'checkout.html')
 
 
-def shoppage(request):
-    return render(request, 'shop.html')
 
 
 def contactpage(request):

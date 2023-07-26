@@ -1,12 +1,12 @@
 from django.urls import path
 from app import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('',views.index,name='index'),
-    path('index_after_login',views.index_after_login,name='index_after_login'),
 
     path('logout/',views.logoutpage,name='logout'),
-    # path('send_otp/',views.send_otppage,name='send_otp'),
     path('enter_otp/',views.enter_otppage,name='enter_otp'),
     
     path('admin_index/',views.admin_indexpage,name='admin_index'),
@@ -44,4 +44,4 @@ urlpatterns = [
     path('elements/',views.elementspage,name='elements'),
     
    
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

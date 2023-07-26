@@ -1,148 +1,131 @@
 {% extends 'layouts/main.html' %}
 {% load static %}
+{% block additional_styles %}
+.product-image {
+    max-width: 100%;
+    height: auto;
+}
+{% endblock %}
 {% block body %}
         <!-- Header Start -->
         {% include 'inc/navbar.html' %}
         <!-- Header End -->
 
-    {% comment %} <main>
-      <!-- Hero Area Start-->
-      <div class="slider-area">
-    <div class="single-slider slider-height2 d-flex align-items-center"> 
-          <div class="container">
-            <div class="row">
-              <div class="col-xl-12">
-                <div class="hero-cap text-center">
-                  <h2>Watch Shop</h2>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Hero Area End-->
-      <!--================Single Product Area =================-->
-      <div class="product_image_area">
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-12">
-              <div class="product_img_slide owl-carousel">
-                <div class="single_product_img">
-                  <img
-                    src={% static "assets/img/gallery/gallery1.png" %}
-                    alt="#"
-                    class="img-fluid"
-                  />
-                </div>
-                <div class="single_product_img">
-                  <img
-                    src="assets/img/gallery/gallery01.png"
-                    alt="#"
-                    class="img-fluid"
-                  />
-                </div>
-                <div class="single_product_img">
-                  <img
-                    src="assets/img/gallery/gallery1.png"
-                    alt="#"
-                    class="img-fluid"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-8">
-              <div class="single_product_text text-center">
-                <h3>
-                  Foam filling cotton slow <br />
-                  rebound pillows
-                </h3>
-                <p>
-                  Seamlessly empower fully researched growth strategies and
-                  interoperable internal or “organic” sources. Credibly innovate
-                  granular internal or “organic” sources whereas high standards
-                  in web-readiness. Credibly innovate granular internal or
-                  organic sources whereas high standards in web-readiness.
-                  Energistically scale future-proof core competencies vis-a-vis
-                  impactful experiences. Dramatically synthesize integrated
-                  schemas. with optimal networks.
-                </p>
-                <div class="card_area">
-                  <div class="product_count_area">
-                    <p>Quantity</p>
-                    <div class="product_count d-inline-block">
-                      <span class="product_count_item inumber-decrement">
-                        <i class="ti-minus"></i
-                      ></span>
-                      <input
-                        class="product_count_item input-number"
-                        type="text"
-                        value="1"
-                        min="0"
-                        max="10"
-                      />
-                      <span class="product_count_item number-increment">
-                        <i class="ti-plus"></i
-                      ></span>
-                    </div>
-                    <p>$5</p>
-                  </div>
-                  <div class="add_to_cart">
-                    <a href="#" class="btn_3">add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> {% endcomment %}
-      <!--================End Single Product Area =================-->
-      {% comment %} <!-- subscribe part here -->
-      <section class="subscribe_part section_padding">
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-8">
-              <div class="subscribe_part_content">
-                <h2>Get promotions & updates!</h2>
-                <p>
-                  Seamlessly empower fully researched growth strategies and
-                  interoperable internal or “organic” sources credibly innovate
-                  granular internal .
-                </p>
-                <div class="subscribe_form">
-                  <input type="email" placeholder="Enter your mail" />
-                  <a href="#" class="btn_1">Subscribe</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <!-- subscribe part end --> {% endcomment %}
-    {% comment %} </main> {% endcomment %}
-    {% comment %} <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product View</title>
-  <link rel="stylesheet" href={% static "assets/css/product_view.css" %}>
-</head>
-<body> {% endcomment %}
-  <div class="product-container" style="padding-top: 150px;">
- <div class="product-image" >
-      <img src={{product.Product_Image.url}} alt="Product Image" style="width: 400px; height: 400px;">
-    </div>  
-    <div class="product-details" style="float: left; padding-left: 180px;">
-      <h1 class="product-title">{{product.product_name}}</h1>
-      <p class="product-price">
-        ₹{{product.offer_price}} &nbsp&nbsp  <s>₹{{product.price}}</s></p>
-        <p class="shape">
-          {{product.shape}}</p>
-          <p class="product_category">
-            {{product.category.categories}}</p>
-        <p class="description">
-        {{product.description}}</p>
         
+        
+        
+                <!-- Product section-->
+        
+                <section class="py-5">
+                    <div class="container px-4 px-lg-5 my-5" style='max-width: 1000px;'>
+                        <div class="row gx-4 gx-lg-5 align-items-center rounded-3" >
+                            <div class="col-md-6">
+                                {% comment %} <div style='display:flex; justify-content: center; align-items: center; aspect-ratio: 1; overflow: hidden; border-radius: 15px; margin: 30px;'>
+                                    {% comment %} <img src="{{ product.Product_Image.url }}" alt="Product Image" style='height: 100%;' /> {% endcomment %}
+                                    {% comment %} <div style="background-image: url('{{ product.Product_Image.url }}'); height: 100%; width: 100%; background-size: cover; background-repeat: no-repeat;"></div>
+                                </div>  {% endcomment %}
+                                <div class="product-image" >
+                                  <img src={{product.product_Image.url}} alt="Product Image" style="width: 400px; height: 400px;">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h1 class="display-5 fw-bolder">{{ product.Product_name }}</h1>
+                                <div class="d-flex small text-success mb-2">
+                                    {% comment %} <div class="bi-star-fill"></div>
+                                    <div class="bi-star-fill"></div>
+                                    <div class="bi-star-fill"></div>
+                                    <div class="bi-star-fill"></div>
+                                    <div class="bi-star-fill"></div> {% endcomment %}
+                                </div>
+                                <p class="lead">₹ {{ product.offer_price}} &nbsp &nbsp ₹ <s>{{ product.price}}</s></p>
+                                <p class="lead">Model: {{ product.category.categories}}</p>
+                                <p class="lead">Shape: {{ product.shape}}</p>
+                                <p class="lead">Description: {{ product.description }}</p>
+                                <div class="d-flex">
+                                    <div hidden>
+                                        <form action="" method="post">
+                                           {% csrf_token %}
+                                            <input type="text" value='some text'>
+                                           <input type="submit" value="Add to cart">
+                                        </form>
+                                    </div>
+                                    <form action="" method="post" class='w-100'>
+                                        {% csrf_token %}
+                                        <div style='display: grid; grid-auto-flow: row; row-gap: 20px;'> 
+                                           
+                                            <div style='display: grid; grid-auto-flow: column; column-gap: 20px;'>
+                                                <button type="submit" class="btn btn-dark" style='min-width: 150px; height: 50px;'>Add to Cart</button>
+                                                <button type="#" class="btn btn-dark" style='min-width: 150px; height: 50px;'>By now</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                    </div>
+                </section>
+                
+
+        <div class="shop-method-area" style="padding-top: 40px;">
+          <div class="container">
+              <div class="method-wrapper">
+                  <div class="row d-flex justify-content-between">
+                      <div class="col-xl-4 col-lg-4 col-md-6">
+                          <div class="single-method mb-40">
+                              <i class="ti-package"></i>
+                              <h6>Free Shipping Method</h6>
+                              <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+                          </div>
+                      </div>
+                      <div class="col-xl-4 col-lg-4 col-md-6">
+                          <div class="single-method mb-40">
+                              <i class="ti-unlock"></i>
+                              <h6>Secure Payment System</h6>
+                              <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+                          </div>
+                      </div> 
+                      <div class="col-xl-4 col-lg-4 col-md-6">
+                          <div class="single-method mb-40">
+                              <i class="ti-reload"></i>
+                              <h6>Secure Payment System</h6>
+                              <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- Shop Method End-->
+                {% comment %} <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.all.min.js"></script>
+                {% if error %}
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        swal({
+                            title: "Error",
+                            text: "{{ error }}",
+                            icon: "error",
+                            button: "OK"
+                        });
+                    });
+                </script>
+            {% endif %}
+                {% endcomment %}
+        {% endblock body %}
+
+        
+
+  {% comment %} <div class="product-container" style="padding-top: 150px;">
+    <div class="product-image" >
+      <img src={% static "assets/img/logo/dij2.png" %} alt="Product Image" style="width: 400px; height: 400px;">
+    </div>
+    <div class="product-details" style="float: left; padding-left: 180px;">
+      <h1 class="product-title">G-Shock</h1>
+      <p class="product-price">
+        ₹ 1000</p>
+      <p class="product-description">
+        One of Casio's most popular watch lines is G-shock, short for Gravitational Shock watch. They are the ideal accessory for anybody who prioritizes accuracy, toughness, and flexibility because they have been designed to withstand the toughest situations, from severe temperatures to strong impact.</p>
       <button class="add-to-cart">Add to Cart</button>
       <button class="add-to-cart">Buy Now</button>
     </div>
@@ -179,4 +162,4 @@
   </div>
 </div>
 <!-- Shop Method End-->
-    {% endblock body %}
+    {% endblock body %} {% endcomment %}

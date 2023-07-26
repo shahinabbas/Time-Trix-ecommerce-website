@@ -71,7 +71,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2,default=0)
     offer_price = models.DecimalField(max_digits=8, decimal_places=2,default=0)
     stock = models.IntegerField(default=0)
-    product_Image = models.ImageField(upload_to='product_images')
+    product_Image = models.ImageField(upload_to='media/product_images')
     shape = models.CharField(max_length=50)
     category = models.ForeignKey('category', on_delete=models.CASCADE)
     is_deleted = models.BooleanField(default=False)

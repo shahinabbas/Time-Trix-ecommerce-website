@@ -1,4 +1,6 @@
 {% load static %}
+<link rel="stylesheet" href='{% static "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-JyKoYn1tkgFJ5s1oi41p3r2XZpAnZxX7WnG5ZKNmZYRP/dfkX9vLoArqgeLP7aCfFM6u0R/L3qkX+rYdVaz5w==" crossorigin="anonymous" referrerpolicy="no-referrer" %}' />
+
 <header>
     <!-- Header Start -->
     <div class="header-area">
@@ -44,20 +46,38 @@
                                     </ul>
                                 </li>
                                 <li><a href="{% url 'contact' %}">Contact</a></li>
-                                
+                                {% if user.is_authenticated %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'logout' %}">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item"><a class="nav-link" href="{% url 'send_otp' %}">Login</a></li>
+                            {% endif %}
+                                <div class="container">
+                                    <!-- Your navigation bar content -->
+                                        <!-- Add other navigation links here -->
+                                        
+                                    
+                                </div>
                             </ul>
                         </nav>
                     </div>
                     <!-- Header Right -->
                     <div class="header-right">
                         <ul>
+                        
                             <li>
                                 <div class="nav-search search-switch">
                                     <span class="flaticon-search"></span>
                                 </div>
                             </li>
+                            
                             <li> <a href="{% url 'send_otp' %}"><span class="flaticon-user"></span></a></li>
                             <li><a href="{% url 'cart' %}"><span class="flaticon-shopping-cart"></span></a> </li>
+
+                            
                         </ul>
                     </div>
                 </div>

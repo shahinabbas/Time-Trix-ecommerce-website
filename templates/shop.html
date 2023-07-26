@@ -68,12 +68,14 @@
                 <!-- Nav Card -->
                 <div class="tab-content" id="nav-tabContent">
                     <!-- card one -->
+                    {% for product in product %}
+
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                         <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                 <div class="single-popular-items mb-50 text-center">
                                     <div class="popular-img">
-                                        <img src= alt="">
+                                        <img src={{product.product_image.url}} alt="">
                                         <div class="img-cap">
                                             <span>Add to cart</span>
                                         </div>
@@ -82,15 +84,34 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">{{product.Product_name}}</a></h3>
-                                        <span>₹ 5000</span>
+                                        <h3><a href="{% url 'product_details' product.id %}">{{product.product_name}}</a></h3>
+                                        <span>₹ {{product.offer_price}} &nbsp &nbsp ₹ <s>{{product.price}}</s></span>
+
+                                    </div>
+                                </div>
+                            </div>
+                            {% comment %} <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                                <div class="single-popular-items mb-50 text-center">
+                                    <div class="popular-img">
+                                        <img src={{product.product_image.url}}alt="">
+                                        <div class="img-cap">
+                                            <span>Add to cart</span>
+                                        </div>
+                                        <div class="favorit-items">
+                                            <span class="flaticon-heart"></span>
+                                        </div>
+                                    </div>
+                                    <div class="popular-caption">
+                                        <h3><a href="product_details.html">{{product.product_name}}</a></h3>
+                                        <span>₹ {{product.offer_price}} &nbsp &nbsp ₹ <s>{{product.price}}</s></span>
+
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                 <div class="single-popular-items mb-50 text-center">
                                     <div class="popular-img">
-                                        <img src={% static "assets/img/gallery/popular2.png" %} alt="">
+                                        <img src={{product.product_image.url}} alt="">
                                         <div class="img-cap">
                                             <span>Add to cart</span>
                                         </div>
@@ -99,29 +120,13 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                        <span>$ 45,743</span>
+                                        <h3><a href="product_details.html">{{product.product_name}}</a></h3>
+                                        <span>₹ {{product.offer_price}} &nbsp &nbsp ₹ <s>{{product.price}}</s></span>
+
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                                <div class="single-popular-items mb-50 text-center">
-                                    <div class="popular-img">
-                                        <img src={% static "assets/img/gallery/popular3.png" %} alt="">
-                                        <div class="img-cap">
-                                            <span>Add to cart</span>
-                                        </div>
-                                        <div class="favorit-items">
-                                            <span class="flaticon-heart"></span>
-                                        </div>
-                                    </div>
-                                    <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
-                                        <span>$ 45,743</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                            </div> {% endcomment %}
+                            {% comment %} <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                                 <div class="single-popular-items mb-50 text-center">
                                     <div class="popular-img">
                                         <img src={% static "assets/img/gallery/popular4.png" %} alt="">
@@ -385,10 +390,11 @@
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
-                            </div>
+                            </div> {% endcomment %}
                         </div>
                     </div>
                 </div>
+                {% endfor %}
                 <!-- End Nav Card -->
             </div>
         </section>

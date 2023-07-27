@@ -11,12 +11,12 @@
     <a class="btn btn-light btn-block" href="{% url 'userlogout' %}" id="userlogoutbtn"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a>
     <!--   SIDEBAR .//END   -->
   </aside>   {% endcomment %}
-  <aside class="col-md-2">
+  <aside class="col-md-3">
     <!--   SIDEBAR   -->
     <ul class="list-group">
       <a class="list-group-item {% if '/about/' == request.path %}active{% endif %}" href="{% url 'about' %}"> Dashboard </a>
       <a class="list-group-item {% if '/about/' in request.path %}active{% endif %}" href="{% url 'about' %}"> My Orders </a>
-      <a class="list-group-item {% if '/signup/' in request.path %}active{% endif %}" href="{% url 'signup' %}"> Manage Address </a>
+      <a class="list-group-item {% if '/address/' in request.path %}active{% endif %}" href="{% url 'address' %}"> Manage Address </a>
       <a class="list-group-item {% if '/send_otp/' in request.path %}active{% endif %}" href="{% url 'send_otp' %}"> Edit Profile </a>
       <a class="list-group-item {% if '/send_otp/' in request.path %}active{% endif %}" href="{% url 'send_otp' %}"> Change Password </a>  
     </ul>

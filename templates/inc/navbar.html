@@ -24,13 +24,13 @@
                                         <li><a href="{% url 'digital' %}">digital</a></li>
                                         <li><a href="{% url 'smart' %}">>smart</a></li>
                                     </ul> {% endcomment %}
-                                {% comment %} </li>
+                            {% comment %} </li>
                                 <li class="hot"><a href="#">Latest</a>
                                     <ul class="submenu">
                                         <li><a href="shop.html"> Product list</a></li>
                                         <li><a href="product_details.html"> Product Details</a></li>
                                     </ul>
-                                </li> {% endcomment %}
+                                </li>  {% endcomment %}
                                 <li><a href="{% url 'about' %}">About</a></li>
                                 {% comment %} <li><a href="blog.html">Blog</a></li> {% endcomment %}
                                 <li><a href="{% url 'blog' %}">Blog</a></li>
@@ -53,7 +53,7 @@
                                     </a>
                                 </li>
                             {% else %}
-                                <li class="nav-item"><a class="nav-link" href="{% url 'send_otp' %}">Login</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
                             {% endif %}
                                 <div class="container">
                                     <!-- Your navigation bar content -->

@@ -14,24 +14,56 @@ from django.contrib.auth.decorators import login_required
 
 
 
+# def reset_passwordpage(request):
+#     error_message = None
+#     print('hi')
+#     if request.session.has_key('phone_number'):
+#         phone_number= request.session['phone_number']
+#         user = CustomUser.objects.get(phone_number=phone_number)
+#         if request.method == 'POST':
+#             new_password=request.POST.get('new_password')
+#             confirm_password=request.POST.get('confirm_password')
+
+#             if new_password == confirm_password:
+#                 if new_password:  
+#                     error_message= "Enter new password"
+#                 elif not confirm_password:
+#                     error_message ="Reenter password"
+#                 elif new_password == user.password:
+#                     error_message = "This password already exist"
+#                 if not error_message:
+#                     user.set_password(new_password)
+#                     print(user.password)
+#                     user.save() 
+#                     del request.session['phone_number']
+
+#                 messages.success(request,"password changed Sucess fully")
+#                 return redirect('/login')
+#     return render(request,"reset.html",{'error':error_message})
+
+
+
+def addresspage(request):
+    return render(request, 'address.html')
 
 # @login_required(login_url='send_otp')
 def profilepage(request):
     return render(request, 'profile.html')
-# @never_cache
-# def loginpage(request):
-#     if request.method == "POST":
-#         phone_number = request.POST.get("phone_number")
-#         otp = request.POST.get("otp")
-#         user = authenticate(request, phone_number=phone_number, otp=otp)
-#         print(user)
-#         if user is not None:
-#             if user.is_active:
-#                 auth.login(request, user)
-#                 return redirect("/")
-#             else:
-#                 messages.error(request, "User name or password is incorect")
-#     return render(request, 'login.html')
+
+@never_cache
+def loginpage(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        user = authenticate(request, email=email,password=password)
+        print(user)
+        if user is not None:
+            if user.is_active:
+                auth.login(request, user)
+                return redirect("/")
+            else:
+                messages.error(request, "User name or password is incorect")
+    return render(request, 'login.html')
 
 
 
@@ -202,7 +234,7 @@ def product_detailspage(request, product_id):
 
 
 def shoppage(request):
-    product = Product.objects.all()
+    product = Product.objects.all().filter(is_deleted=False)
     return render(request, 'shop.html', {'product': product})
 
 
@@ -248,29 +280,13 @@ def add_product1page(request):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def signuppage(request):
     if request.method == "POST":
         name = request.POST.get('name')
         email = request.POST.get('email')
         phone_number = request.POST.get('phone_number')
-        pass1 = request.POST.get('password')
-        pass2 = request.POST.get('confirm_password')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
         if not name:
             messages.error(request, "Name field cannot be empty")
             return redirect('/signup')
@@ -280,11 +296,11 @@ def signuppage(request):
         if len(phone_number) < 13 or len(phone_number) > 14:
             messages.error(request, 'Phone number is wrong')
             return redirect('/signup')
-        if pass1 == pass2:
+        if password == confirm_password:
             myuser = CustomUser.objects.create_user(
-                name=name, email=email, phone_number=phone_number, password=pass1)
+                name=name, email=email, phone_number=phone_number, password=password)
             myuser.save()
-            return redirect("send_otp")
+            return redirect("login")
         else:
             messages.error(
                 request, "your password and confirm password incorrect")
@@ -322,6 +338,7 @@ def send_otppage(request):
                     from_='+12342616521',
                     to=phone_number
                 )
+                print('ok')
                 return render(request, "enter_otp.html")
             except Exception as e:
                 messages.error(
@@ -349,7 +366,7 @@ def enter_otppage(request):
                     print(entered_otp)
                     user.is_otp_verified = True
                     user.save()
-                    del request.session['phone_number']
+                    # del request.session['phone_number']
                     auth.login(request, user)
                     return redirect('/')
                 else:
@@ -358,7 +375,6 @@ def enter_otppage(request):
             messages.error(request, 'Phone number not found in session.')
     phone_number = request.session.get('phone_number')
     return render(request, 'enter_otp.html', {'phone_number': phone_number})
-
 
 
 

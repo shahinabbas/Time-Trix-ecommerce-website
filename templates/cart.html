@@ -6,19 +6,41 @@
       <!-- Header End -->
   <main>
       <!-- Hero Area Start-->
-      <div class="slider-area ">
-          <div class="single-slider slider-height2 d-flex align-items-center">
-              <div class="container">
-                  <div class="row">
-                      <div class="col-xl-12">
-                          <div class="hero-cap text-center">
-                              <h2>Cart List</h2>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+      <style>
+        .video-area {
+          position: relative;
+          text-align: center;
+        }
+      
+        .video-area img {
+          width: 100%;
+          opacity: 0.8;
+        }
+      
+        .video-area h2 {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: white;
+          font-size: 66px;
+          font-weight: bold;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Add a text shadow for better visibility */
+        }
+      </style>
+      
+      <div class="video-area">
+        <div class="container-fluid">
+          <div class="row align-items-center">
+            <div class="col-lg-12">
+              <img src="{% static 'assets/img/logo/1233.png' %}" alt="Image" class="img-fluid" >              <h2>Cart List</h2>
+            </div>
           </div>
+        </div>
       </div>
+      
+  
+    
       <!--================Cart Area =================-->
       <section class="cart_area section_padding">
         <div class="container">
@@ -86,7 +108,7 @@
                   </tr>
                   <tr class="bottom_button">
                     <td>
-                      <a class="btn_1" href="#">Update Cart</a>
+                      <a class="btn_1" href="{% url 'shop' %}">Update Cart</a>
                     </td>
                     <td></td>
                     <td></td>
@@ -154,12 +176,43 @@
                 </tbody>
               </table>
               <div class="checkout_btn_inner float-right">
-                <a class="btn_1" href="#">Continue Shopping</a>
+                <a class="btn_1" href="{% url 'shop' %}">Continue Shopping</a>
                 <a class="btn_1 checkout_btn_1" href="#">Proceed to checkout</a>
               </div>
             </div>
           </div>
       </section>
       <!--================End Cart Area =================-->
+      <!--? Shop Method Start-->
+      <div class="shop-method-area" style="padding-top: 40px;">
+        <div class="container">
+            <div class="method-wrapper">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="single-method mb-40">
+                            <i class="ti-package"></i>
+                            <h6>Free Shipping Method</h6>
+                            <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="single-method mb-40">
+                            <i class="ti-unlock"></i>
+                            <h6>Secure Payment System</h6>
+                            <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+                        </div>
+                    </div> 
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="single-method mb-40">
+                            <i class="ti-reload"></i>
+                            <h6>Secure Payment System</h6>
+                            <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Shop Method End-->
   </main>
   {% endblock body %}

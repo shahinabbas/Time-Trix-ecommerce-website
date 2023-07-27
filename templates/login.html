@@ -1,0 +1,41 @@
+{% extends 'layouts/main.html' %}
+{% load static %}
+{% block body %}
+<!DOCTYPE html>
+
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="{% static 'assets/s_fonts/material-design-iconic-font/css/material-design-iconic-font.min.css' %}">   
+		<link rel="stylesheet" href="{% static 'assets/s_css/style.css' %}">
+	
+		<!-- Header Start -->
+        {% include 'inc/navbar.html' %}
+        <!-- Header End -->
+        
+		<div class="wrapper" style="background-image: url('{% static 'assets/img/s_images/croped1.png' %}');">
+			<div class="inner">
+				<form action="" method="post" style="padding-top: 120px;">
+					{% csrf_token %}
+					<h3>Login</h3>
+					<div class="form-wrapper">
+						<input type="email" placeholder="Email" class="form-control" name="email" required>
+						<i class="zmdi zmdi-email"></i>
+					</div>
+					<div class="form-wrapper">
+						<input type="password" placeholder="Password" class="form-control" name="password" required>
+						<i class="zmdi zmdi-lock"></i>
+					</div>
+                    <a href="{% url 'send_otp' %}"><p style="font-size: 10px; text-align: right;">Login with OTP?</p></a>
+					<button>Login
+						<i class="zmdi zmdi-arrow-right"></i>
+					</button>
+				</form>
+                <div class="image-holder">
+					<img src="{% static 'assets/img/s_images/post-4.png' %}" alt="">
+				</div>
+			</div>
+		</div>
+		
+	</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
+{% endblock body %}

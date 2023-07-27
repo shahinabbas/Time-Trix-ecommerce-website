@@ -1,21 +1,15 @@
 {% extends 'layouts/main.html' %}
 {% load static %}
 {% block body %}
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>Send OTP</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<!-- MATERIAL DESIGN ICONIC FONT -->
-		<link rel="stylesheet" href="{% static 'assets/s_fonts/material-design-iconic-font/css/material-design-iconic-font.min.css' %}">
+{% block head%}
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/s_fonts/material-design-iconic-font/css/material-design-iconic-font.min.css' %}"
+    />
 
-		<!-- STYLE CSS -->
-		<link rel="stylesheet" href="{% static 'assets/s_css/style.css' %}">
-	</head>
-
-	<body>
+    <!-- STYLE CSS -->
+    <link rel="stylesheet" href="{% static 'assets/s_css/style.css' %}" />
+{% endblock %}
 		<!-- Header Start -->
         {% include 'inc/navbar.html' %}
         <!-- Header End -->
@@ -48,7 +42,7 @@
                         Enter your phone number to verify,
                         you will receive an sms message </br>
 				<div style="padding-top: 20px;">
-                    <button>Login
+                    <button>Request OTP
 						<i class="zmdi zmdi-arrow-right"></i>
 					</button>
 
@@ -64,7 +58,5 @@
 				</div>
 			</div>
 		</div>
-		
-	</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
-</html>
+
 {% endblock body %}

@@ -1,0 +1,65 @@
+{% extends 'layouts/main.html' %}
+{% load static %}
+{% block body %} 
+ 
+<section class="section-conten padding-y bg" style="padding-top: 20px">
+    <div class="container">
+      <div class="row">
+        {% include 'inc/sidebar.html' %}
+ <!-- Address Cards Section -->
+    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="row gutters">
+                    <h6 class="mb-2 text-primary">Profile address</h6>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex flex-wrap">
+                        {% comment %} {% for profile_address in address %} {% endcomment %}
+                            <div class="card mr-2 mb-2" style="width: 15rem;">
+                                <div class="card-body bg-warning" style="border-radius: 10px">
+                                    <h5 class="card-title">Address 1</h5>
+                                    <p style="color: black;">
+                                        {{ profile_address.name }},
+                                        <br>
+                                        {{ profile_address.street }},{{ profile_address.city }},
+                                        <br>
+                                        {{ profile_address.state }},{{ profile_address.country }},
+                                        <br>
+                                        Pin:{{ profile_address.postal_code }},
+                                        <br>
+                                        Ph:2115265622115
+                                    </p>
+                                    <div class="d-flex justify-content-center">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1"
+                                        data-address-id="1"
+                                        data-target="#exampleModalCenter1"
+                                        data-address-name="{{ profile_address.name }}"
+                                        data-address-email="{{ profile_address.email }}"
+                                        data-address-mobile="{{ profile_address.phone_number }}"
+                                        data-address-house-no="{{ profile_address.house_no }}"
+                                        data-address-house-name="{{ profile_address.house_name }}"
+                                        data-address-street="{{ profile_address.street }}"
+                                        data-address-city="{{ profile_address.city }}"
+                                        data-address-state="{{ profile_address.state }}"
+                                        data-address-country="{{ profile_address.country }}"
+                                        data-address-zip="{{ profile_address.postal_code }}">
+                                        <i class="fas fa-edit"></i>
+                                </button>
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <input type="number" name="address_id" value="{{ profile_address.id  }}"hidden>
+                                        <button type="submit" class="btn btn-danger ml-2"><i class="fas fa-trash"></i></button>
+                                </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% comment %} {% endfor %} {% endcomment %}
+                    </div>
+                    <!-- Personal Details Section -->
+                </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</section>
+{% endblock body %}

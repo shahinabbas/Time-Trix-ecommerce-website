@@ -96,5 +96,24 @@ class user_profile(models.Model):
     state = models.CharField(_('state'), max_length=100)
     country = models.CharField(_('country'), max_length=100)
     postal_code = models.CharField(_('postal code'), max_length=10)
+
     def _str_(self):
         return f"{self.user.email}'s Address"
+    
+
+class cart(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product, through = 'cart_item')
+
+
+class cart_item(models.Model):
+    user= models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True)
+    cart = models.ForeignKey(cart, on_delete=models.CASCADE, related_name='cart_items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE) 
+    stock = models.PositiveIntegerField(default=1)
+    is_active=models.BooleanField(default=True)
+
+    def get_subtotal(self):
+        return self.product.price * self.quantity
+    def get_subtotal_offer_price(self):
+        return self.product.offer_price * self.quantity

@@ -71,7 +71,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2,default=0)
     offer_price = models.DecimalField(max_digits=8, decimal_places=2,default=0)
     stock = models.IntegerField(default=0)
-    product_Image = models.ImageField(upload_to='media/product_images')
+    product_Image = models.ImageField(upload_to='product_images')
     shape = models.CharField(max_length=50)
     category = models.ForeignKey('category', on_delete=models.CASCADE)
     is_deleted = models.BooleanField(default=False)
@@ -84,3 +84,17 @@ class Product(models.Model):
         return self.product_name
 
 
+class user_profile(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    name = models.CharField(_('name'), max_length=100)
+    phone_number = models.BigIntegerField(_('phone_number'), blank=True, null=True)
+    house_no = models.CharField(_('house number'), max_length=10, blank=True)
+    profile_pic = models.ImageField(upload_to='profile_pic')
+    house_name = models.CharField(_('house name'), max_length=50, blank=True)
+    street = models.CharField(_('street'), max_length=100)
+    city = models.CharField(_('city'), max_length=100)
+    state = models.CharField(_('state'), max_length=100)
+    country = models.CharField(_('country'), max_length=100)
+    postal_code = models.CharField(_('postal code'), max_length=10)
+    def _str_(self):
+        return f"{self.user.email}'s Address"

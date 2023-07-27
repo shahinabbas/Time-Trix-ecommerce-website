@@ -8,180 +8,41 @@ import os
 from django.contrib.auth.models import auth
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseNotFound
+from django.contrib.auth.decorators import login_required
 
 
 
 
-def signuppage(request):
-    if request.method == "POST":
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        phone_number = request.POST.get('phone_number')
-        pass1 = request.POST.get('password')
-        pass2 = request.POST.get('confirm_password')
-        if not name:
-            messages.error(request, "Name field cannot be empty")
-            return redirect('/signup')
-        if CustomUser.objects.filter(name=name):
-            messages.error(request, "Username already Registered!!")
-            return redirect('/signup')
-        if len(phone_number) < 13 or len(phone_number) > 14:
-            messages.error(request, 'Phone number is wrong')
-            return redirect('/signup')
-        if pass1 == pass2:
-            myuser = CustomUser.objects.create_user(name=name, email=email, phone_number=phone_number, password=pass1)
-            myuser.save()
-            return redirect("send_otp")
-        else:
-            messages.error(request, "your password and confirm password incorrect")
-            return redirect("/signup")
-    return render(request, "signup.html")
 
 
-def send_otppage(request):
-    if request.method == 'POST':
-
-        phone_number = request.POST.get('phone_number')
-        user_phone = CustomUser.objects.filter(phone_number=phone_number)
-        otp = ''.join([str(random.randint(0, 9)) for _ in range(6)])
-        print(otp)
-        if user_phone.exists():
-            user = user_phone.first()
-            user.otp=otp
-            user.save()
-            request.session['phone_number'] = phone_number
-            print(phone_number)
-            account_sid = 'AC2052f7894a67013c46526f408871da08'
-            auth_token = '5bfbffe61c4c0c8cad4078ef7ee131f9'
-
-            try:
-                client = Client(account_sid, auth_token)
-                client.messages.create(
-                    body=' Welcome to TIME TRIX Your OTP is: ' + otp,
-                    from_='+12342616521',
-                    to=phone_number
-                )
-                return render(request, "enter_otp.html")
-            except Exception as e:
-                messages.error(request, 'Failed to send OTP. Please try again later.')
-                return render(request, 'send_otp.html')
-        else:
-            messages.warning(request, "No user registered with the provided mobile number")
-            return render(request, 'send_otp.html')
-    return render(request, 'send_otp.html')
-
-
-
-def enter_otppage(request):
-    if request.method == 'POST':
-        entered_otp = request.POST.get('otp')
-        print(entered_otp)
-        phone_number = request.session.get('phone_number')
-
-        if phone_number:
-            user_number = CustomUser.objects.filter(phone_number=phone_number)
-            if user_number.exists():
-                user = user_number.first()
-                print(user)
-                if entered_otp == user.otp:
-                    print(entered_otp)
-                    user.is_otp_verified = True
-                    user.save()
-                    del request.session['phone_number']
-                    login(request, user)
-                    return redirect('/')
-                else:
-                    messages.error(request, 'Invalid OTP')
-        else:
-            messages.error(request, 'Phone number not found in session.')
-    phone_number = request.session.get('phone_number')
-    return render(request, 'enter_otp.html', {'phone_number': phone_number})
-
-# def enter_otppage(request,id,phone_number):
+# @login_required(login_url='send_otp')
+def profilepage(request):
+    return render(request, 'profile.html')
+# @never_cache
+# def loginpage(request):
 #     if request.method == "POST":
-#         entered_otp=request.POST.get('otp')
-#         if verify.check(phone_number, entered_otp):
-#             user_id = CustomUser.objects.filter(id=id).update(is_verified=True)
-#             return redirect('/index_after_login')
-#         else:
-#             user_id=CustomUser.objects.get(id=id)
-#             user_id.delete()
-#             return redirect('index')
-#     else:
-#         return render(request,'enter_otp.html')
+#         phone_number = request.POST.get("phone_number")
+#         otp = request.POST.get("otp")
+#         user = authenticate(request, phone_number=phone_number, otp=otp)
+#         print(user)
+#         if user is not None:
+#             if user.is_active:
+#                 auth.login(request, user)
+#                 return redirect("/")
+#             else:
+#                 messages.error(request, "User name or password is incorect")
+#     return render(request, 'login.html')
 
 
 
 
-    #     phone_number = request.session.get('phone_number')
-    #     user_phone = CustomUser.objects.filter(phone_number=phone_number)
-    #     if user_phone.exists():
-    #         user = user_phone.first()
-    #         if entered_otp == user.otp:
-    #             print('sup')
-    #             user.is_otp_verified = True
-    #             user.save()
 
-    #             del request.session['phone_number']
-    #             login(request, user)
-    #             return redirect('/index_after_login')
-    #         else:
-    #             messages.error(request, 'Invalid OTP')
-    #             return render(request, 'enter_otp.html')
-    # return redirect('send_otp') 
-
-@never_cache
-def loginpage(request):
-    if request.method == "POST":
-        phone_number = request.POST.get("phone_number")
-        otp = request.POST.get("otp")
-        user = authenticate(request, phone_number=phone_number, otp=otp)
-        print(user)
-        if user is not None:
-            if user.is_active:
-                auth.login(request, user)
-                return redirect("/")
-            else:
-                messages.error(request, "User name or password is incorect")
-    return render(request, 'login.html')
-
-
-@never_cache
-def logoutpage(request):
-    logout(request)
-    request.session.flush()
-    messages.success(request, "Logout success")
-    return redirect('/')
-
-
-def admin_signinpage(request):
-    if request.user.is_authenticated:
-        return redirect('/users')
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = authenticate(request, email=email, password=password)
-        if user.is_superuser:
-            login(request, user)
-            return redirect('/users')
-        else:
-            messages.error(request, "User email or password is incorrect")
-            return redirect('/admin_signin')
-
-    return render(request, 'admin/admin_signin.html')
-
-
-def admin_logoutpage(request):
-    logout(request)
-    messages.success(request, "Logged Out Successfully!!")
-    return redirect('admin_signin')
-
-
-def userspage(request):
+@login_required(login_url='admin_signin')
+def userspage(request):   
     stu = CustomUser.objects.all()
     return render(request, "admin/users.html", {'stu': stu})
 
-
+@login_required(login_url='admin_signin')
 def user_blockpage(request, id):
     if request.method == 'POST':
         user = CustomUser.objects.get(pk=id)
@@ -189,7 +50,7 @@ def user_blockpage(request, id):
         user.save()
     return redirect('users')
 
-
+@login_required(login_url='admin_signin')
 def user_unblockpage(request, id):
     if request.method == 'POST':
         user = CustomUser.objects.get(pk=id)
@@ -197,11 +58,12 @@ def user_unblockpage(request, id):
         user.save()
     return redirect('users')
 
-
+@never_cache
+@login_required(login_url='admin_signin')
 def admin_indexpage(request):
     return render(request, "admin/admin_index.html")
 
-
+@login_required(login_url='admin_signin')
 def categorypage(request):
     if request.method == 'POST':
         category_name = request.POST['categoryname']
@@ -214,12 +76,12 @@ def categorypage(request):
             return render(request, 'admin/category.html', {'stu': stu})
     return render(request, "admin/category.html")
 
-
+@login_required(login_url='admin_signin')
 def category_listpage(request):
     stu = category.objects.all()
     return render(request, "admin/category.html", {'stu': stu})
 
-
+@login_required(login_url='admin_signin')
 def delete_categorypage(request, id):
     if request.method == 'POST':
         co = category.objects.filter(pk=id).first()
@@ -227,14 +89,14 @@ def delete_categorypage(request, id):
             co.delete()
         return redirect('/category_list')
 
-
+@login_required(login_url='admin_signin')
 def productspage(request):
     stu = category.objects.all()
     products = Product.objects.all()
     # shape = shape.objects.all()
     return render(request, 'admin/products.html', {'products': products})
 
-
+@login_required(login_url='admin_signin')
 def add_productpage(request):
     categories = category.objects.all()
     if request.method == 'POST':
@@ -275,22 +137,22 @@ def add_productpage(request):
 
     return render(request, "admin/add_product.html", {'categories': categories})
 
-
-
+@login_required(login_url='admin_signin')
 def delete_productpage(request, id):
     if request.method == 'POST':
         product = get_object_or_404(Product, pk=id)
         product.soft_delete()
         return redirect('products')
 
+@login_required(login_url='admin_signin')
 def undo_productpage(request, id):
     if request.method == 'POST':
         product = get_object_or_404(Product, pk=id)
         product.is_deleted = False
         product.save()
         return redirect('products')
-    
 
+@login_required(login_url='admin_signin')
 def edit_productpage(request, id):
     try:
         product = Product.objects.get(pk=id)
@@ -307,10 +169,10 @@ def edit_productpage(request, id):
     if request.method == 'POST':
         product_name = request.POST.get('productName')
         category_id = request.POST.get('categoryId')
-        category = get_object_or_404(category, pk=category_id)        
+        category = get_object_or_404(category, pk=category_id)
         description = request.POST.get('description')
         product_image = request.FILES.get('image')
-        
+
         # Update the product details+
         product.product_name = product_name
         product.category = category
@@ -321,15 +183,14 @@ def edit_productpage(request, id):
 
         product.save()
 
-        return redirect('products')  # Redirect to a success page or product list view
+        # Redirect to a success page or product list view
+        return redirect('products')
 
-    # If the request method is not POST, render the edit product form with the current product details
     return render(request, "admin/edit_product.html", context)
 
 
 def listpage(request, id):
-    return render(request,'list.html')
-
+    return render(request, 'list.html')
 
 
 def product_detailspage(request, product_id):
@@ -341,15 +202,13 @@ def product_detailspage(request, product_id):
 
 
 def shoppage(request):
-    product=Product.objects.all()
-    return render(request,'shop.html',{'product': product})
+    product = Product.objects.all()
+    return render(request, 'shop.html', {'product': product})
 
 
 def index(request):
-    if request.user.is_authenticated:
-        return render(request,'index.html') 
-    else:
-        return redirect('send_otp')
+    return render(request, 'index.html')
+
 
 def aboutpage(request):
     return render(request, 'about.html')
@@ -371,8 +230,6 @@ def checkoutpage(request):
     return render(request, 'checkout.html')
 
 
-
-
 def contactpage(request):
     return render(request, 'contact.html')
 
@@ -387,3 +244,139 @@ def elementspage(request):
 
 def add_product1page(request):
     return render(request, "admin/add_product1.html")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def signuppage(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone_number = request.POST.get('phone_number')
+        pass1 = request.POST.get('password')
+        pass2 = request.POST.get('confirm_password')
+        if not name:
+            messages.error(request, "Name field cannot be empty")
+            return redirect('/signup')
+        if CustomUser.objects.filter(name=name):
+            messages.error(request, "Username already Registered!!")
+            return redirect('/signup')
+        if len(phone_number) < 13 or len(phone_number) > 14:
+            messages.error(request, 'Phone number is wrong')
+            return redirect('/signup')
+        if pass1 == pass2:
+            myuser = CustomUser.objects.create_user(
+                name=name, email=email, phone_number=phone_number, password=pass1)
+            myuser.save()
+            return redirect("send_otp")
+        else:
+            messages.error(
+                request, "your password and confirm password incorrect")
+            return redirect("/signup")
+    return render(request, "signup.html")
+
+
+def logoutpage(request):
+    logout(request)
+    request.session.flush()
+    messages.success(request, "Logout success")
+    return redirect('/')
+
+
+def send_otppage(request):
+    if request.method == 'POST':
+
+        phone_number = request.POST.get('phone_number')
+        user_phone = CustomUser.objects.filter(phone_number=phone_number)
+        otp = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+        print(otp)
+        if user_phone.exists():
+            user = user_phone.first()
+            user.otp = otp
+            user.save()
+            request.session['phone_number'] = phone_number
+            print(phone_number)
+            account_sid = 'AC2052f7894a67013c46526f408871da08'
+            auth_token = '5bfbffe61c4c0c8cad4078ef7ee131f9'
+
+            try:
+                client = Client(account_sid, auth_token)
+                client.messages.create(
+                    body=' Welcome to TIME TRIX Your OTP is: ' + otp,
+                    from_='+12342616521',
+                    to=phone_number
+                )
+                return render(request, "enter_otp.html")
+            except Exception as e:
+                messages.error(
+                    request, 'Failed to send OTP. Please try again later.')
+                return render(request, 'send_otp.html')
+        else:
+            messages.warning(
+                request, "No user registered with the provided mobile number")
+            return render(request, 'send_otp.html')
+    return render(request, 'send_otp.html')
+
+
+def enter_otppage(request):
+    if request.method == 'POST':
+        entered_otp = request.POST.get('otp')
+        print(entered_otp)
+        phone_number = request.session.get('phone_number')
+
+        if phone_number:
+            user_number = CustomUser.objects.filter(phone_number=phone_number)
+            if user_number.exists():
+                user = user_number.first()
+                print(user)
+                if entered_otp == user.otp:
+                    print(entered_otp)
+                    user.is_otp_verified = True
+                    user.save()
+                    del request.session['phone_number']
+                    auth.login(request, user)
+                    return redirect('/')
+                else:
+                    messages.error(request, 'Invalid OTP')
+        else:
+            messages.error(request, 'Phone number not found in session.')
+    phone_number = request.session.get('phone_number')
+    return render(request, 'enter_otp.html', {'phone_number': phone_number})
+
+
+
+
+def admin_signinpage(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(request, email=email, password=password)
+        if user.is_superuser:
+            auth.login(request, user)
+            return redirect('/users')
+        else:
+            messages.error(request, "User email or password is incorrect")
+            return redirect('/admin_signin')
+    return render(request, 'admin/admin_signin.html')
+
+@login_required(login_url='admin_signin')
+def admin_logoutpage(request):
+    auth.logout(request)
+    messages.success(request, "Logged Out Successfully!!")
+    return redirect('admin_signin')

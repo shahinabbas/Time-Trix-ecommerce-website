@@ -1,0 +1,48 @@
+{% comment %} <aside class="col-md-3">
+    <!--   SIDEBAR   -->
+    <ul class="list-group">
+      <a class="list-group-item {% if '/accounts/' == request.path %}active{% endif %}" href="{% url 'userdashboard' %}"> Dashboard </a>
+      <a class="list-group-item {% if '/my_orders/' in request.path %}active{% endif %}" href="{% url 'my_orders' %}"> My Orders </a>
+      <a class="list-group-item {% if '/add_address/' in request.path %}active{% endif %}" href="{% url 'add_address' %}" > Manage Address </a>
+      <a class="list-group-item {% if '/edit_profile/' in request.path %}active{% endif %}" href="{% url 'edit_profile' %}"> Edit Profile </a>
+      <a class="list-group-item {% if '/change_password/' in request.path %}active{% endif %}" href="{% url 'change_password' %}"> Change Password </a>  
+    </ul>
+    <br>
+    <a class="btn btn-light btn-block" href="{% url 'userlogout' %}" id="userlogoutbtn"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a>
+    <!--   SIDEBAR .//END   -->
+  </aside>   {% endcomment %}
+  <aside class="col-md-2">
+    <!--   SIDEBAR   -->
+    <ul class="list-group">
+      <a class="list-group-item {% if '/about/' == request.path %}active{% endif %}" href="{% url 'about' %}"> Dashboard </a>
+      <a class="list-group-item {% if '/about/' in request.path %}active{% endif %}" href="{% url 'about' %}"> My Orders </a>
+      <a class="list-group-item {% if '/signup/' in request.path %}active{% endif %}" href="{% url 'signup' %}"> Manage Address </a>
+      <a class="list-group-item {% if '/send_otp/' in request.path %}active{% endif %}" href="{% url 'send_otp' %}"> Edit Profile </a>
+      <a class="list-group-item {% if '/send_otp/' in request.path %}active{% endif %}" href="{% url 'send_otp' %}"> Change Password </a>  
+    </ul>
+    <br>
+    <a class="btn btn-light btn-block" href="{% url 'logout' %}" id="userlogoutbtn"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a>
+    <!--   SIDEBAR .//END   -->
+  </aside>  
+
+  <style>
+    /* Style for sidebar list items */
+    .list-group-item {
+        color: black;
+        font-weight: bold;
+    }
+
+    /* Style for sidebar buttons */
+    .btn-light {
+        color: black;
+        font-weight: bold;
+    }
+    .list-group-item:hover,
+    .btn-light:hover {
+        color: #ff2020;
+    } 
+    .list-group-item.active {
+      color: #000000;
+      background-color: #ff2020;
+  }
+</style>

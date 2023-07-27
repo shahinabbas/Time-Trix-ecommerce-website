@@ -15,7 +15,8 @@ urlpatterns = [
 
     path('list/<int:id>/',views.listpage,name="list"),
     path('product_details/<int:product_id>/',views.product_detailspage,name='product_details'),
-  
+    path('confirmation',views.confirmationpage,name="confirmation"),
+
     path('profile',views.profilepage,name='profile'),
     path('address',views.addresspage,name='address'),
 

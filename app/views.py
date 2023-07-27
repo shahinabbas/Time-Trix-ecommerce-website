@@ -396,3 +396,7 @@ def admin_logoutpage(request):
     auth.logout(request)
     messages.success(request, "Logged Out Successfully!!")
     return redirect('admin_signin')
+
+
+def confirmationpage(request):
+    return render(request,'confirmation.html')

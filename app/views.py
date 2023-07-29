@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404,HttpResponse
 from django.contrib import messages
-from app.models import CustomUser, category, Product
+from app.models import CustomUser, category, Product, CartItem, Cart
 import random
 from twilio.rest import Client
 import os
@@ -9,10 +9,100 @@ from django.contrib.auth.models import auth
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
 
 
+def _cart_id(request):
+    cart = request.session.session_key
+    if not cart:
+        cart = request.session.create()
+    return cart
 
+
+def add_cartpage(request, product_id):
+    product = Product.objects.get(id=product_id)
+    try:
+        cart = Cart.objects.get(cart_id=_cart_id(request))
+    except Cart.DoesNotExist:
+        cart = Cart.objects.create(
+            cart_id = _cart_id(request)
+        )
+    cart.save()
+
+    try:
+        cart_item = CartItem.objects.get(product=product, cart=cart)
+        cart_item.quantity += 1
+        cart_item.save()
+    except CartItem.DoesNotExist:
+        cart_item = CartItem.objects.create(
+            product = product,
+            quantity = 1,
+            cart = cart,
+        )
+        cart_item.save()
+    return redirect('/cart')
+
+
+def cartpage(request, total=0, quantity=0, cart_items=None):
+    tax=0  
+    grand_total = 0 
+    try:
+        cart = Cart.objects.get(cart_id=_cart_id(request))
+        cart_items = CartItem.objects.filter(cart = cart, is_active = True)
+        tot=0
+        
+        # ship = 0 
+        for cart_item in cart_items:
+            total += (cart_item.product.offer_price * cart_item.quantity)
+            quantity += cart_item.quantity
+            tot += (cart_item.product.price * cart_item.quantity)
+        #     ship += cart_item.offer_total_price()
+
+        # if ship >= 1000:
+        #     shipping_charge = 0
+        # else:
+        #     shipping_charge = 40
+
+        tax = (3 * total)/100
+        grand_total=total + tax
+        org_tot = tot - grand_total
+
+    except ObjectDoesNotExist:
+        pass
+    context = {
+        'total': total,
+        'quantity': quantity,
+        'cart_items': cart_items,
+        'tax': tax,
+        'grand_total': grand_total,
+        # 'org_tot':org_tot,
+        # 'shipping_charge':shipping_charge,
+    }
+    return render(request, 'cart.html', context)
+
+
+def remove_cart(request,product_id):
+    cart=Cart.objects.get(cart_id = _cart_id(request))
+    product=get_object_or_404(Product, id=product_id)
+    cart_item = CartItem.objects.get(product=product, cart=cart)
+    if cart_item.quantity > 1:
+        cart_item.quantity -= 1
+        cart_item.save()
+    else:
+        cart_item.delete()
+    return redirect('/cart')
+
+
+def delete_cart_item(request,product_id):
+    cart=Cart.objects.get(cart_id =_cart_id(request))
+    product=get_object_or_404(Product,id=product_id)
+    cart_item=CartItem.objects.get(product=product,cart=cart)
+    cart_item.delete()
+    return redirect('/cart')
+
+
+    
 
 # def reset_passwordpage(request):
 #     error_message = None
@@ -25,7 +115,7 @@ from django.contrib.auth.decorators import login_required
 #             confirm_password=request.POST.get('confirm_password')
 
 #             if new_password == confirm_password:
-#                 if new_password:  
+#                 if new_password:
 #                     error_message= "Enter new password"
 #                 elif not confirm_password:
 #                     error_message ="Reenter password"
@@ -34,7 +124,7 @@ from django.contrib.auth.decorators import login_required
 #                 if not error_message:
 #                     user.set_password(new_password)
 #                     print(user.password)
-#                     user.save() 
+#                     user.save()
 #                     del request.session['phone_number']
 
 #                 messages.success(request,"password changed Sucess fully")
@@ -42,20 +132,22 @@ from django.contrib.auth.decorators import login_required
 #     return render(request,"reset.html",{'error':error_message})
 
 
-
 def addresspage(request):
     return render(request, 'address.html')
 
 # @login_required(login_url='send_otp')
+
+
 def profilepage(request):
     return render(request, 'profile.html')
+
 
 @never_cache
 def loginpage(request):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
-        user = authenticate(request, email=email,password=password)
+        user = authenticate(request, email=email, password=password)
         print(user)
         if user is not None:
             if user.is_active:
@@ -66,13 +158,11 @@ def loginpage(request):
     return render(request, 'login.html')
 
 
-
-
-
 @login_required(login_url='admin_signin')
-def userspage(request):   
+def userspage(request):
     stu = CustomUser.objects.all()
     return render(request, "admin/users.html", {'stu': stu})
+
 
 @login_required(login_url='admin_signin')
 def user_blockpage(request, id):
@@ -82,6 +172,7 @@ def user_blockpage(request, id):
         user.save()
     return redirect('users')
 
+
 @login_required(login_url='admin_signin')
 def user_unblockpage(request, id):
     if request.method == 'POST':
@@ -90,10 +181,12 @@ def user_unblockpage(request, id):
         user.save()
     return redirect('users')
 
+
 @never_cache
 @login_required(login_url='admin_signin')
 def admin_indexpage(request):
     return render(request, "admin/admin_index.html")
+
 
 @login_required(login_url='admin_signin')
 def categorypage(request):
@@ -108,10 +201,12 @@ def categorypage(request):
             return render(request, 'admin/category.html', {'stu': stu})
     return render(request, "admin/category.html")
 
+
 @login_required(login_url='admin_signin')
 def category_listpage(request):
     stu = category.objects.all()
     return render(request, "admin/category.html", {'stu': stu})
+
 
 @login_required(login_url='admin_signin')
 def delete_categorypage(request, id):
@@ -121,12 +216,14 @@ def delete_categorypage(request, id):
             co.delete()
         return redirect('/category_list')
 
+
 @login_required(login_url='admin_signin')
 def productspage(request):
     stu = category.objects.all()
     products = Product.objects.all()
     # shape = shape.objects.all()
     return render(request, 'admin/products.html', {'products': products})
+
 
 @login_required(login_url='admin_signin')
 def add_productpage(request):
@@ -169,12 +266,14 @@ def add_productpage(request):
 
     return render(request, "admin/add_product.html", {'categories': categories})
 
+
 @login_required(login_url='admin_signin')
 def delete_productpage(request, id):
     if request.method == 'POST':
         product = get_object_or_404(Product, pk=id)
         product.soft_delete()
         return redirect('products')
+
 
 @login_required(login_url='admin_signin')
 def undo_productpage(request, id):
@@ -183,6 +282,7 @@ def undo_productpage(request, id):
         product.is_deleted = False
         product.save()
         return redirect('products')
+
 
 @login_required(login_url='admin_signin')
 def edit_productpage(request, id):
@@ -228,9 +328,16 @@ def listpage(request, id):
 def product_detailspage(request, product_id):
     try:
         product = Product.objects.get(pk=product_id)
-    except Product.DoesNotExist:
-        product = None
-    return render(request, 'product_details.html', {'product': product})
+        in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request),product=product).exists()
+        
+    except Exception as e:
+        raise e
+    
+    context = {
+        'product': product,
+        'in_cart': in_cart,
+    }
+    return render(request, 'product_details.html', context)
 
 
 def shoppage(request):
@@ -254,10 +361,6 @@ def blogdetailspage(request):
     return render(request, 'blog-details.html')
 
 
-def cartpage(request):
-    return render(request, 'cart.html')
-
-
 def checkoutpage(request):
     return render(request, 'checkout.html')
 
@@ -276,8 +379,6 @@ def elementspage(request):
 
 def add_product1page(request):
     return render(request, "admin/add_product1.html")
-
-
 
 
 def signuppage(request):
@@ -377,7 +478,6 @@ def enter_otppage(request):
     return render(request, 'enter_otp.html', {'phone_number': phone_number})
 
 
-
 def admin_signinpage(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -391,6 +491,7 @@ def admin_signinpage(request):
             return redirect('/admin_signin')
     return render(request, 'admin/admin_signin.html')
 
+
 @login_required(login_url='admin_signin')
 def admin_logoutpage(request):
     auth.logout(request)
@@ -399,4 +500,4 @@ def admin_logoutpage(request):
 
 
 def confirmationpage(request):
-    return render(request,'confirmation.html')
+    return render(request, 'confirmation.html')

@@ -34,17 +34,16 @@ class CustomUserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-
 class CustomUser(AbstractUser):
     # first_name=models.CharField(('first_name'))
     # last_name=models.CharField(('last_name'))
     username = None
     email = models.EmailField(_('email'), unique=True)
     name = models.CharField(_('name'), max_length=30, blank=True)
-    phone_number = models.BigIntegerField(_('phone_number'), blank=True, null=True)
+    phone_number = models.BigIntegerField(
+        _('phone_number'), blank=True, null=True)
     otp = models.CharField(_('OTP'), max_length=6, blank=True)
     is_otp_verified = models.BooleanField(default=False)
-
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -52,10 +51,12 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-       return self.email
-    
-    groups = models.ManyToManyField(Group, blank=True, related_name='custom_users', help_text='The groups this user belongs to.')
-    user_permissions = models.ManyToManyField(Permission, blank=True, related_name='custom_users', help_text='Specific permissions for this user.')
+        return self.email
+
+    groups = models.ManyToManyField(
+        Group, blank=True, related_name='custom_users', help_text='The groups this user belongs to.')
+    user_permissions = models.ManyToManyField(
+        Permission, blank=True, related_name='custom_users', help_text='Specific permissions for this user.')
 
 
 class category(models.Model):
@@ -63,13 +64,14 @@ class category(models.Model):
 
     def __str__(self):
         return self.categories
-    
+
 
 class Product(models.Model):
     product_name = models.CharField(max_length=255)
     description = models.TextField(null=True)
-    price = models.DecimalField(max_digits=8, decimal_places=2,default=0)
-    offer_price = models.DecimalField(max_digits=8, decimal_places=2,default=0)
+    price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    offer_price = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0)
     stock = models.IntegerField(default=0)
     product_Image = models.ImageField(upload_to='product_images')
     shape = models.CharField(max_length=50)
@@ -84,10 +86,48 @@ class Product(models.Model):
         return self.product_name
 
 
+class Cart(models.Model):
+    cart_id = models.CharField(max_length=250, blank=True)
+    date_added = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.cart_id
+
+
+class CartItem(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
+    cart = models.ForeignKey(
+        Cart, on_delete=models.CASCADE, related_name='cart_items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.product
+    
+    def price(self):
+        return self.product.price * self.quantity
+
+    def sub_total(self):
+        return self.product.offer_price * self.quantity
+
+    def total_price(self):
+        return sum(item.sub_total() for item in self.cart_items.all())
+
+    def offer_total_price(self):
+        return sum(item.sub_total() for item in self.cart_items.all())
+    
+    def cart_count(self):
+        return CartItem.objects.filter(cart__user = self.user).count()
+        
+    
+
+
 class user_profile(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(_('name'), max_length=100)
-    phone_number = models.BigIntegerField(_('phone_number'), blank=True, null=True)
+    phone_number = models.BigIntegerField(
+        _('phone_number'), blank=True, null=True)
     house_no = models.CharField(_('house number'), max_length=10, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pic')
     house_name = models.CharField(_('house name'), max_length=50, blank=True)
@@ -99,21 +139,3 @@ class user_profile(models.Model):
 
     def _str_(self):
         return f"{self.user.email}'s Address"
-    
-
-class cart(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    products = models.ManyToManyField(Product, through = 'cart_item')
-
-
-class cart_item(models.Model):
-    user= models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True)
-    cart = models.ForeignKey(cart, on_delete=models.CASCADE, related_name='cart_items')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE) 
-    stock = models.PositiveIntegerField(default=1)
-    is_active=models.BooleanField(default=True)
-
-    def get_subtotal(self):
-        return self.product.price * self.quantity
-    def get_subtotal_offer_price(self):
-        return self.product.offer_price * self.quantity

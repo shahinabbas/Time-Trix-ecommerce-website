@@ -1,7 +1,5 @@
-{% extends 'layouts/main.html' %} {% load static %} 
-{% block additional_styles%}
- .product-image { max-width: 100%; height: auto; } 
- {% endblock %} 
+{% extends 'layouts/main.html' %} {% load static %} {% block additional_styles%}
+.product-image { max-width: 100%; height: auto; } {% endblock %}
  {% block body %}
 <!-- Header Start -->
 {% include 'inc/navbar.html' %}
@@ -57,7 +55,7 @@
           {% endcomment %}
         </div>
         <p class="lead">
-          ₹ {{ product.offer_price}} &nbsp &nbsp ₹ <s>{{ product.price}}</s>
+          ₹ <s>{{ product.price}}</s> &nbsp &nbsp ₹ {{ product.offer_price}}
         </p>
         <p class="lead">Model: {{ product.category.categories}}</p>
         <p class="lead">Shape: {{ product.shape}}</p>
@@ -76,24 +74,22 @@
               <div
                 style="display: grid; grid-auto-flow: column; column-gap: 20px"
               >
-                {% if product.stock %} 
-                {% if product.stock <= 0 %}
+                {% if product.stock %} {% if product.stock <= 0 %}
                 <h5 class="text-danger">Out of Stock</h5>
+                {% else %} {% if in_cart %}
+                <a href="{% url 'cart' %}" class="btn hero-btn"
+                  >Added to Cart <i class="fas fa-check"></i
+                ></a>
+                
                 {% else %}
-                <button
-                  type="submit"
-                  class="btn btn-dark"
-                  style="min-width: 150px; height: 50px"
-                >
-                  Add to Cart
-                </button>
-                <button
-                  type="#"
-                  class="btn btn-dark"
-                  style="min-width: 150px; height: 50px"
-                >
-                  By now
-                </button>
+                <a href="{% url 'add_cart' product.id %}" class="btn hero-btn"
+                  >Add to Cart<i class="flaticon-shopping-cart"></i
+                ></a>
+                {% endif %}
+
+                <a href="#" class="btn hero-btn"
+                  >Buy Now <i class="ti-package"></i
+                ></a>
                 {% endif %} {% else %}
                 <h5 class="text-danger">Out of Stock</h5>
 
@@ -136,6 +132,8 @@
     </div>
   </div>
 </div>
+{% endblock body %} 
+
 <!-- Shop Method End-->
 {% comment %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.all.min.js"></script>
@@ -150,7 +148,8 @@
     });
   });
 </script>
-{% endif %} {% endcomment %} {% endblock body %} {% comment %}
+{% endif %} {% endcomment %} 
+{% comment %}
 <div class="product-container" style="padding-top: 150px">
   <div class="product-image">
     <img src={% static "assets/img/logo/dij2.png" %} alt="Product Image"

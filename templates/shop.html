@@ -1,4 +1,6 @@
-{% extends 'layouts/main.html' %} {% load static %} {% block body %}
+{% extends 'layouts/main.html' %}
+ {% load static %}
+  {% block body %}
 <body>
   <!--? Preloader Start -->
   <div id="preloader-active">
@@ -19,19 +21,61 @@
 
   <main>
     <!-- Hero Area Start-->
-    <div class="slider-area">
-      <div class="single-slider slider-height2 d-flex align-items-center">
-        <div class="container">
-          <div class="row">
-            <div class="col-xl-12">
-              <div class="hero-cap text-center">
-                <h2>Watch Shop</h2>
-              </div>
-            </div>
-          </div>
-        </div>
+<style>
+  .video-area {
+    position: relative;
+    text-align: center;
+    overflow: hidden; /* Add overflow hidden */
+  }
+
+  .video-area img {
+    width: 100%;
+    opacity: 0.9;
+    filter: blur(1px);
+  }
+
+  .video-area h2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 66px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Add a text shadow for better visibility */
+  }
+
+  /* Add media queries for responsive font size */
+  @media (max-width: 768px) {
+    /* For smaller screens, reduce the font size */
+    .video-area h2 {
+      font-size: 40px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    /* For even smaller screens, further reduce the font size */
+    .video-area h2 {
+      font-size: 30px;
+    }
+  }
+</style>
+
+<div class="video-area">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-lg-12">
+        <img
+          src="{% static 'assets/img/logo/ad.jpg' %}"
+          alt="Image"
+          class="img-fluid"
+        />
+        <h2>Explore More</h2>
       </div>
     </div>
+  </div>
+</div>
+
     <!-- Hero Area End-->
     <!-- Latest Products Start -->
     <section class="popular-items latest-padding">
@@ -107,9 +151,17 @@
               <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                 <div class="single-popular-items mb-50 text-center">
                   <div class="popular-img">
+                    <a href="{% url 'product_details' pro.id %}">
                     <img src="{{pro.product_Image.url}}" alt="" />
+                    </a>
                     <div class="img-cap">
-                      <span>Add to cart</span>
+                      {% if pro.stock <= 0 %}
+                      <a href="#"> <span>Out Of Stock</span>
+                        {% else %}
+                    
+                      <a href="{% url 'add_cart' pro.id %}"> <span>Add to cart</span>
+                       {% endif %}
+
                     </div>
                     <div class="favorit-items">
                       <span class="flaticon-heart"></span>
@@ -122,8 +174,8 @@
                       >
                     </h3>
                     <span
-                      >₹ {{pro.offer_price}} &nbsp &nbsp ₹
-                      <s>{{pro.price}}</s></span
+                      > ₹<s>{{pro.price}}</s>&nbsp &nbsp 
+                      ₹ {{pro.offer_price}}</span
                     >
                   </div>
                 </div>

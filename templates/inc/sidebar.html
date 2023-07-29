@@ -14,10 +14,10 @@
   <aside class="col-md-3">
     <!--   SIDEBAR   -->
     <ul class="list-group">
-      <a class="list-group-item {% if '/about/' == request.path %}active{% endif %}" href="{% url 'about' %}"> Dashboard </a>
+      <a class="list-group-item {% if '/about/' == request.path %}active{% endif %}" href="{% url 'about' %}"> Account </a>
       <a class="list-group-item {% if '/about/' in request.path %}active{% endif %}" href="{% url 'about' %}"> My Orders </a>
       <a class="list-group-item {% if '/address/' in request.path %}active{% endif %}" href="{% url 'address' %}"> Manage Address </a>
-      <a class="list-group-item {% if '/send_otp/' in request.path %}active{% endif %}" href="{% url 'send_otp' %}"> Edit Profile </a>
+      <a class="list-group-item {% if '/edit_profile/' in request.path %}active{% endif %}" href="{% url 'edit_profile' %}"> Edit Profile </a>
       <a class="list-group-item {% if '/send_otp/' in request.path %}active{% endif %}" href="{% url 'send_otp' %}"> Change Password </a>  
     </ul>
     <br>

@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404,HttpResponse
 from django.contrib import messages
-from app.models import CustomUser, category, Product, CartItem, Cart
+from app.models import CustomUser, category, Product
+from cart.models import Cart,CartItem
 import random
 from twilio.rest import Client
 import os
@@ -10,96 +11,15 @@ from django.views.decorators.cache import never_cache
 from django.http import HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from cart.views import _cart_id
 
 
-
-def _cart_id(request):
-    cart = request.session.session_key
-    if not cart:
-        cart = request.session.create()
-    return cart
+def profile(request):
+    return render(request, 'profile.html')
 
 
-def add_cartpage(request, product_id):
-    product = Product.objects.get(id=product_id)
-    try:
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-    except Cart.DoesNotExist:
-        cart = Cart.objects.create(
-            cart_id = _cart_id(request)
-        )
-    cart.save()
-
-    try:
-        cart_item = CartItem.objects.get(product=product, cart=cart)
-        cart_item.quantity += 1
-        cart_item.save()
-    except CartItem.DoesNotExist:
-        cart_item = CartItem.objects.create(
-            product = product,
-            quantity = 1,
-            cart = cart,
-        )
-        cart_item.save()
-    return redirect('/cart')
-
-
-def cartpage(request, total=0, quantity=0, cart_items=None):
-    tax=0  
-    grand_total = 0 
-    try:
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-        cart_items = CartItem.objects.filter(cart = cart, is_active = True)
-        tot=0
-        
-        # ship = 0 
-        for cart_item in cart_items:
-            total += (cart_item.product.offer_price * cart_item.quantity)
-            quantity += cart_item.quantity
-            tot += (cart_item.product.price * cart_item.quantity)
-        #     ship += cart_item.offer_total_price()
-
-        # if ship >= 1000:
-        #     shipping_charge = 0
-        # else:
-        #     shipping_charge = 40
-
-        tax = (3 * total)/100
-        grand_total=total + tax
-        org_tot = tot - grand_total
-
-    except ObjectDoesNotExist:
-        pass
-    context = {
-        'total': total,
-        'quantity': quantity,
-        'cart_items': cart_items,
-        'tax': tax,
-        'grand_total': grand_total,
-        # 'org_tot':org_tot,
-        # 'shipping_charge':shipping_charge,
-    }
-    return render(request, 'cart.html', context)
-
-
-def remove_cart(request,product_id):
-    cart=Cart.objects.get(cart_id = _cart_id(request))
-    product=get_object_or_404(Product, id=product_id)
-    cart_item = CartItem.objects.get(product=product, cart=cart)
-    if cart_item.quantity > 1:
-        cart_item.quantity -= 1
-        cart_item.save()
-    else:
-        cart_item.delete()
-    return redirect('/cart')
-
-
-def delete_cart_item(request,product_id):
-    cart=Cart.objects.get(cart_id =_cart_id(request))
-    product=get_object_or_404(Product,id=product_id)
-    cart_item=CartItem.objects.get(product=product,cart=cart)
-    cart_item.delete()
-    return redirect('/cart')
+def edit_profile(request):
+    return render(request, 'edit_profile.html')
 
 
     
@@ -137,18 +57,13 @@ def addresspage(request):
 
 # @login_required(login_url='send_otp')
 
-
-def profilepage(request):
-    return render(request, 'profile.html')
-
-
 @never_cache
 def loginpage(request):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
         user = authenticate(request, email=email, password=password)
-        print(user)
+        print(email)
         if user is not None:
             if user.is_active:
                 auth.login(request, user)
@@ -156,6 +71,15 @@ def loginpage(request):
             else:
                 messages.error(request, "User name or password is incorect")
     return render(request, 'login.html')
+
+
+
+@login_required(login_url='admin_signin')
+def admin_logoutpage(request):
+    auth.logout(request)
+    messages.success(request, "Logged Out Successfully!!")
+    return redirect('admin_signin')
+
 
 
 @login_required(login_url='admin_signin')
@@ -321,6 +245,14 @@ def edit_productpage(request, id):
     return render(request, "admin/edit_product.html", context)
 
 
+
+
+
+
+
+
+
+
 def listpage(request, id):
     return render(request, 'list.html')
 
@@ -477,8 +409,9 @@ def enter_otppage(request):
     phone_number = request.session.get('phone_number')
     return render(request, 'enter_otp.html', {'phone_number': phone_number})
 
-
 def admin_signinpage(request):
+    if request.user.is_authenticated:
+        return redirect('admin_index')
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -492,11 +425,7 @@ def admin_signinpage(request):
     return render(request, 'admin/admin_signin.html')
 
 
-@login_required(login_url='admin_signin')
-def admin_logoutpage(request):
-    auth.logout(request)
-    messages.success(request, "Logged Out Successfully!!")
-    return redirect('admin_signin')
+
 
 
 def confirmationpage(request):

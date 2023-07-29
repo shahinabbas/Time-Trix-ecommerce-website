@@ -17,7 +17,8 @@ urlpatterns = [
     path('product_details/<int:product_id>/',views.product_detailspage,name='product_details'),
     path('confirmation',views.confirmationpage,name="confirmation"),
 
-    path('profile',views.profilepage,name='profile'),
+    path('profile',views.profile,name='profile'),
+    path('edit_profile',views.edit_profile,name='edit_profile'),
     path('address',views.addresspage,name='address'),
 
 
@@ -50,11 +51,6 @@ urlpatterns = [
     path('confirm/',views.confirmpage,name='confirm'),
     path('elements/',views.elementspage,name='elements'),
     
-
-    path('cart/',views.cartpage,name='cart'),
-    path('add_cart/<int:product_id>/', views.add_cartpage, name='add_cart'),
-    path('remove_cart/<int:product_id>/',views.remove_cart,name='remove_cart'),
-    path('delete_cart_item/<int:product_id>/',views.delete_cart_item,name='delete_cart_item'),
 
 
    

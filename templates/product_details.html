@@ -1,6 +1,7 @@
-{% extends 'layouts/main.html' %} {% load static %} {% block additional_styles%}
-.product-image { max-width: 100%; height: auto; } {% endblock %}
- {% block body %}
+{% extends 'layouts/main.html' %} {% load static %} 
+{% block additional_styles%}
+.product-image { max-width: 100%; height: auto; } 
+{% endblock %} {% block body%}
 <!-- Header Start -->
 {% include 'inc/navbar.html' %}
 <!-- Header End -->
@@ -44,15 +45,10 @@
         </div>
       </div>
       <div class="col-md-6">
+<form action="{% url 'add_cart' product.id %}" method="post"></form>
         <h1 class="display-5 fw-bolder">{{ product.product_name }}</h1>
         <div class="d-flex small text-success mb-2">
-          {% comment %}
-          <div class="bi-star-fill"></div>
-          <div class="bi-star-fill"></div>
-          <div class="bi-star-fill"></div>
-          <div class="bi-star-fill"></div>
-          <div class="bi-star-fill"></div>
-          {% endcomment %}
+        
         </div>
         <p class="lead">
           ₹ <s>{{ product.price}}</s> &nbsp &nbsp ₹ {{ product.offer_price}}
@@ -60,43 +56,46 @@
         <p class="lead">Model: {{ product.category.categories}}</p>
         <p class="lead">Shape: {{ product.shape}}</p>
         <p class="lead">Description: {{ product.description }}</p>
+        <div class="row">
+          <div class="form-group mb-3 col-xs-12 col-sm-6">
+            <label for="shape" style="color: white">Shape</label>
+            <select class="custom-select tm-select-accounts" id="shape" required>
+              <option value="" selected>Select Shape</option>
+              <option value=""></option>
+              <option value="">Oval</option>
+              <option value="">Round</option>
+            </select>
+          </div>
+          
+       <div>
         <div class="d-flex">
           <div hidden>
-            <form action="" method="post">
-              {% csrf_token %}
-              <input type="text" value="some text" />
-              <input type="submit" value="Add to cart" />
-            </form>
           </div>
-          <form action="" method="post" class="w-100">
-            {% csrf_token %}
             <div style="display: grid; grid-auto-flow: row; row-gap: 20px">
               <div
                 style="display: grid; grid-auto-flow: column; column-gap: 20px"
               >
-                {% if product.stock %} {% if product.stock <= 0 %}
+                {% if product.stock <= 0 %}
                 <h5 class="text-danger">Out of Stock</h5>
-                {% else %} {% if in_cart %}
-                <a href="{% url 'cart' %}" class="btn hero-btn"
-                  >Added to Cart <i class="fas fa-check"></i
-                ></a>
-                
                 {% else %}
-                <a href="{% url 'add_cart' product.id %}" class="btn hero-btn"
-                  >Add to Cart<i class="flaticon-shopping-cart"></i
-                ></a>
+                {% if in_cart %}
+                <a href="{% url 'cart' %}" class="btn hero-btn">Added to Cart <i class="fas fa-check"></i></a>
+                {% else %}
+                <button type="submit" class="btn hero-btn">Add to Cart<i class="flaticon-shopping-cart"></i></button>
+                {% endif %}
                 {% endif %}
 
+                {% if product.stock <= 0 %}
+                {% else %}
                 <a href="#" class="btn hero-btn"
                   >Buy Now <i class="ti-package"></i
                 ></a>
-                {% endif %} {% else %}
-                <h5 class="text-danger">Out of Stock</h5>
-
                 {% endif %}
               </div>
             </div>
-          </form>
+          </div>
+        </div>
+        </form>
         </div>
       </div>
     </div>
@@ -132,7 +131,7 @@
     </div>
   </div>
 </div>
-{% endblock body %} 
+{% endblock body %}
 
 <!-- Shop Method End-->
 {% comment %}
@@ -148,8 +147,7 @@
     });
   });
 </script>
-{% endif %} {% endcomment %} 
-{% comment %}
+{% endif %} {% endcomment %} {% comment %}
 <div class="product-container" style="padding-top: 150px">
   <div class="product-image">
     <img src={% static "assets/img/logo/dij2.png" %} alt="Product Image"

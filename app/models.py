@@ -77,14 +77,13 @@ class Product(models.Model):
     shape = models.CharField(max_length=50)
     category = models.ForeignKey('category', on_delete=models.CASCADE)
     is_deleted = models.BooleanField(default=False)
-
+    
     def soft_delete(self):
         self.is_deleted = True
         self.save()
 
     def __str__(self):
         return self.product_name
-
 
 
 class user_profile(models.Model):
@@ -103,5 +102,3 @@ class user_profile(models.Model):
 
     def __str__(self):
         return self.user.first_name
-
-

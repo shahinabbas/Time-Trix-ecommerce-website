@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'timetrix',
+        'NAME': 'project1',
         'USER': 'sha',
         'PASSWORD': '123',
         'HOST': 'localhost',

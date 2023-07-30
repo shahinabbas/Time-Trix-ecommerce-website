@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404,HttpResponse
 from django.contrib import messages
 from app.models import CustomUser, category, Product
+from cart.models import Strap
 from cart.models import Cart,CartItem
 import random
 from twilio.rest import Client
@@ -158,7 +159,8 @@ def add_productpage(request):
         category_name = request.POST.get('category')
         product_Image = request.FILES.get('image')
         description = request.POST.get('description')
-        shape = ['Square', 'Oval', 'Round']
+        # shape = ['Square', 'Oval', 'Round']
+        strap = ['Rubber', 'Leather', 'Chain']
         price = request.POST.get('price')
         offer_price = request.POST.get('offer_price')
         stock = request.POST.get('stock')
@@ -180,13 +182,17 @@ def add_productpage(request):
                 category=selected_category,
                 product_Image=product_Image,
                 description=description,
-                shape=shape,
+                strap=strap,
                 price=price,
                 offer_price=offer_price,
                 stock=stock
             )
             product.save()
-            messages.success(request, 'New product added successfully')
+            # messages.success(request, 'New product added successfully')
+        for straps in strap:
+            # s=request.POST.get(f's-{straps}')
+            strap=Strap(product_id=product,strap=strap)
+            strap.save()
 
     return render(request, "admin/add_product.html", {'categories': categories})
 
@@ -257,19 +263,27 @@ def listpage(request, id):
     return render(request, 'list.html')
 
 
-def product_detailspage(request, product_id):
-    try:
-        product = Product.objects.get(pk=product_id)
-        in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request),product=product).exists()
-        
-    except Exception as e:
-        raise e
-    
+def product_details(request, product_id):
+    product = Product.objects.get(id=product_id) 
+    all_categories = category.objects.all()
     context = {
-        'product': product,
-        'in_cart': in_cart,
+              'product': product, 
+              "category":all_categories,
     }
-    return render(request, 'product_details.html', context)
+   
+    return render(request,"product_details.html",context)
+    # try:
+    #     product = Product.objects.get(pk=product_id)
+    #     in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request),product=product).exists()
+        
+    # except Exception as e:
+    #     raise e
+    
+    # context = {
+    #     'product': product,
+    #     'in_cart': in_cart,
+    # }
+    # return render(request, 'product_details.html', context)
 
 
 def shoppage(request):

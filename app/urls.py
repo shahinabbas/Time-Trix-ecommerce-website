@@ -14,7 +14,7 @@ urlpatterns = [
     # path('reset_password/',views.reset_passwordpage,name='reset_password'),
 
     path('list/<int:id>/',views.listpage,name="list"),
-    path('product_details/<int:product_id>/',views.product_detailspage,name='product_details'),
+    path('product_details/<int:product_id>/',views.product_details,name='product_details'),
     path('confirmation',views.confirmationpage,name="confirmation"),
 
     path('profile',views.profile,name='profile'),

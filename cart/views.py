@@ -17,6 +17,7 @@ def _cart_id(request):
     return cart
 
 def cart_plus(request,strap_id):
+    print('sadffffagr215212154125421525215412221111')
     strap=get_object_or_404(Strap,id=strap_id)
     try :
         if request.user.is_authenticated:
@@ -39,27 +40,52 @@ def cart_minus(request,product_id):
 def add_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     strap = request.POST.get('strap_id')
-    print(strap,"1111111111111111111111111111111111111123")
+    print(strap)
+
     try:
         cart = Cart.objects.get(cart_id=_cart_id(request))
     except Cart.DoesNotExist:
-        cart = Cart.objects.create(
-        cart_id=_cart_id(request)
-        )
-        cart.save()
+        cart = Cart.objects.create(cart_id=_cart_id(request))
+        print('hiiiiiiiiiiiiiiiiiiii')
 
-    if strap is not None:
-        try: 
-            cart_item = CartItem.objects.create(
-                product=product,
-                quantity=1,
-                cart=cart,
-                strap_id=strap,
-            )
-            cart_item.save()
-        except:
-            messages.error(request,'select')
+    if CartItem.objects.filter(strap=strap).exists():
+        print('hiiiiiiiiiiiiiiiiiiii')
+        return cart_plus(request,strap)
+    else:
+        cart_item = CartItem.objects.create(
+            product=product,
+            quantity=1,
+            cart=cart,
+            strap_id=strap,
+        )
     return redirect('/cart')
+
+
+
+# def add_cart(request, product_id):
+#     product = get_object_or_404(Product, id=product_id)
+#     strap = request.POST.get('strap_id')
+    
+#     try:
+#         cart = Cart.objects.get(cart_id=_cart_id(request))
+#     except Cart.DoesNotExist:
+#         cart = Cart.objects.create(
+#         cart_id=_cart_id(request)
+#         )
+#         cart.save()
+
+#     if strap is not None:
+#         try: 
+#             cart_item = CartItem.objects.create(
+#                 product=product,
+#                 quantity=1,
+#                 cart=cart,
+#                 strap_id=strap,
+#             )
+#             cart_item.save()
+#         except:
+#             messages.error(request,'select')
+#     return redirect('/cart')
 
     # if request.method == 'POST':
     #         product=get_object_or_404(Product,id= product_id)

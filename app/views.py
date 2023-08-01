@@ -219,13 +219,13 @@ def categorypage(request):
             return render(request, 'admin/category.html', {'stu': stu})
     return render(request, "admin/category.html")
 
-
+@never_cache
 @login_required(login_url='admin_signin')
 def category_listpage(request):
     stu = category.objects.all()
     return render(request, "admin/category.html", {'stu': stu})
 
-
+@never_cache
 @login_required(login_url='admin_signin')
 def delete_categorypage(request, id):
     if request.method == 'POST':
@@ -234,7 +234,7 @@ def delete_categorypage(request, id):
             co.delete()
         return redirect('/category_list')
 
-
+@never_cache
 @login_required(login_url='admin_signin')
 def productspage(request):
     stu = category.objects.all()
@@ -242,7 +242,7 @@ def productspage(request):
     # shape = shape.objects.all()
     return render(request, 'admin/products.html', {'products': products})
 
-
+@never_cache
 @login_required(login_url='admin_signin')
 def add_productpage(request):
     categories = category.objects.all()
@@ -306,7 +306,7 @@ def undo_productpage(request, id):
         product.save()
         return redirect('products')
 
-
+@never_cache
 @login_required(login_url='admin_signin')
 def edit_productpage(request, id):
     try:

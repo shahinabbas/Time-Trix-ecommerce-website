@@ -1,9 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404,HttpResponse
 from django.contrib import messages
-from app.models import CustomUser, category, Product
+from app.models import CustomUser, category, Product,User_Profile
 from cart.models import Strap
-from cart.models import Cart,CartItem
 import random
 from twilio.rest import Client
 import os
@@ -15,8 +14,89 @@ from django.core.exceptions import ObjectDoesNotExist
 from cart.views import _cart_id
 
 
-def profile(request):
-    return render(request, 'profile.html')
+
+
+# def add_address(request):
+
+def add_address(request):
+    user = request.user
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        house_no = request.POST.get('house_no')
+        street = request.POST.get('street')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        country = request.POST.get('country')
+        pin_code = request.POST.get('pin_code')
+
+        profile_address = User_Profile(user=user)
+        profile_address.name=name
+        profile_address.phone_number=phone_number
+        profile_address.house_no=house_no
+        profile_address.street = street
+        profile_address.city = city
+        profile_address.state = state
+        profile_address.country = country
+        profile_address.pin_code = pin_code
+        profile_address.save()
+        messages.success(request,"successful")
+        return redirect('add_address')
+    # user = request.user
+    # if request.method == 'POST':
+    #     name = request.POST.get('name')
+    #     phone_number = request.POST.get('phone_number')
+    #     address=request.POST.get('address')
+    #     house_no = request.POST.get('house_no')
+    #     street = request.POST.get('street')
+    #     city = request.POST.get('city')
+    #     state = request.POST.get('state')
+    #     country = request.POST.get('country')
+    #     pin_code = request.POST.get('pin_code')
+
+
+    #     profile_address = User_Profile(
+    #         name=name,
+    #         phone_number=phone_number,
+    #         address=address,
+    #         country=country,
+    #         state=state,
+    #         city=city,
+    #         street=street,
+    #         house_no=house_no,
+    #         pin_code=pin_code,
+    #         user=request.user, 
+    #           # Assuming you have set the user properly
+    #     )
+
+    #     profile_address.save()
+    #     return redirect('add_address')
+
+
+    messages.error(request,"failed")
+    return render(request,'add_address.html')
+
+def user_profile(request):
+    
+    if request.user.is_authenticated:
+        user=request.user
+    else:
+        return redirect('login')
+    
+    user_profile=User_Profile.objects.filter(user=user)
+
+    if user_profile.exists():
+        user_profile=user_profile.all()
+    else:
+        user_profile=None
+    print(user_profile,'111111111111111111111111111111111111')
+
+    context={
+        'user':user,
+        'user_profile':user_profile
+    }
+    print(user_profile,'111111111111111111111111111111111111')
+    return render(request, 'profile.html',context)
 
 
 def edit_profile(request):
@@ -54,7 +134,20 @@ def edit_profile(request):
 
 
 def addresspage(request):
-    return render(request, 'address.html')
+    user=request.user
+    user_profile=User_Profile.objects.filter(user=user)
+
+    if user_profile.exists():
+        user_profile=user_profile.all()
+    else:
+        user_profile=None
+    print(user_profile,'111111111111111111111111111111111111')
+
+    context={
+        'user':user,
+        'user_profile':user_profile
+    }
+    return render(request, 'address.html',context)
 
 # @login_required(login_url='send_otp')
 
@@ -285,7 +378,7 @@ def product_details(request, product_id):
     # }
     # return render(request, 'product_details.html', context)
 
-
+# @login_required
 def shoppage(request):
     product = Product.objects.all().filter(is_deleted=False)
     return render(request, 'shop.html', {'product': product})
@@ -307,7 +400,7 @@ def blogdetailspage(request):
     return render(request, 'blog-details.html')
 
 
-def checkoutpage(request):
+def checkout(request):
     return render(request, 'checkout.html')
 
 
@@ -376,7 +469,7 @@ def send_otppage(request):
             request.session['phone_number'] = phone_number
             print(phone_number)
             account_sid = 'AC2052f7894a67013c46526f408871da08'
-            auth_token = '5bfbffe61c4c0c8cad4078ef7ee131f9'
+            auth_token = 'b14780861a285e84c4e906c676806b79'
 
             try:
                 client = Client(account_sid, auth_token)

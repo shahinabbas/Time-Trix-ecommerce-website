@@ -1,5 +1,5 @@
 from app.models import Product
-from .models import Cart, CartItem
+from .models import Cart, CartItem,Strap
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate,login,logout
@@ -16,57 +16,76 @@ def _cart_id(request):
         cart = request.session.create()
     return cart
 
+def cart_plus(request,strap_id):
+    strap=get_object_or_404(Strap,id=strap_id)
+    try :
+        if request.user.is_authenticated:
+            cart_item = CartItem.objects.get(strap = strap,user = request.user)
+            if cart_item.quantity >= 1:
+                cart_item.quantity += 1
+                cart_item.save()
+    except:
+        cart = Cart.objects.get(cart_id = _cart_id(request))
+        cart_item = CartItem.objects.get(strap = strap,cart= cart)
+        if cart_item.quantity >= 1:
+            cart_item.quantity += 1
+            cart_item.save()
+    return redirect('cart')
+
+def cart_minus(request,product_id):
+    return render(request,'cart.html')
+
 
 def add_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    if request.method == 'POST':
-# for item in request.POST:
-        #     key = item
-        #     value = request.POST.get(key)
+    strap = request.POST.get('strap_id')
+    print(strap,"1111111111111111111111111111111111111123")
+    try:
+        cart = Cart.objects.get(cart_id=_cart_id(request))
+    except Cart.DoesNotExist:
+        cart = Cart.objects.create(
+        cart_id=_cart_id(request)
+        )
+        cart.save()
 
-        user = request.user if request.user.is_authenticated else None
-        cart, _ = Cart.objects.get_or_create(user=user)
-        strap_id = request.POST.get('strap_id')  # Get the selected product size ID from the request
+    if strap is not None:
+        try: 
+            cart_item = CartItem.objects.create(
+                product=product,
+                quantity=1,
+                cart=cart,
+                strap_id=strap,
+            )
+            cart_item.save()
+        except:
+            messages.error(request,'select')
+    return redirect('/cart')
 
-        if strap_id is not None:
-            try:
-                cart_item, created = cart.cart_items.get_or_create(product=product, strap_id=strap_id)
+    # if request.method == 'POST':
+    #         product=get_object_or_404(Product,id= product_id)
+    #         user = request.user if request.user.is_authenticated else None
+    #         cart, _ = Cart.objects.get_or_create(user=user)
+    #         strap_id = request.POST.get('strap_id')  # Get the selected product size ID from the request
 
-                if not created:
-                    cart_item.quantity += 1
-                    if cart_item.quantity > cart_item.strap.Quantity:
-                        cart_item.quantity = cart_item.strap.Quantity
-                cart_item.save()
+    #         if strap_id is not None:
+    #             try:
+    #                 cart_item, created = cart.cart_items.get_or_create(product=product, strap_id=strap_id)
 
-            except IntegrityError:
-                messages.error(request, 'Please select a valid size.')
-                
-        else:
-            messages.error(request, 'Please select a size.')
-            return redirect('product_details',product_id=product_id)
+    #                 if not created:
+    #                     cart_item.quantity += 1
+    #                     # if cart_item.quantity > cart_item.strap.Quantity:
+    #                     #     cart_item.quantity = cart_item.strap.Quantity
+    #                 cart_item.save()
 
-    return redirect('cart')
+    #             except IntegrityError:
+    #                 messages.error(request, 'Please select a valid size.')
+                    
+    #         else:
+    #             messages.error(request, 'Please select a size.')
+    #             return redirect('product_details',product_id=product_id)
 
-    # try:
-    #     cart = Cart.objects.get(cart_id=_cart_id(request))
-    # except Cart.DoesNotExist:
-    #     cart = Cart.objects.create(
-    #         cart_id=_cart_id(request)
-    #     )
-    # cart.save()
+    # return redirect('cart')
 
-    # try:
-    #     cart_item = CartItem.objects.get(product=product, cart=cart)
-    #     cart_item.quantity += 1
-    #     cart_item.save()
-    # except CartItem.DoesNotExist:
-    #     cart_item = CartItem.objects.create(
-    #         product=product,
-    #         quantity=1,
-    #         cart=cart,
-    #     )
-    #     cart_item.save()
-    # return redirect('/cart')
 
 
 def cartpage(request, total=0, quantity=0, cart_items=None):
@@ -115,8 +134,11 @@ def remove_cart(request, product_id):
 
 
 def delete_cart_item(request, product_id):
-    cart = Cart.objects.get(cart_id=_cart_id(request))
-    product = get_object_or_404(Product, id=product_id)
-    cart_item = CartItem.objects.get(product=product, cart=cart)
+    cart_item = get_object_or_404(CartItem, id=product_id)
     cart_item.delete()
     return redirect('/cart')
+    # cart = Cart.objects.get(cart_id=_cart_id(request))
+    # product = get_object_or_404(Product, id=product_id)
+    # cart_item = CartItem.objects.get(product=product, cart=cart)
+    # cart_item.delete()
+    # return redirect('/cart')

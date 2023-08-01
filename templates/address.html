@@ -1,65 +1,111 @@
-{% extends 'layouts/main.html' %}
-{% load static %}
-{% block body %} 
- 
-<section class="section-conten padding-y bg" style="padding-top: 20px">
-    <div class="container">
-      <div class="row">
-        {% include 'inc/sidebar.html' %}
- <!-- Address Cards Section -->
-    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-        <div class="card h-100">
-            <div class="card-body">
-                <div class="row gutters">
-                    <h6 class="mb-2 text-primary">Profile address</h6>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex flex-wrap">
-                        {% comment %} {% for profile_address in address %} {% endcomment %}
-                            <div class="card mr-2 mb-2" style="width: 15rem;">
-                                <div class="card-body bg-warning" style="border-radius: 10px">
-                                    <h5 class="card-title">Address 1</h5>
-                                    <p style="color: black;">
-                                        {{ profile_address.name }},
-                                        <br>
-                                        {{ profile_address.street }},{{ profile_address.city }},
-                                        <br>
-                                        {{ profile_address.state }},{{ profile_address.country }},
-                                        <br>
-                                        Pin:{{ profile_address.postal_code }},
-                                        <br>
-                                        Ph:2115265622115
-                                    </p>
-                                    <div class="d-flex justify-content-center">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1"
-                                        data-address-id="1"
-                                        data-target="#exampleModalCenter1"
-                                        data-address-name="{{ profile_address.name }}"
-                                        data-address-email="{{ profile_address.email }}"
-                                        data-address-mobile="{{ profile_address.phone_number }}"
-                                        data-address-house-no="{{ profile_address.house_no }}"
-                                        data-address-house-name="{{ profile_address.house_name }}"
-                                        data-address-street="{{ profile_address.street }}"
-                                        data-address-city="{{ profile_address.city }}"
-                                        data-address-state="{{ profile_address.state }}"
-                                        data-address-country="{{ profile_address.country }}"
-                                        data-address-zip="{{ profile_address.postal_code }}">
-                                        <i class="fas fa-edit"></i>
-                                </button>
-                                <form action="" method="post">
-                                    {% csrf_token %}
-                                    <input type="number" name="address_id" value="{{ profile_address.id  }}"hidden>
-                                        <button type="submit" class="btn btn-danger ml-2"><i class="fas fa-trash"></i></button>
-                                </form>
-                                    </div>
-                                </div>
-                            </div>
-                        {% comment %} {% endfor %} {% endcomment %}
-                    </div>
-                    <!-- Personal Details Section -->
-                </div>
+{% extends 'layouts/main.html' %} {% load static %} {% block body %}
+
+<!-- Header Start -->
+{% include 'inc/navbar.html' %}
+<!-- Header End -->
+
+<div class="container mt-5 mb-5">
+  <div class="row">
+
+    {% include 'inc/sidebar.html' %}
+
+    <div class="col-md-9">
+
+      <h4 class="card-title" style=""><b>Manage Addresses</b></h4>
+      {% for profile in user_profile %}
+
+      <div class="card">
+        <div class="card-body"></div>
+
+        <div class="p-3 py-5">
+          <div class="col-12"></div>
+
+          <div class="col">
+            <h6 class="card-subtitle mb-2 text-muted">
+              <p class="card-text text-muted small">
+                Name:{{ profile.name }}
+                <br />
+                Street:{{ profile.street }}
+                <br />
+                City:{{ profile.city }}
+                <br />
+                State:{{ profile.state }}
+                <br />
+                Country:{{ profile.country }}
+                <br />
+                Pin:{{ profile.pin_code }}
+                <br />
+                Ph:{{ profile.phone_number }}
+              </p>
+            </h6>
         </div>
     </div>
+  </div>
+            {% endfor %}
+    </div>
+  </div>
+  <style>
+    body {
+      font-family: "Rubik", sans-serif;
+      height: 100% !important;
+      background: rgb(99, 39, 120)
+    }
+    .card-text {
+      color: blue;
+    }
+
+    #star {
+      margin-left: -5px !important;
+      vertical-align: bottom !important;
+      opacity: 0.5;
+    }
+
+    .more {
+      opacity: 0.5 !important;
+    }
+
+    .btn:hover {
+      color: black !important;
+    }
+
+    .vl {
+      margin: 8px !important;
+      width: 2px;
+      border-right: 1px solid #aaaaaa;
+      height: 25px;
+    }
+
+    #plus {
+      opacity: 0.8;
+    }
+
+    .card {
+      border-radius: 10px !important;
+    }
+
+    a:hover {
+      background-color: #ccc !important;
+    }
+
+    .btn-outlined:active {
+      color: #fff;
+      border-color: #fff !important;
+    }
+
+    img {
+      cursor: pointer;
+      overflow: visible;
+    }
+
+    .btn:focus,
+    .btn:active {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    .container {
+      margin-top: 100px !important;
+    }
+  </style>
+  {% endblock body %}
 </div>
-</div>
-</div>
-</section>
-{% endblock body %}

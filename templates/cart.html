@@ -4,20 +4,36 @@
 <!-- Header End -->
 
 {% if not cart_items %}
-<div class="container d-flex justify-content-center align-items-center h-100 mt-3">
+<div
+  class="container d-flex justify-content-center align-items-center h-100 mt-3"
+>
   <div class="card text-center">
     <div class="card-body">
-      <div style="display: flex; justify-content: center; align-items: center; border-radius: 200px; height: 200px; width: 200px; background: #F8FAF5; margin: 0 auto;">
-          <i class="fas fa-shopping-cart" style="font-size: 100px;"></i>
-        </div>
+      <div
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 200px;
+          height: 200px;
+          width: 200px;
+          background: #f8faf5;
+          margin: 0 auto;
+        "
+      >
+        <i class="fas fa-shopping-cart" style="font-size: 100px"></i>
+      </div>
       <h1 class="mt-4">Cart is Empty</h1>
       <p>
-        Your cart is currently empty. Start adding items to your cart to continue shopping.
-        <br>
+        Your cart is currently empty. Start adding items to your cart to
+        continue shopping.
+        <br />
         We'll be in touch shortly!
       </p>
       <div class="mt-4">
-        <a href="{% url 'shop' %}" class="btn btn-success btn-lg btn-block">Continue Shopping</a>
+        <a href="{% url 'shop' %}" class="btn btn-success btn-lg btn-block"
+          >Continue Shopping</a
+        >
       </div>
     </div>
   </div>
@@ -26,63 +42,63 @@
 {% else %}
 
 <main>
-   <!-- Hero Area Start-->
-<style>
-  .video-area {
-    position: relative;
-    text-align: center;
-    overflow: hidden; /* Add overflow hidden */
-  }
-
-  .video-area img {
-    width: 100%;
-    opacity: 0.8;
-    filter: blur(2px);
-  }
-
-  .video-area h2 {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 66px;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Add a text shadow for better visibility */
-  }
-
-  /* Add media queries for responsive font size */
-  @media (max-width: 768px) {
-    /* For smaller screens, reduce the font size */
-    .video-area h2 {
-      font-size: 40px;
+  <!-- Hero Area Start-->
+  <style>
+    .video-area {
+      position: relative;
+      text-align: center;
+      overflow: hidden; /* Add overflow hidden */
     }
-  }
 
-  @media (max-width: 576px) {
-    /* For even smaller screens, further reduce the font size */
-    .video-area h2 {
-      font-size: 30px;
+    .video-area img {
+      width: 100%;
+      opacity: 0.8;
+      filter: blur(2px);
     }
-  }
-</style>
 
-<div class="video-area">
-  <div class="container-fluid">
-    <div class="row align-items-center">
-      <div class="col-lg-12">
-        <img
-          src="{% static 'assets/img/logo/1233.png' %}"
-          alt="Image"
-          class="img-fluid"
-        />
-        <h2>Cart List</h2>
+    .video-area h2 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 66px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Add a text shadow for better visibility */
+    }
+
+    /* Add media queries for responsive font size */
+    @media (max-width: 768px) {
+      /* For smaller screens, reduce the font size */
+      .video-area h2 {
+        font-size: 40px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      /* For even smaller screens, further reduce the font size */
+      .video-area h2 {
+        font-size: 30px;
+      }
+    }
+  </style>
+
+  <div class="video-area">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-lg-12">
+          <img
+            src="{% static 'assets/img/logo/1233.png' %}"
+            alt="Image"
+            class="img-fluid"
+          />
+          <h2>Cart List</h2>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-    <!-- Hero Area End-->
+  <!-- Hero Area End-->
 
   <style>
     .trash-link {
@@ -90,8 +106,20 @@
       color: #333;
     }
   </style>
-
-
+  {% for message in messages %}
+  <div
+    class="alert alert-{{message.tags}} alert-dismissible fade show"
+    role="alert"
+  >
+    {{message}}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endfor %}
   <section class="h-100 gradient-custom">
     <div class="container py-5">
       <div class="row d-flex justify-content-center my-4">
@@ -107,70 +135,175 @@
               <div class="row">
                 <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
                   <!-- Image -->
-                  <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
-                    <img src="{{ cart_item.product.product_Image.url}}"
-                      class="w-100" alt="image" />
+                  <div
+                    class="bg-image hover-overlay hover-zoom ripple rounded"
+                    data-mdb-ripple-color="light"
+                  >
+                    <img
+                      src="{{ cart_item.product.product_Image.url}}"
+                      class="w-100"
+                      alt="image"
+                    />
                     <a href="#!">
-                      <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                      <div
+                        class="mask"
+                        style="background-color: rgba(251, 251, 251, 0.2)"
+                      ></div>
                     </a>
                   </div>
                   <!-- Image -->
                 </div>
-  
+
                 <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
                   <!-- Data -->
-                  <p><a href="{% url 'product_details' cart_item.product.id %}" style="color: black;"><strong>{{cart_item.product.product_name}}</strong></a></p>
+                  <p>
+                    <a
+                      href="{% url 'product_details' cart_item.product.id %}"
+                      style="color: black"
+                      ><strong>{{cart_item.product.product_name}}</strong></a
+                    >
+                  </p>
                   <p>Color: blue</p>
                   <p>Category: {{cart_item.product.category}}</p>
-                  <p>Selected Strap: {{cart_item.product.strap}}</p>
+                  <p>Selected Strap: {{cart_item.strap.strap}}</p>
 
-                 <a href="{% url 'delete_cart_item' cart_item.product.id %}"><button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
-                    title="Remove item">
-                    <i class="fas fa-trash"></i>
-                  </button></a>
+                  <a
+                    href="{% url 'delete_cart_item' cart_item.product.id %}"
+                    ><button
+                      type="button"
+                      class="btn btn-primary btn-sm me-1 mb-2"
+                      data-mdb-toggle="tooltip"
+                      title="Remove item"
+                    >
+                      <i class="fas fa-trash"></i></button
+                  ></a>
 
-                  <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
-                    title="Move to the wish list">
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-sm mb-2"
+                    data-mdb-toggle="tooltip"
+                    title="Move to the wish list"
+                  >
                     <i class="fas fa-heart"></i>
                   </button>
                   <!-- Data -->
                 </div>
-  
+
                 <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                     <!-- Quantity -->
-   <div class="product_count">
-    <a href="{% url 'remove_cart' cart_item.product.id %}"><span class="input-number-decrement">
-      <i class="ti-minus" style="color: black;"></i
-    ></span></a>
-    <input
-      class="input-number"
-      type="text"
-      value="{{cart_item.quantity}}"
-      min="0"
-      max="10"
-    />
-   <a href="{% url 'add_cart' cart_item.product.id %}"><span class="input-number-increment">
-      <i class="ti-plus" style="color: black;"></i
-    ></span></a>
-  </div>
-  <!-- Quantity -->
-  
+
+
+                  <!-- Quantity -->
+                  <div class="product_count">
+                    <a
+                      href="{% url 'remove_cart' cart_item.product.id %}"
+                      ><span class="input-number-decrement">
+                        <i class="ti-minus" style="color: black"></i></span
+                    ></a>
+                    <input
+                      class="input-number"
+                      type="text"
+                      value="{{cart_item.quantity}}"
+                      min="0"
+                      max="10"
+                    />
+                    <a
+                      href="{% url 'cart_plus' cart_item.strap.id %}"
+                    >
+                      <span class="input-number-increment">
+                        <i class="ti-plus" style="color: black"></i></span
+                    ></a>
+                  </div>
+                  <!-- Quantity -->
+
+
+                  {% comment %}
+                  <!-- Quantity -->
+                  <div class="product_count">
+                    <a
+                      href="{% url 'remove_cart' cart_item.product.id %}?strap_id={{ cart_item.strap_id }}"
+                      ><span class="input-number-decrement">
+                        <i class="ti-minus" style="color: black"></i></span
+                    ></a>
+                    <input
+                      class="input-number"
+                      type="text"
+                      value="{{cart_item.quantity}}"
+                      min="0"
+                      max="10"
+                    />
+                    <a
+                      href="{% url 'add_cart' cart_item.product.id %}?strap_id={{ cart_item.strap_id }}"
+                    >
+                      <span class="input-number-increment">
+                        <i class="ti-plus" style="color: black"></i></span
+                    ></a>
+                  </div>
+                  <!-- Quantity -->
+                  {% endcomment %}
+                  {% comment %} <td>
+                    <!-- col.// -->
+                    <div class="col increase bttttns">
+                      <div class="input-group input-spinner">
+                        <div class="input-group-prepend">
+                          <a
+                            href="{% url 'cart_plus' cart_item.product.id %}"
+                            class="btn btn-light minusplus"
+                            type="button"
+                            id="button-plus"
+                            onclick="checkCart(event)"
+                          >
+                            <i class="fa fa-minus"></i>
+                          </a>
+                        </div>
+                        <input
+                          type="text"
+                          class="form-control val"
+                          value="{{ cart_item.quantity }}"
+                          id="cart_count"
+                        />
+                        <div class="input-group-append">
+                          {% comment %} <form action="" method="POST">
+                            {% csrf_token %}
+                             {% for item in cart_item.variations.all %}
+                            <input
+                              type="hidden"
+                              name="{{ item.variation_category | lower }}"
+                              value="{{ item.color_name | capfirst }}"
+                            />
+                            {% endfor %} 
+                            <a
+                            href="{% url 'cart_minus' cart_item.product.id %}"
+                            class="btn btn-light minusplus"
+                            type="button"
+                            id="button-minus"
+                            onclick="checkCart(event)"
+                          >
+                              <i class="fa fa-plus"></i>
+                          </a>
+                        </form> 
+                        </div>
+                      </div>
+                      <!-- input-group.// -->
+                    </div>
+                    <!-- col.// -->
+                  </td> {% endcomment %}
+
+
+
                   <!-- Price -->
                   <p class="text-start text-md-center">
-                    <strong>₹<s>{{ cart_item.price }}</s>
-                     </strong>&nbsp&nbsp&nbsp
-                    <strong>₹
-{{ cart_item.sub_total}}</strong>
+                    <strong>₹<s>{{ cart_item.price }}</s> </strong
+                    >&nbsp&nbsp&nbsp
+                    <strong>₹ {{ cart_item.sub_total}}</strong>
                   </p>
                   <!-- Price -->
                 </div>
               </div>
               <!-- Single item -->
-  
-              <hr class="my-4" />
-  
-              {% endfor %}
 
+              <hr class="my-4" />
+
+              {% endfor %}
             </div>
           </div>
           <div class="card mb-4">
@@ -182,20 +315,28 @@
           <div class="card mb-4 mb-lg-0">
             <div class="card-body">
               <p><strong>We accept</strong></p>
-              <img class="me-2" width="45px"
+              <img
+                class="me-2"
+                width="45px"
                 src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
-                alt="Visa" />
-              <img class="me-2" width="45px"
+                alt="Visa"
+              />
+              <img
+                class="me-2"
+                width="45px"
                 src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
-                alt="American Express" />
-              <img class="me-2" width="45px"
+                alt="American Express"
+              />
+              <img
+                class="me-2"
+                width="45px"
                 src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
-                alt="Mastercard" />
-              
+                alt="Mastercard"
+              />
             </div>
           </div>
         </div>
-           <!-- total -->
+        <!-- total -->
         <div class="col-md-4">
           <div class="card mb-4">
             <div class="card-header py-3">
@@ -206,26 +347,30 @@
             <div class="card-body">
               <ul class="list-group list-group-flush">
                 <li
-                  class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                  class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0"
+                >
                   Products
                   <span>₹{{total}}</span>
                 </li>
                 <li
-                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
-                <div>
-                  <strong>Shipping Charge</strong>
-                </div>
-                <span><strong>₹{{shipping_charge}}</strong></span>
-              </li>
+                  class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
+                >
+                  <div>
+                    <strong>Shipping Charge</strong>
+                  </div>
+                  <span><strong>₹{{shipping_charge}}</strong></span>
+                </li>
                 <li
-                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
-                <div>
-                  <strong>Tax</strong>
-                </div>
-                <span><strong>₹{{tax}}</strong></span>
-              </li>
+                  class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
+                >
+                  <div>
+                    <strong>Tax</strong>
+                  </div>
+                  <span><strong>₹{{tax}}</strong></span>
+                </li>
                 <li
-                  class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                  class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
+                >
                   <div>
                     <strong>Total amount</strong>
                     <strong>
@@ -239,17 +384,18 @@
               <button type="button" class="btn btn-primary btn-lg btn-block">
                 Go to checkout
               </button>
-              
+
               <style>
                 .dotted-line {
                   border-bottom: 1px dotted green;
                 }
               </style>
-              
+
               <!-- Add the dotted line and change the text color -->
-              <hr class="dotted-line">
-              <h6 style="color: green;">You will save ₹{{ org_tot }} on this order.</h6>
-
+              <hr class="dotted-line" />
+              <h6 style="color: green">
+                You will save ₹{{ org_tot }} on this order.
+              </h6>
             </div>
           </div>
         </div>
@@ -257,483 +403,6 @@
     </div>
   </section>
 
-
-
-  
-  {% comment %} <!--================Cart Area =================-->
-  <section class="h-100 h-custom" style="background-color: #eee">
-    <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col">
-          <div class="card">
-            <div class="card-body p-4">
-              <div class="row">
-                <div class="col-lg-7">
-                  <h5 class="mb-3">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Product</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Total</th>
-                <th scope="col">Trash</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for cart_item in cart_items %}
-              <tr>
-                <td>
-                  <div class="media">
-                    <div class="d-flex">
-                      <img src={{cart_item.product.product_Image.url}} alt=""
-                      style="width: 100px; height: 100px;"/>
-                    </div>
-                    <div class="media-body">
-                      <p>{{cart_item.product.product_name}}</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <h5>${{cart_item.product.offer_price}}</h5>
-                </td>
-
-                <td>
-                  <div class="product_count">
-                    <span class="input-number-decrement">
-                      <i class="ti-minus"></i
-                    ></span>
-                    <input
-                      class="input-number"
-                      type="text"
-                      value="{{cart_item.quantity}}"
-                      min="0"
-                      max="10"
-                    />
-                    <span class="input-number-increment">
-                      <i class="ti-plus"></i
-                    ></span>
-                  </div>
-                </td>
-                <td>
-                  <h5>₹{{ cart_item.sub_total }}</h5>
-                </td>
-                <td>
-                  <a href="#" class="trash-link">
-                    &nbsp&nbsp&nbsp<i class="fas fa-trash-alt"></i>
-                  </a>
-                </td>
-              </tr>
-              {% endfor %}
-      </tbody>
-          </table>
-          <div class="checkout_btn_inner float-right">
-            <a class="btn_1" href="{% url 'shop' %}">Continue Shopping</a>
-            <a class="btn_1 checkout_btn_1" href="#">Proceed to checkout</a>
-          </div>
-      <div class="card mb-3">
-        <div class="card-body">
-          <div class="d-flex justify-content-between">
-            <div class="d-flex flex-row align-items-center">
-              <div>
-       <div class="container-fluid">
-        <div class="row justify-content-end">
-          <!-- Align the row content to the right -->
-          <div class="col-lg-5"> 
-            <!-- Specify the column size for larger screens -->
-            <div class="card text-white rounded-3">
-              <div class="card-body">
-                <div class="d-flex justify-content-between">
-                  <p class="mb-2">Subtotal</p>
-                  <p class="mb-2 text-end">₹996</p>
-                  <!-- Added "text-end" class here -->
-                </div>
-
-                <div class="d-flex justify-content-between">
-                  <p class="mb-2">Shipping</p>
-                  <p class="mb-2 text-end">₹</p>
-                  <!-- Added "text-end" class here -->
-                </div>
-
-                <div class="d-flex justify-content-between mb-4">
-                  <p class="mb-2">Total(Incl. taxes)</p>
-                  <p class="mb-2 text-end">₹58484</p>
-                  <!-- Added "text-end" class here -->
-                </div>
-                <hr class="my-4" />
-
-                <p
-                  class="small mb-2"
-                  style="padding-right: 50px; padding-left: 15px"
-                >
-                  Card type
-                </p>
-                <a href="#!" type="submit" class="text-black">
-                  <i
-                    class="fab fa-cc-mastercard fa-2x me-2"
-                    style="
-                      color: black;
-                      padding-left: 15px;
-                      padding-right: 10px;
-                    "
-                  ></i>
-                </a>
-                <a href="#!" type="submit" class="text-black">
-                  <i
-                    class="fab fa-cc-visa fa-2x me-2"
-                    style="color: black; padding-right: 15px"
-                  ></i>
-                </a>
-                <a href="#!" type="submit" class="text-black">
-                  <i
-                    class="fab fa-cc-amex fa-2x me-2"
-                    style="color: black; padding-right: 10px"
-                  ></i>
-                </a>
-                <a href="#!" type="submit" class="text-black">
-                  <i
-                    class="fab fa-cc-paypal fa-2x"
-                    style="color: black; padding-right: 10px"
-                  ></i>
-                </a>
-
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <button
-                        type="button"
-                        class="btn btn-info btn-block btn-lg"
-                      >
-                        <div class="d-flex justify-content-between">
-                          <span
-                            ><i class="fas fa-long-arrow-alt-left ms-2"></i>Back
-                            to shop</span
-                          >
-                        </div>
-                      </button>
-                    </div>
-                    <div class="col-md-6">
-                      <button
-                        type="button"
-                        class="btn btn-info btn-block btn-lg"
-                      >
-                        <div class="d-flex justify-content-between">
-                          <span
-                            >Checkout
-                            <i class="fas fa-long-arrow-alt-right ms-3"></i
-                          ></span>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section> {% endcomment %}
-
-  {% comment %}
-  <section class="h-100 h-custom" style="background-color: #eee">
-    <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col">
-          <div class="card">
-            <div class="card-body p-4">
-              <div class="row">
-                <div class="col-lg-7">
-                  <h5 class="mb-3">
-                    <a href="#!" class="text-body"
-                      ><i class="fas fa-long-arrow-alt-left me-2"></i>Continue
-                      shopping</a
-                    >
-                  </h5>
-                  <hr />
-
-                  <div
-                    class="d-flex justify-content-between align-items-center mb-4"
-                  >
-                    <div>
-                      <p class="mb-1">Shopping cart</p>
-                      <p class="mb-0">You have 4 items in your cart</p>
-                    </div>
-                    <div>
-                      <p class="mb-0">
-                        <span class="text-muted">Sort by:</span>
-                        <a href="#!" class="text-body"
-                          >price <i class="fas fa-angle-down mt-1"></i
-                        ></a>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div class="card mb-3">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between">
-                        <div class="d-flex flex-row align-items-center">
-                          <div>
-                            <img
-                              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                              class="img-fluid rounded-3"
-                              alt="Shopping item"
-                              style="width: 65px"
-                            />
-                          </div>
-                          <div class="ms-3">
-                            <h5>Iphone 11 pro</h5>
-                            <p class="small mb-0">256GB, Navy Blue</p>
-                          </div>
-                        </div>
-                        <div class="d-flex flex-row align-items-center">
-                          <div style="width: 50px">
-                            <h5 class="fw-normal mb-0">2</h5>
-                          </div>
-                          <div style="width: 80px">
-                            <h5 class="mb-0">$900</h5>
-                          </div>
-                          <a href="#!" style="color: #cecece"
-                            ><i class="fas fa-trash-alt"></i
-                          ></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="card mb-3">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between">
-                        <div class="d-flex flex-row align-items-center">
-                          <div>
-                            <img
-                              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img2.webp"
-                              class="img-fluid rounded-3"
-                              alt="Shopping item"
-                              style="width: 65px"
-                            />
-                          </div>
-                          <div class="ms-3">
-                            <h5>Samsung galaxy Note 10</h5>
-                            <p class="small mb-0">256GB, Navy Blue</p>
-                          </div>
-                        </div>
-                        <div class="d-flex flex-row align-items-center">
-                          <div style="width: 50px">
-                            <h5 class="fw-normal mb-0">2</h5>
-                          </div>
-                          <div style="width: 80px">
-                            <h5 class="mb-0">$900</h5>
-                          </div>
-                          <a href="#!" style="color: #cecece"
-                            ><i class="fas fa-trash-alt"></i
-                          ></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="card mb-3">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between">
-                        <div class="d-flex flex-row align-items-center">
-                          <div>
-                            <img
-                              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img3.webp"
-                              class="img-fluid rounded-3"
-                              alt="Shopping item"
-                              style="width: 65px"
-                            />
-                          </div>
-                          <div class="ms-3">
-                            <h5>Canon EOS M50</h5>
-                            <p class="small mb-0">Onyx Black</p>
-                          </div>
-                        </div>
-                        <div class="d-flex flex-row align-items-center">
-                          <div style="width: 50px">
-                            <h5 class="fw-normal mb-0">1</h5>
-                          </div>
-                          <div style="width: 80px">
-                            <h5 class="mb-0">$1199</h5>
-                          </div>
-                          <a href="#!" style="color: #cecece"
-                            ><i class="fas fa-trash-alt"></i
-                          ></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="card mb-3 mb-lg-0">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between">
-                        <div class="d-flex flex-row align-items-center">
-                          <div>
-                            <img
-                              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img4.webp"
-                              class="img-fluid rounded-3"
-                              alt="Shopping item"
-                              style="width: 65px"
-                            />
-                          </div>
-                          <div class="ms-3">
-                            <h5>MacBook Pro</h5>
-                            <p class="small mb-0">1TB, Graphite</p>
-                          </div>
-                        </div>
-                        <div class="d-flex flex-row align-items-center">
-                          <div style="width: 50px">
-                            <h5 class="fw-normal mb-0">1</h5>
-                          </div>
-                          <div style="width: 80px">
-                            <h5 class="mb-0">$1799</h5>
-                          </div>
-                          <a href="#!" style="color: #cecece"
-                            ><i class="fas fa-trash-alt"></i
-                          ></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-5">
-                  <div class="card bg-primary text-white rounded-3">
-                    <div class="card-body">
-                      <div
-                        class="d-flex justify-content-between align-items-center mb-4"
-                      >
-                        <h5 class="mb-0">Card details</h5>
-                        <img
-                          src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                          class="img-fluid rounded-3"
-                          style="width: 45px"
-                          alt="Avatar"
-                        />
-                      </div>
-
-                      <p class="small mb-2">Card type</p>
-                      <a href="#!" type="submit" class="text-white"
-                        ><i class="fab fa-cc-mastercard fa-2x me-2"></i
-                      ></a>
-                      <a href="#!" type="submit" class="text-white"
-                        ><i class="fab fa-cc-visa fa-2x me-2"></i
-                      ></a>
-                      <a href="#!" type="submit" class="text-white"
-                        ><i class="fab fa-cc-amex fa-2x me-2"></i
-                      ></a>
-                      <a href="#!" type="submit" class="text-white"
-                        ><i class="fab fa-cc-paypal fa-2x"></i
-                      ></a>
-
-                      <form class="mt-4">
-                        <div class="form-outline form-white mb-4">
-                          <input
-                            type="text"
-                            id="typeName"
-                            class="form-control form-control-lg"
-                            siez="17"
-                            placeholder="Cardholder's Name"
-                          />
-                          <label class="form-label" for="typeName"
-                            >Cardholder's Name</label
-                          >
-                        </div>
-
-                        <div class="form-outline form-white mb-4">
-                          <input
-                            type="text"
-                            id="typeText"
-                            class="form-control form-control-lg"
-                            siez="17"
-                            placeholder="1234 5678 9012 3457"
-                            minlength="19"
-                            maxlength="19"
-                          />
-                          <label class="form-label" for="typeText"
-                            >Card Number</label
-                          >
-                        </div>
-
-                        <div class="row mb-4">
-                          <div class="col-md-6">
-                            <div class="form-outline form-white">
-                              <input
-                                type="text"
-                                id="typeExp"
-                                class="form-control form-control-lg"
-                                placeholder="MM/YYYY"
-                                size="7"
-                                id="exp"
-                                minlength="7"
-                                maxlength="7"
-                              />
-                              <label class="form-label" for="typeExp"
-                                >Expiration</label
-                              >
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-outline form-white">
-                              <input
-                                type="password"
-                                id="typeText"
-                                class="form-control form-control-lg"
-                                placeholder="&#9679;&#9679;&#9679;"
-                                size="1"
-                                minlength="3"
-                                maxlength="3"
-                              />
-                              <label class="form-label" for="typeText"
-                                >Cvv</label
-                              >
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-
-                      <hr class="my-4" />
-
-                      <div class="d-flex justify-content-between">
-                        <p class="mb-2">Subtotal</p>
-                        <p class="mb-2">$4798.00</p>
-                      </div>
-
-                      <div class="d-flex justify-content-between">
-                        <p class="mb-2">Shipping</p>
-                        <p class="mb-2">$20.00</p>
-                      </div>
-
-                      <div class="d-flex justify-content-between mb-4">
-                        <p class="mb-2">Total(Incl. taxes)</p>
-                        <p class="mb-2">$4818.00</p>
-                      </div>
-
-                      <button
-                        type="button"
-                        class="btn btn-info btn-block btn-lg"
-                      >
-                        <div class="d-flex justify-content-between">
-                          <span>$4818.00</span>
-                          <span
-                            >Checkout
-                            <i class="fas fa-long-arrow-alt-right ms-2"></i
-                          ></span>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!--================End Cart Area =================-->
-  {% endcomment %}
-  <!--? Shop Method Start-->
   <div class="shop-method-area" style="padding-top: 40px">
     <div class="container">
       <div class="method-wrapper">
@@ -765,19 +434,4 @@
   </div>
   <!-- Shop Method End-->
 </main>
-{% endif %}
-{% comment %} $.ajax({
-  url: {% url 'add_cart' %},
-  type: 'POST',
-  data: { 
-    id:
-  } ,
-  contentType: 'application/json; charset=utf-8',
-  success: function (response) {
-      alert(response.status);
-  },
-  error: function () {
-      alert("error");
-  }
-});  {% endcomment %}
-{% endblock body %}
+{% endif %} {% endblock body %}

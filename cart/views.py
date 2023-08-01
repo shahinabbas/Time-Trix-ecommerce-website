@@ -33,32 +33,62 @@ def cart_plus(request,strap_id):
             cart_item.save()
     return redirect('cart')
 
-def cart_minus(request,product_id):
-    return render(request,'cart.html')
 
 
 def add_cart(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    strap = request.POST.get('strap_id')
-    print(strap)
+    product = get_object_or_404(Product,id=product_id)
+    strap_id=request.POST.get('strap_id')
 
     try:
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-    except Cart.DoesNotExist:
-        cart = Cart.objects.create(cart_id=_cart_id(request))
-        print('hiiiiiiiiiiiiiiiiiiii')
+        cart=Cart.objects.get(cart_id=_cart_id(request))
+    except cart.DoesNotExist:
+        Cart.objects.create(cart_id=_cart_id(request))
 
-    if CartItem.objects.filter(strap=strap).exists():
-        print('hiiiiiiiiiiiiiiiiiiii')
-        return cart_plus(request,strap)
-    else:
-        cart_item = CartItem.objects.create(
+    strap = get_object_or_404(Strap, id=strap_id) 
+        
+    try:
+        cart_item=CartItem.objects.get(product=product, strap=strap, cart=cart)
+        cart_item.quantity += 1
+        if cart_item.quantity > cart_item.Quantity:
+            cart_item.quantity=cart_item.Quantity
+            cart_item.save()
+    except CartItem.DoesNotExist:
+        cart_item=CartItem.objects.create(
             product=product,
             quantity=1,
             cart=cart,
-            strap_id=strap,
+            strap=strap
         )
     return redirect('/cart')
+
+
+    
+
+
+
+
+
+    # product = get_object_or_404(Product, id=product_id)
+    # strap = request.POST.get('strap_id')
+    # print(strap)
+
+    # try:
+    #     cart = Cart.objects.get(cart_id=_cart_id(request))
+    # except Cart.DoesNotExist:
+    #     cart = Cart.objects.create(cart_id=_cart_id(request))
+    #     print('hiiiiiiiiiiiiiiiiiiii')
+
+    # if CartItem.objects.filter(strap=strap).exists():
+    #     print('hiiiiiiiiiiiiiiiiiiii')
+    #     return cart_plus(request,strap)
+    # else:
+    #     cart_item = CartItem.objects.create(
+    #         product=product,
+    #         quantity=1,
+    #         cart=cart,
+    #         strap_id=strap,
+    #     )
+    # return redirect('/cart')
 
 
 

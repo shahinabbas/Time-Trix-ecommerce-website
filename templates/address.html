@@ -1,111 +1,113 @@
-{% extends 'layouts/main.html' %} {% load static %} {% block body %}
+{% extends 'layouts/main.html' %} 
+{% load static %} 
+{% block body %}
 
 <!-- Header Start -->
 {% include 'inc/navbar.html' %}
 <!-- Header End -->
 
 <div class="container mt-5 mb-5">
+    
   <div class="row">
-
     {% include 'inc/sidebar.html' %}
 
     <div class="col-md-9">
-
       <h4 class="card-title" style=""><b>Manage Addresses</b></h4>
       {% for profile in user_profile %}
 
       <div class="card">
-        <div class="card-body"></div>
-
+  
         <div class="p-3 py-5">
+            <div><a href="">
+                <i class="fas fa-trash" style="color: black;  padding-left: 640px;"></i></a>
+                
+                <a href="">
+                    <i class="fas fa-edit" style="color: black;  padding-left: 640px;"></i></a>
+                    </div>
           <div class="col-12"></div>
 
           <div class="col">
             <h6 class="card-subtitle mb-2 text-muted">
+                
               <p class="card-text text-muted small">
-                Name:{{ profile.name }}
-                <br />
-                Street:{{ profile.street }}
-                <br />
-                City:{{ profile.city }}
-                <br />
-                State:{{ profile.state }}
-                <br />
-                Country:{{ profile.country }}
-                <br />
-                Pin:{{ profile.pin_code }}
-                <br />
-                Ph:{{ profile.phone_number }}
+                <b>
+                  {{ profile.name }}&nbsp&nbsp&nbsp&nbsp&nbsp{{profile.phone_number }}
+                  <br />
+                  {{ profile.house_no }}&nbsp&nbsp&nbsp&nbsp&nbsp{{profile.street }}&nbsp&nbsp&nbsp&nbsp&nbsp{{ profile.city}}&nbsp&nbsp&nbsp&nbsp&nbsp{{ profile.country}}&nbsp&nbsp&nbsp&nbsp&nbsp{{ profile.state}}&nbsp&nbsp-&nbsp&nbsp{{ profile.pin_code }}
+                </b>
               </p>
             </h6>
+          </div>
         </div>
+      </div>
+      <br />
+
+      {% endfor %}
     </div>
   </div>
-            {% endfor %}
-    </div>
-  </div>
-  <style>
-    body {
-      font-family: "Rubik", sans-serif;
-      height: 100% !important;
-      background: rgb(99, 39, 120)
-    }
-    .card-text {
-      color: blue;
-    }
-
-    #star {
-      margin-left: -5px !important;
-      vertical-align: bottom !important;
-      opacity: 0.5;
-    }
-
-    .more {
-      opacity: 0.5 !important;
-    }
-
-    .btn:hover {
-      color: black !important;
-    }
-
-    .vl {
-      margin: 8px !important;
-      width: 2px;
-      border-right: 1px solid #aaaaaa;
-      height: 25px;
-    }
-
-    #plus {
-      opacity: 0.8;
-    }
-
-    .card {
-      border-radius: 10px !important;
-    }
-
-    a:hover {
-      background-color: #ccc !important;
-    }
-
-    .btn-outlined:active {
-      color: #fff;
-      border-color: #fff !important;
-    }
-
-    img {
-      cursor: pointer;
-      overflow: visible;
-    }
-
-    .btn:focus,
-    .btn:active {
-      outline: none !important;
-      box-shadow: none !important;
-    }
-
-    .container {
-      margin-top: 100px !important;
-    }
-  </style>
-  {% endblock body %}
 </div>
+
+<style>
+  body {
+    font-family: "Rubik", sans-serif;
+    height: 100% !important;
+    background: rgb(99, 39, 120);
+  }
+  .card-subtitle {
+    font-size: 25px;
+  }
+
+  #star {
+    margin-left: -5px !important;
+    vertical-align: bottom !important;
+    opacity: 0.5;
+  }
+
+  .more {
+    opacity: 0.5 !important;
+  }
+
+  .btn:hover {
+    color: black !important;
+  }
+
+  .vl {
+    margin: 8px !important;
+    width: 2px;
+    border-right: 1px solid #aaaaaa;
+    height: 25px;
+  }
+
+  #plus {
+    opacity: 0.8;
+  }
+
+  .card {
+    border-radius: 10px !important;
+  }
+
+  a:hover {
+    background-color: #ccc !important;
+  }
+
+  .btn-outlined:active {
+    color: #fff;
+    border-color: #fff !important;
+  }
+
+  img {
+    cursor: pointer;
+    overflow: visible;
+  }
+
+  .btn:focus,
+  .btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .container {
+    margin-top: 100px !important;
+  }
+</style>
+{% endblock body %}

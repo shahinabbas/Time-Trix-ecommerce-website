@@ -12,7 +12,7 @@ urlpatterns = [
     path('enter_otp/',views.enter_otppage,name='enter_otp'),
     path('signup/',views.signuppage,name='signup'),
     path('send_otp/',views.send_otppage,name='send_otp'),
-    # path('reset_password/',views.reset_passwordpage,name='reset_password'),
+    path('reset/',views.reset,name='reset'),
 
 
     path('list/<int:id>/',views.listpage,name="list"),
@@ -22,8 +22,10 @@ urlpatterns = [
 
     path('user_profile',views.user_profile,name='user_profile'),
     path('edit_profile',views.edit_profile,name='edit_profile'),
-    path('address',views.addresspage,name='address'),
+    path('address',views.address,name='address'),
     path('add_address',views.add_address,name='add_address'),
+
+
 
 
 
@@ -54,7 +56,6 @@ urlpatterns = [
     path('blog/',views.blogpage,name='blog'),
     path('contact/',views.contactpage,name='contact'),
     path('shop/',views.shoppage,name='shop'),
-    path('checkout/',views.checkout,name='checkout'),
     path('blog-details/',views.blogdetailspage,name='blog-details'),
     path('confirm/',views.confirmpage,name='confirm'),
     path('elements/',views.elementspage,name='elements'),

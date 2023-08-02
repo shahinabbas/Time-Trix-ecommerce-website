@@ -72,7 +72,6 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     offer_price = models.DecimalField(
         max_digits=8, decimal_places=2, default=0)
-    quantity = models.IntegerField(default=0)
     product_Image = models.ImageField(upload_to='product_images')
     shape = models.CharField(max_length=50)
     category = models.ForeignKey('category', on_delete=models.CASCADE)
@@ -92,8 +91,7 @@ class User_Profile(models.Model):
     address=models.CharField(_('address'),max_length=180)
     phone_number = models.BigIntegerField(
         _('phone_number'))
-    house_no = models.CharField(_('house number'), max_length=10,)
-    profile_pic = models.ImageField(upload_to='profile_pic')
+    house_no = models.CharField(_('house number'), max_length=10)
     street = models.CharField(_('street'), max_length=100)
     city = models.CharField(_('city'), max_length=100)
     state = models.CharField(_('state'), max_length=100)

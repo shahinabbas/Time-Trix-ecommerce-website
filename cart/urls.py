@@ -7,10 +7,10 @@ urlpatterns = [
 
     path("", views.cartpage, name="cart"),
     path("add_cart/<int:product_id>/", views.add_cart, name="add_cart"),
-    path("remove_cart/<int:product_id>/", views.remove_cart, name="remove_cart"),
-    path("delete_cart_item/<int:product_id>/", views.delete_cart_item, name="delete_cart_item"),
-    path("cart_plus/<int:strap_id>/",views.cart_plus,name="cart_plus"),
-
+    path("cart_minus/<int:strap_id>/", views.cart_minus, name="cart_minus"),
+    path("delete_cart_item/<int:product_id>/",views.delete_cart_item,name='delete_cart_item'),
+    path("cart_plus/<int:strap_id>/",views.cart_plus,name='cart_plus'),
+    path('checkout/',views.checkout,name='checkout'),
 
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

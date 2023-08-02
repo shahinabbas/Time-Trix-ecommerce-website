@@ -6,7 +6,7 @@
       <a class="list-group-item {% if '/about/' in request.path %}active{% endif %}" href="{% url 'about' %}"> My Orders </a>
       <a class="list-group-item {% if '/add_address/' in request.path %}active{% endif %}" href="{% url 'add_address' %}"> Add Address </a>
       <a class="list-group-item {% if '/address/' in request.path %}active{% endif %}" href="{% url 'address' %}"> Manage Address </a>
-      <a class="list-group-item {% if '/send_otp/' in request.path %}active{% endif %}" href="{% url 'send_otp' %}"> Change Password </a>  
+      <a class="list-group-item {% if '/reset/' in request.path %}active{% endif %}" href="{% url 'reset' %}"> Reset Password </a>  
     </ul>
     <br>
     <a class="btn btn-light btn-block" href="{% url 'logout' %}" id="userlogoutbtn"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a>

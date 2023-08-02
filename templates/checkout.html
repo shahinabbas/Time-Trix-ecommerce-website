@@ -1,224 +1,376 @@
-{% extends 'layouts/main.html' %}
-{% load static %}
-{% block body %}
+{% extends 'layouts/main.html' %} {% load static %} {% block body %}
+<!-- Header Start -->
+{% include 'inc/navbar.html' %}
+<!-- Header End -->
 
+{% if not cart_items %}
+<div
+  class="container d-flex justify-content-center align-items-center h-100 mt-3"
+>
+  <div class="card text-center">
+    <div class="card-body">
+      <div
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 200px;
+          height: 200px;
+          width: 200px;
+          background: #f8faf5;
+          margin: 0 auto;
+        "
+      >
+        <i class="fas fa-shopping-cart" style="font-size: 100px"></i>
+      </div>
+      <h1 class="mt-4">Cart is Empty</h1>
+      <p>
+        Your cart is currently empty. Start adding items to your cart to
+        continue shopping.
+        <br />
+        We'll be in touch shortly!
+      </p>
+      <div class="mt-4">
+        <a href="{% url 'shop' %}" class="btn btn-success btn-lg btn-block"
+          >Continue Shopping</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
 
-      <!-- Header Start -->
-    {% include 'inc/navbar.html' %}
-      <!-- Header End -->
+{% else %}
 
+<main>
+  <!-- Hero Area Start-->
+  <style>
+    .video-area {
+      position: relative;
+      text-align: center;
+      overflow: hidden; /* Add overflow hidden */
+    }
 
-    <main>
-        <!-- Hero Area Start-->
-        <div class="slider-area ">
-            <div class="single-slider slider-height2 d-flex align-items-center">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="hero-cap text-center">
-                                <h2>Checkout</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    .video-area img {
+      width: 100%;
+      opacity: 0.8;
+      filter: blur(2px);
+    }
+
+    .video-area h2 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 66px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Add a text shadow for better visibility */
+    }
+
+    /* Add media queries for responsive font size */
+    @media (max-width: 768px) {
+      /* For smaller screens, reduce the font size */
+      .video-area h2 {
+        font-size: 40px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      /* For even smaller screens, further reduce the font size */
+      .video-area h2 {
+        font-size: 30px;
+      }
+    }
+    .dotted-box {
+      border: 2px dotted #ccc;
+      padding: 20px;
+      cursor: pointer;
+    }
+  
+    .add-address-text {
+      color: #ff0000; /* Change this to the desired text color */
+    }
+  </style>
+
+  <div class="video-area">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-lg-12">
+          <img
+            src="{% static 'assets/img/logo/1233.png' %}"
+            alt="Image"
+            class="img-fluid"
+          />
+          <h2>Checkout</h2>
         </div>
-        <!--================Checkout Area =================-->
-        <section class="checkout_area section_padding">
-          <div class="container">
-            <div class="returning_customer">
-              <div class="check_title">
-                <h2>
-                  Returning Customer?
-                  <a href="#">Click here to login</a>
-                </h2>
-              </div>
-              <p>
-                If you have shopped with us before, please enter your details in the
-                boxes below. If you are a new customer, please proceed to the
-                Billing & Shipping section.
-              </p>
-              <form class="row contact_form" action="#" method="post" novalidate="novalidate">
-                <div class="col-md-6 form-group p_star">
-                  <input type="text" class="form-control" id="name" name="name" value=" " />
-                  <span class="placeholder" data-placeholder="Username or Email"></span>
-                </div>
-                <div class="col-md-6 form-group p_star">
-                  <input type="password" class="form-control" id="password" name="password" value="" />
-                  <span class="placeholder" data-placeholder="Password"></span>
-                </div>
-                <div class="col-md-12 form-group">
-                  <button type="submit" value="submit" class="btn_3">
-                    log in
-                  </button>
-                  <div class="creat_account">
-                    <input type="checkbox" id="f-option" name="selector" />
-                    <label for="f-option">Remember me</label>
-                  </div>
-                  <a class="lost_pass" href="#">Lost your password?</a>
-                </div>
-              </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Area End-->
+
+  <style>
+    .trash-link {
+      text-decoration: none;
+      color: #333;
+    }
+  </style>
+  {% for message in messages %}
+  <div
+    class="alert alert-{{message.tags}} alert-dismissible fade show"
+    role="alert"
+  >
+    {{message}}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endfor %}
+  <section class="h-100 gradient-custom">
+    <div class="container py-5">
+      <div class="row d-flex justify-content-center my-4">
+        <div class="col-md-8">
+          <div class="card mb-4">
+            <div class="card-header py-3">
+              <h5 class="mb-0">Checkout</h5>
             </div>
-            <div class="cupon_area">
-              <div class="check_title">
-                <h2>
-                  Have a coupon?
-                  <a href="#">Click here to enter your code</a>
-                </h2>
-              </div>
-              <input type="text" placeholder="Enter coupon code" />
-              <a class="tp_btn" href="#">Apply Coupon</a>
-            </div>
-            <div class="billing_details">
+            <div class="card-body">
+              {% for cart_item in cart_items %}
+
+              <!-- Single item -->
               <div class="row">
-                <div class="col-lg-8">
-                  <h3>Billing Details</h3>
-                  <form class="row contact_form" action="#" method="post" novalidate="novalidate">
-                    <div class="col-md-6 form-group p_star">
-                      <input type="text" class="form-control" id="first" name="name" />
-                      <span class="placeholder" data-placeholder="First name"></span>
-                    </div>
-                    <div class="col-md-6 form-group p_star">
-                      <input type="text" class="form-control" id="last" name="name" />
-                      <span class="placeholder" data-placeholder="Last name"></span>
-                    </div>
-                    <div class="col-md-12 form-group">
-                      <input type="text" class="form-control" id="company" name="company" placeholder="Company name" />
-                    </div>
-                    <div class="col-md-6 form-group p_star">
-                      <input type="text" class="form-control" id="number" name="number" />
-                      <span class="placeholder" data-placeholder="Phone number"></span>
-                    </div>
-                    <div class="col-md-6 form-group p_star">
-                      <input type="text" class="form-control" id="email" name="compemailany" />
-                      <span class="placeholder" data-placeholder="Email Address"></span>
-                    </div>
-                    <div class="col-md-12 form-group p_star">
-                      <select class="country_select">
-                        <option value="1">Country</option>
-                        <option value="2">Country</option>
-                        <option value="4">Country</option>
-                      </select>
-                    </div>
-                    <div class="col-md-12 form-group p_star">
-                      <input type="text" class="form-control" id="add1" name="add1" />
-                      <span class="placeholder" data-placeholder="Address line 01"></span>
-                    </div>
-                    <div class="col-md-12 form-group p_star">
-                      <input type="text" class="form-control" id="add2" name="add2" />
-                      <span class="placeholder" data-placeholder="Address line 02"></span>
-                    </div>
-                    <div class="col-md-12 form-group p_star">
-                      <input type="text" class="form-control" id="city" name="city" />
-                      <span class="placeholder" data-placeholder="Town/City"></span>
-                    </div>
-                    <div class="col-md-12 form-group p_star">
-                      <select class="country_select">
-                        <option value="1">District</option>
-                        <option value="2">District</option>
-                        <option value="4">District</option>
-                      </select>
-                    </div>
-                    <div class="col-md-12 form-group">
-                      <input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP" />
-                    </div>
-                    <div class="col-md-12 form-group">
-                      <div class="creat_account">
-                        <input type="checkbox" id="f-option2" name="selector" />
-                        <label for="f-option2">Create an account?</label>
-                      </div>
-                    </div>
-                    <div class="col-md-12 form-group">
-                      <div class="creat_account">
-                        <h3>Shipping Details</h3>
-                        <input type="checkbox" id="f-option3" name="selector" />
-                        <label for="f-option3">Ship to a different address?</label>
-                      </div>
-                      <textarea class="form-control" name="message" id="message" rows="1"
-                        placeholder="Order Notes"></textarea>
-                    </div>
-                  </form>
-                </div>
-                <div class="col-lg-4">
-                  <div class="order_box">
-                    <h2>Your Order</h2>
-                    <ul class="list">
-                      <li>
-                        <a href="#">Product
-                          <span>Total</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">Fresh Blackberry
-                          <span class="middle">x 02</span>
-                          <span class="last">$720.00</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">Fresh Tomatoes
-                          <span class="middle">x 02</span>
-                          <span class="last">$720.00</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">Fresh Brocoli
-                          <span class="middle">x 02</span>
-                          <span class="last">$720.00</span>
-                        </a>
-                      </li>
-                    </ul>
-                    <ul class="list list_2">
-                      <li>
-                        <a href="#">Subtotal
-                          <span>$2160.00</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">Shipping
-                          <span>Flat rate: $50.00</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">Total
-                          <span>$2210.00</span>
-                        </a>
-                      </li>
-                    </ul>
-                    <div class="payment_item">
-                      <div class="radion_btn">
-                        <input type="radio" id="f-option5" name="selector" />
-                        <label for="f-option5">Check payments</label>
-                        <div class="check"></div>
-                      </div>
-                      <p>
-                        Please send a check to Store Name, Store Street, Store Town,
-                        Store State / County, Store Postcode.
-                      </p>
-                    </div>
-                    <div class="payment_item active">
-                      <div class="radion_btn">
-                        <input type="radio" id="f-option6" name="selector" />
-                        <label for="f-option6">Paypal </label>
-                        <img src="img/product/single-product/card.jpg" alt="" />
-                        <div class="check"></div>
-                      </div>
-                      <p>
-                        Please send a check to Store Name, Store Street, Store Town,
-                        Store State / County, Store Postcode.
-                      </p>
-                    </div>
-                    <div class="creat_account">
-                      <input type="checkbox" id="f-option4" name="selector" />
-                      <label for="f-option4">I’ve read and accept the </label>
-                      <a href="#">terms & conditions*</a>
-                    </div>
-                    <a class="btn_3" href="#">Proceed to Paypal</a>
+                <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                  <!-- Image -->
+                  <div
+                    class="bg-image hover-overlay hover-zoom ripple rounded"
+                    data-mdb-ripple-color="light"
+                  >
+                    <img
+                      src="{{ cart_item.product.product_Image.url}}"
+                      class="w-100"
+                      alt="image"
+                    />
+                    <a href="#!">
+                      <div
+                        class="mask"
+                        style="background-color: rgba(251, 251, 251, 0.2)"
+                      ></div>
+                    </a>
                   </div>
+                  <!-- Image -->
+                </div>
+
+                <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                  <!-- Data -->
+                  <p>
+                    <a
+                      href="{% url 'product_details' cart_item.product.id %}"
+                      style="color: black"
+                      ><strong>{{cart_item.product.product_name}}</strong></a
+                    >
+                  </p>
+                  <p>Category: {{cart_item.product.category}}</p>
+                  <p>Selected Strap: {{cart_item.strap.strap}}</p>
+                  <p>Quantity: {{cart_item.quantity}}</p>
+
+                  {% comment %} <a href="{% url 'delete_cart_item' cart_item.product.id %}"
+                    ><button
+                      type="button"
+                      class="btn btn-primary"
+                      data-mdb-toggle="tooltip"
+                      title="Remove item"
+                      style="padding: 15px 20px; font-size: 12px; line-height: 1;"
+                    >
+                      <i class="fas fa-trash"></i></button
+                  ></a>
+
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-mdb-toggle="tooltip"
+                    title="Move to the wish list"
+                    style="padding: 15px 20px; font-size: 12px; line-height: 1;"
+                  >
+                    <i class="fas fa-heart"></i>
+                  </button> {% endcomment %}
+                  <!-- Data -->
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                  
+
+                 
+
+                  <!-- Price -->
+                  <br></br>
+                  
+        
+
+                  <p class="text-start text-md-center">
+                    <strong>₹<s>{{ cart_item.price }}</s> </strong
+                    >&nbsp&nbsp&nbsp
+                    <strong>₹ {{ cart_item.sub_total}}</strong>
+                  </p>
+                  <!-- Price -->
                 </div>
               </div>
+              <!-- Single item -->
+
+              <hr class="my-4" />
+
+              {% endfor %}
             </div>
           </div>
-        </section>
-        <!--================End Checkout Area =================-->
-    </main>
-{% endblock body %}
+          <div class="card mb-4">
+            <div class="card-body">
+              {% for user_profile in user_profile %}
+                <div class="card mb-4">
+                <div class="card-body">
+                  {{user_profile.name}} {{user_profile.phone_number}} 
+                  <br />
+                  {{user_profile.address}}, {{user_profile.country}}, {{user_profile.state}}, {{user_profile.street}} - {{user_profile.pin_code}}
+
+                </div>
+              </div>
+            
+              {% endfor %}
+           
+          <div class="card mb-4" id="addAddressCard">
+            <div class="card-body dotted-box">
+              <a href="{% url 'add_address' %}" class="stretched-link">
+                <div class="text-center">
+                  <h5 class="card-title">Add Address</h5>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     
+              <div class="card mb-4 mb-lg-0">
+                <div class="card-body">
+                  <p><strong>We accept</strong></p>
+                  <img
+                    class="me-2"
+                    width="45px"
+                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+                    alt="Visa"
+                  />
+                  <img
+                    class="me-2"
+                    width="45px"
+                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+                    alt="American Express"
+                  />
+                  <img
+                    class="me-2"
+                    width="45px"
+                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+                    alt="Mastercard"
+                  />
+                </div>
+              </div>
+            </div>
+       
+        <!-- total -->
+        <div class="col-md-4">
+          <div class="card mb-4">
+            <div class="card-header py-3">
+              <h5 class="mb-0">Summary</h5>
+            </div>
+
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0"
+                >
+                  Products
+                  <span>₹{{total}}</span>
+                </li>
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
+                >
+                  <div>
+                    <strong>Shipping Charge</strong>
+                  </div>
+                  <span><strong>₹{{shipping_charge}}</strong></span>
+                </li>
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
+                >
+                  <div>
+                    <strong>Tax</strong>
+                  </div>
+                  <span><strong>₹{{tax}}</strong></span>
+                </li>
+                <li
+                  class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
+                >
+                  <div>
+                    <strong>Total amount</strong>
+                    <strong>
+                      <p class="mb-0">(incl. taxes)</p>
+                    </strong>
+                  </div>
+                  <span><strong>₹{{grand_total}}</strong></span>
+                </li>
+              </ul>
+              <a href="{% url 'checkout' %}">
+              <button type="button" class="btn btn-primary btn-lg btn-block">
+                Place Order
+              </button></a>
+
+              <style>
+                .dotted-line {
+                  border-bottom: 1px dotted green;
+                }
+              </style>
+
+              <!-- Add the dotted line and change the text color -->
+              <hr class="dotted-line" />
+              <h6 style="color: green">
+                You will save ₹{{ org_tot }} on this order.
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="shop-method-area" style="padding-top: 40px">
+    <div class="container">
+      <div class="method-wrapper">
+        <div class="row d-flex justify-content-between">
+          <div class="col-xl-4 col-lg-4 col-md-6">
+            <div class="single-method mb-40">
+              <i class="ti-package"></i>
+              <h6>Free Shipping Method</h6>
+              <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6">
+            <div class="single-method mb-40">
+              <i class="ti-unlock"></i>
+              <h6>Secure Payment System</h6>
+              <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6">
+            <div class="single-method mb-40">
+              <i class="ti-reload"></i>
+              <h6>Secure Payment System</h6>
+              <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Shop Method End-->
+</main>
+{% endif %} {% endblock body %}

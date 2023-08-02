@@ -11,13 +11,28 @@ from django.views.decorators.cache import never_cache
 from django.http import HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from cart.views import _cart_id
+# from cart.views import _cart_id
 
 
 
 
 # def add_address(request):
-
+@login_required(login_url='login')
+def reset(request):
+    user=request.user
+    if request.method=='POST':
+        password=request.POST.get('password')
+        confirm_password=request.POST.get('confirm_password')
+        if password == confirm_password:
+            user.set_password(password)
+            user.save()
+            messages.success(request,'Password changed succsessfully')
+            return redirect('reset')
+        else:
+            messages.error(request,'Entered passwords are not same')
+        return redirect('reset')  
+    return render(request,'reset.html')
+   
 def add_address(request):
     user = request.user
     if request.method == 'POST':
@@ -41,52 +56,18 @@ def add_address(request):
         profile_address.pin_code = pin_code
         profile_address.save()
         messages.success(request,"successful")
-        return redirect('add_address')
-    # user = request.user
-    # if request.method == 'POST':
-    #     name = request.POST.get('name')
-    #     phone_number = request.POST.get('phone_number')
-    #     address=request.POST.get('address')
-    #     house_no = request.POST.get('house_no')
-    #     street = request.POST.get('street')
-    #     city = request.POST.get('city')
-    #     state = request.POST.get('state')
-    #     country = request.POST.get('country')
-    #     pin_code = request.POST.get('pin_code')
-
-
-    #     profile_address = User_Profile(
-    #         name=name,
-    #         phone_number=phone_number,
-    #         address=address,
-    #         country=country,
-    #         state=state,
-    #         city=city,
-    #         street=street,
-    #         house_no=house_no,
-    #         pin_code=pin_code,
-    #         user=request.user, 
-    #           # Assuming you have set the user properly
-    #     )
-
-    #     profile_address.save()
-    #     return redirect('add_address')
-
-
-    messages.error(request,"failed")
+        return redirect('address')
     return render(request,'add_address.html')
+   
 
 def user_profile(request):
-    
-    if request.user.is_authenticated:
-        user=request.user
-    else:
-        return redirect('login')
-    
+    user=request.user
     user_profile=User_Profile.objects.filter(user=user)
-
+    print(user)
     if user_profile.exists():
+        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         user_profile=user_profile.all()
+        print(user_profile,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     else:
         user_profile=None
     print(user_profile,'111111111111111111111111111111111111')
@@ -133,7 +114,7 @@ def edit_profile(request):
 #     return render(request,"reset.html",{'error':error_message})
 
 
-def addresspage(request):
+def address(request):
     user=request.user
     user_profile=User_Profile.objects.filter(user=user)
 
@@ -141,7 +122,6 @@ def addresspage(request):
         user_profile=user_profile.all()
     else:
         user_profile=None
-    print(user_profile,'111111111111111111111111111111111111')
 
     context={
         'user':user,
@@ -175,7 +155,7 @@ def admin_logoutpage(request):
     return redirect('admin_signin')
 
 
-
+@never_cache
 @login_required(login_url='admin_signin')
 def userspage(request):
     stu = CustomUser.objects.all()
@@ -205,7 +185,7 @@ def user_unblockpage(request, id):
 def admin_indexpage(request):
     return render(request, "admin/admin_index.html")
 
-
+@never_cache
 @login_required(login_url='admin_signin')
 def categorypage(request):
     if request.method == 'POST':
@@ -239,8 +219,13 @@ def delete_categorypage(request, id):
 def productspage(request):
     stu = category.objects.all()
     products = Product.objects.all()
-    # shape = shape.objects.all()
-    return render(request, 'admin/products.html', {'products': products})
+    strap=Strap.objects.all()
+    context={
+        'products': products,
+        'strap': strap
+    }
+
+    return render(request, 'admin/products.html', context)
 
 @never_cache
 @login_required(login_url='admin_signin')
@@ -400,8 +385,7 @@ def blogdetailspage(request):
     return render(request, 'blog-details.html')
 
 
-def checkout(request):
-    return render(request, 'checkout.html')
+
 
 
 def contactpage(request):

@@ -34,7 +34,7 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     is_active = models.BooleanField(default=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.product
 
     def price(self):
@@ -53,6 +53,7 @@ class CartItem(models.Model):
 class Strap(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     strap = models.CharField(max_length=50)
+    quantity=models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
     def __unicode__(self):

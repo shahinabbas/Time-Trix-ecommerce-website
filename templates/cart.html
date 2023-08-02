@@ -163,25 +163,26 @@
                       ><strong>{{cart_item.product.product_name}}</strong></a
                     >
                   </p>
-                  <p>Color: blue</p>
                   <p>Category: {{cart_item.product.category}}</p>
                   <p>Selected Strap: {{cart_item.strap.strap}}</p>
 
-                  <a href="{% url 'delete_cart_item' cart_item.product.id %}"
+                  <a href="{% url 'delete_cart_item' cart_item.id %}"
                     ><button
                       type="button"
-                      class="btn btn-primary btn-sm me-1 mb-2"
+                      class="btn btn-primary"
                       data-mdb-toggle="tooltip"
                       title="Remove item"
+                      style="padding: 15px 20px; font-size: 12px; line-height: 1;"
                     >
                       <i class="fas fa-trash"></i></button
                   ></a>
 
                   <button
                     type="button"
-                    class="btn btn-danger btn-sm mb-2"
+                    class="btn btn-danger"
                     data-mdb-toggle="tooltip"
                     title="Move to the wish list"
+                    style="padding: 15px 20px; font-size: 12px; line-height: 1;"
                   >
                     <i class="fas fa-heart"></i>
                   </button>
@@ -191,7 +192,7 @@
                 <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
                   <!-- Quantity -->
                   <div class="product_count">
-                    <a href="{% url 'remove_cart' cart_item.product.id %}"
+                    <a href="{% url 'cart_minus' cart_item.strap.id %}"
                       ><span class="input-number-decrement">
                         <i class="ti-minus" style="color: black"></i></span
                     ></a>
@@ -203,88 +204,20 @@
                       max="10"
                       size="3"
                     />
-                    <a href="{% url 'add_cart' cart_item.product.id %}">
+                    <a href="{% url 'cart_plus' cart_item.strap.id %}">
                       <span class="input-number-increment">
                         <i class="ti-plus" style="color: black"></i></span
                     ></a>
                   </div>
                   <!-- Quantity -->
 
-                  {% comment %}
-                  <!-- Quantity -->
-                  <div class="product_count">
-                    <a
-                      href="{% url 'remove_cart' cart_item.product.id %}?strap_id={{ cart_item.strap_id }}"
-                      ><span class="input-number-decrement">
-                        <i class="ti-minus" style="color: black"></i></span
-                    ></a>
-                    <input
-                      class="input-number"
-                      type="text"
-                      value="{{cart_item.quantity}}"
-                      min="0"
-                      max="10"
-                    />
-                    <a
-                      href="{% url 'add_cart' cart_item.product.id %}?strap_id={{ cart_item.strap_id }}"
-                    >
-                      <span class="input-number-increment">
-                        <i class="ti-plus" style="color: black"></i></span
-                    ></a>
-                  </div>
-                  <!-- Quantity -->
-                  {% endcomment %} {% comment %}
-                  <td>
-                    <!-- col.// -->
-                    <div class="col increase bttttns">
-                      <div class="input-group input-spinner">
-                        <div class="input-group-prepend">
-                          <a
-                            href="{% url 'cart_plus' cart_item.product.id %}"
-                            class="btn btn-light minusplus"
-                            type="button"
-                            id="button-plus"
-                            onclick="checkCart(event)"
-                          >
-                            <i class="fa fa-minus"></i>
-                          </a>
-                        </div>
-                        <input
-                          type="text"
-                          class="form-control val"
-                          value="{{ cart_item.quantity }}"
-                          id="cart_count"
-                        />
-                        <div class="input-group-append">
-                          {% comment %}
-                          <form action="" method="POST">
-                            {% csrf_token %} {% for item in
-                            cart_item.variations.all %}
-                            <input
-                              type="hidden"
-                              name="{{ item.variation_category | lower }}"
-                              value="{{ item.color_name | capfirst }}"
-                            />
-                            {% endfor %}
-                            <a
-                              href="{% url 'cart_minus' cart_item.product.id %}"
-                              class="btn btn-light minusplus"
-                              type="button"
-                              id="button-minus"
-                              onclick="checkCart(event)"
-                            >
-                              <i class="fa fa-plus"></i>
-                            </a>
-                          </form>
-                        </div>
-                      </div>
-                      <!-- input-group.// -->
-                    </div>
-                    <!-- col.// -->
-                  </td>
-                  {% endcomment %}
+                 
 
                   <!-- Price -->
+                  <br></br>
+                  
+        
+
                   <p class="text-start text-md-center">
                     <strong>₹<s>{{ cart_item.price }}</s> </strong
                     >&nbsp&nbsp&nbsp
@@ -374,10 +307,10 @@
                   <span><strong>₹{{grand_total}}</strong></span>
                 </li>
               </ul>
-              {% comment %} {% endfor %} {% endcomment %}
+              <a href="{% url 'checkout' %}">
               <button type="button" class="btn btn-primary btn-lg btn-block">
                 Go to checkout
-              </button>
+              </button></a>
 
               <style>
                 .dotted-line {

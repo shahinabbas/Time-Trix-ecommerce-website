@@ -81,8 +81,9 @@
                     <button type="submit" class="btn hero-btn">
                       Add to Cart<i class="flaticon-shopping-cart"></i>
                     </button>
-                    {% endif %} {% endif %} {% if product.stock <= 0 %} {%
-                    else%}
+                    {% endif %} {% endif %}
+                     {% if product.stock <= 0 %} 
+                     {% else %}
                     <a href="#" class="btn hero-btn"
                       >Buy Now <i class="ti-package"></i
                     ></a>

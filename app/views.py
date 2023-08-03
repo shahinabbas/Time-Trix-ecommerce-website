@@ -15,8 +15,42 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 
+def edit_address(request,id):
+    user=request.user
+    profile_address=get_object_or_404(User_Profile,pk=id)
 
-# def add_address(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        house_no = request.POST.get('house_no')
+        street = request.POST.get('street')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        country = request.POST.get('country')
+        pin_code = request.POST.get('pin_code')
+        
+
+        profile_address.name=name
+        profile_address.phone_number=phone_number
+        profile_address.house_no=house_no
+        profile_address.street = street
+        profile_address.city = city
+        profile_address.state = state
+        profile_address.country = country
+        profile_address.pin_code = pin_code
+        profile_address.save()
+        messages.success(request,"successful")
+        return redirect('address')
+    return render(request,'edit_address.html',{"profile_address":profile_address})
+
+
+def delete_address(request,id):
+    user=request.user
+    profile=get_object_or_404(User_Profile,pk=id,user=user)
+    profile.delete()
+    return redirect('address')
+
+
 @login_required(login_url='login')
 def reset(request):
     user=request.user
@@ -59,24 +93,20 @@ def add_address(request):
         return redirect('address')
     return render(request,'add_address.html')
    
-
+@login_required
 def user_profile(request):
     user=request.user
     user_profile=User_Profile.objects.filter(user=user)
     print(user)
     if user_profile.exists():
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         user_profile=user_profile.all()
-        print(user_profile,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     else:
         user_profile=None
-    print(user_profile,'111111111111111111111111111111111111')
 
     context={
         'user':user,
         'user_profile':user_profile
     }
-    print(user_profile,'111111111111111111111111111111111111')
     return render(request, 'profile.html',context)
 
 
@@ -113,7 +143,7 @@ def edit_profile(request):
 #                 return redirect('/login')
 #     return render(request,"reset.html",{'error':error_message})
 
-
+@never_cache
 def address(request):
     user=request.user
     user_profile=User_Profile.objects.filter(user=user)
@@ -147,7 +177,7 @@ def loginpage(request):
     return render(request, 'login.html')
 
 
-
+@never_cache
 @login_required(login_url='admin_signin')
 def admin_logoutpage(request):
     auth.logout(request)
@@ -195,8 +225,8 @@ def categorypage(request):
             return render(request, 'admin/category.html', {'error_message': error_message})
         else:
             Category = category.objects.create(categories=category_name)
-            stu = category.objects.all()
-            return render(request, 'admin/category.html', {'stu': stu})
+            # stu = category.objects.all()
+            return render(request, 'admin/category.html')
     return render(request, "admin/category.html")
 
 @never_cache
@@ -204,6 +234,26 @@ def categorypage(request):
 def category_listpage(request):
     stu = category.objects.all()
     return render(request, "admin/category.html", {'stu': stu})
+
+@never_cache
+def edit_category(request,id):
+    catgry=category.objects.get(pk=id)
+    if request.method=='POST':
+        categories=request.POST.get('category')
+        if category.objects.filter(categories=categories).exclude(pk=id).exists():
+            messages.error(request,'Category name already exists')
+            return redirect('category')
+        else:
+            catgry.categories = categories
+            catgry.save()
+            messages.success(request,'edit successful')
+        return redirect('category')
+    return render(request,'admin/category.html',{'category':categories})
+
+
+
+
+
 
 @never_cache
 @login_required(login_url='admin_signin')
@@ -231,23 +281,19 @@ def productspage(request):
 @login_required(login_url='admin_signin')
 def add_productpage(request):
     categories = category.objects.all()
+    strap = ['Rubber', 'Leather', 'Chain']
     if request.method == 'POST':
-        # Retrieve data from the form
         product_name = request.POST.get('name')
         category_name = request.POST.get('category')
         product_Image = request.FILES.get('image')
         description = request.POST.get('description')
-        # shape = ['Square', 'Oval', 'Round']
-        strap = ['Rubber', 'Leather', 'Chain']
         price = request.POST.get('price')
         offer_price = request.POST.get('offer_price')
-        stock = request.POST.get('stock')
         print('product image:', product_Image)
 
         if Product.objects.filter(product_name=product_name).exists():
             return render(request, 'admin/add_product.html', {'error_message': 'Product already exists.'})
         else:
-            # Create the product object
             try:
                 selected_category = category.objects.get(
                     categories=category_name)
@@ -260,19 +306,21 @@ def add_productpage(request):
                 category=selected_category,
                 product_Image=product_Image,
                 description=description,
-                strap=strap,
+                # strap=strap,
                 price=price,
                 offer_price=offer_price,
-                stock=stock
+                # quantity=quantity,
             )
             product.save()
-            # messages.success(request, 'New product added successfully')
+            messages.success(request, 'New product added successfully')
         for straps in strap:
-            # s=request.POST.get(f's-{straps}')
-            strap=Strap(product_id=product,strap=strap)
+            quantity = request.POST.get(f'quantity-{straps}')
+            print(f'{straps} quantity: {quantity}')
+            strap.append({'name':straps,'quantity':quantity})
+            strap=Strap(product_id=product,strap=strap,quantity=quantity)
             strap.save()
 
-    return render(request, "admin/add_product.html", {'categories': categories})
+    return render(request, "admin/add_product.html", {'categories': categories, 'strap': strap})
 
 
 @login_required(login_url='admin_signin')
@@ -296,7 +344,7 @@ def undo_productpage(request, id):
 def edit_productpage(request, id):
     try:
         product = Product.objects.get(pk=id)
-        # shape = product.productshape_set.all()
+        strap=Strap.objects.filter(product=product)
         categories = category.objects.all()
         context = {
             'product': product,
@@ -305,7 +353,6 @@ def edit_productpage(request, id):
         }
     except Product.DoesNotExist:
         return HttpResponseNotFound("Product not found")
-
     if request.method == 'POST':
         product_name = request.POST.get('productName')
         category_id = request.POST.get('categoryId')
@@ -313,19 +360,14 @@ def edit_productpage(request, id):
         description = request.POST.get('description')
         product_image = request.FILES.get('image')
 
-        # Update the product details+
         product.product_name = product_name
         product.category = category
         product.description = description
 
         if product_image:
             product.product_Image = product_image
-
         product.save()
-
-        # Redirect to a success page or product list view
         return redirect('products')
-
     return render(request, "admin/edit_product.html", context)
 
 
@@ -344,9 +386,11 @@ def listpage(request, id):
 def product_details(request, product_id):
     product = Product.objects.get(id=product_id) 
     all_categories = category.objects.all()
+    strap = Strap.objects.all()
     context = {
               'product': product, 
               "category":all_categories,
+              'strap':strap,
     }
    
     return render(request,"product_details.html",context)

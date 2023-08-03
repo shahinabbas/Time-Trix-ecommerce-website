@@ -155,12 +155,12 @@
                     <img src="{{pro.product_Image.url}}" alt="" />
                     </a>
                     <div class="img-cap">
-                      {% if pro.stock <= 0 %}
+                      {% comment %} {% if pro.stock <= 0 %}
                       <a href="#"> <span>Out Of Stock</span>
                         {% else %}
                     
                       <a href="{% url 'product_details' pro.id %}"> <span>Add to cart</span>
-                       {% endif %}
+                       {% endif %} {% endcomment %}
 
                     </div>
                     <div class="favorit-items">

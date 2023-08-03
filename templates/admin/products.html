@@ -67,7 +67,7 @@
           <th>Category</th>
           <th>Discription</th>
           <th>Shape</th>
-          {% comment %} <th>Strap</th> {% endcomment %}
+          <th>Strap</th>
           <th>Prices</th>
           <th>Offer Prices</th>
           <th>Quantity</th>
@@ -76,14 +76,14 @@
         </tr>
       </thead>
       <tbody>
-        {% for product in products %}
+        {% for strap in strap %}
         <tr>
-          <td>{{product.id}}</td>
+          <td>{{strap.id}}</td>
           <td>
             <div class="d-flex align-items-center">
-              {% if product.product_Image %}
+              {% if strap.product_id.product_Image %}
               <img
-                src="{{product.product_Image.url}}"
+                src="{{strap.product_id.product_Image.url}}"
                 alt=""
                 style="
                   width: 45px;
@@ -95,7 +95,7 @@
               {% endif %}
 
               <div class="ms-3">
-                <p class="fw-bold mb-1">{{product.product_name}}</p>
+                <p class="fw-bold mb-1">{{strap.product_id.product_name}}</p>
                 <p class="text-muted mb-0">
                   <i
                     class="fa fa-star warning"
@@ -123,30 +123,30 @@
             </div>
           </td>
           <td>
-            <p class="fw-normal mb-1">{{product.category.categories}}</p>
+            <p class="fw-normal mb-1">{{strap.product_id.category.categories}}</p>
             <p class="text-muted mb-0"></p>
           </td>
           <td>
-            <p>{{product.description}}<br /></p>
+            <p>{{strap.product_id.description}}<br /></p>
           </td>
           <td>
-            <p class="fw-bold mb-1">{{product.shape}}</p>
+            <p class="fw-bold mb-1">{{strap.product_id.shape}}</p>
           </td>
-          {% comment %} {% for straps in strap%}
+           
           <td>
-            <p class="fw-bold mb-1">{{straps.strap}}</p>
+            <p class="fw-bold mb-1">{{strap.strap}}</p>
           </td>
-          {% endfor %} {% endcomment %}
+          
           <td>
-            <p class="fw-bold mb-1">{{product.price}}</p>
-          </td>
-
-          <td>
-            <p class="fw-bold mb-1">{{product.offer_price}}</p>
+            <p class="fw-bold mb-1">{{strap.product_id.price}}</p>
           </td>
 
           <td>
-            <p class="fw-bold mb-1">{{product.quantity}}</p>
+            <p class="fw-bold mb-1">{{strap.product_id.offer_price}}</p>
+          </td>
+
+          <td>
+            <p class="fw-bold mb-1">{{strap.quantity}}</p>
             <br />
           </td>
           <td>
@@ -162,7 +162,7 @@
           </td>
 
           <td>
-            <form action="{% url 'edit_product' product.id %}" class="d-inline">
+            <form action="{% url 'edit_product' strap.id %}" class="d-inline">
               {% csrf_token %}
               <button type="submit" class="btn btn-success">
                 <i class="fas fa-edit"></i>Edit
@@ -171,7 +171,7 @@
 
             {% if product.is_deleted %}
             <form
-              action="{% url 'undo_product' product.id %}"
+              action="{% url 'undo_product' strap.id %}"
               method="post"
               class="d-inline"
             >
@@ -182,7 +182,7 @@
             </form>
             {% else %}
             <form
-              action="{% url 'delete_product' product.id %}"
+              action="{% url 'delete_product' strap.id %}"
               method="post"
               class="d-inline"
             >

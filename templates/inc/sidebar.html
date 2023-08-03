@@ -2,8 +2,8 @@
   <aside class="col-md-3">
     <!--   SIDEBAR   -->
     <ul class="list-group">
-      <a class="list-group-item {% if '/account/' == request.path %}active{% endif %}" href="{% url 'user_profile' %}"> Account </a>
-      <a class="list-group-item {% if '/about/' in request.path %}active{% endif %}" href="{% url 'about' %}"> My Orders </a>
+      <a class="list-group-item {% if '/profile/' == request.path %}active{% endif %}" href="{% url 'user_profile' %}"> Account </a>
+      <a class="list-group-item {% if '/address/' in request.path %}active{% endif %}" href="{% url 'address' %}"> My Orders </a>
       <a class="list-group-item {% if '/add_address/' in request.path %}active{% endif %}" href="{% url 'add_address' %}"> Add Address </a>
       <a class="list-group-item {% if '/address/' in request.path %}active{% endif %}" href="{% url 'address' %}"> Manage Address </a>
       <a class="list-group-item {% if '/reset/' in request.path %}active{% endif %}" href="{% url 'reset' %}"> Reset Password </a>  

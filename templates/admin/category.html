@@ -1,9 +1,6 @@
-{% load static %} 
-{% include 'admin/navbar.html' %} 
-{% block title %}products{% endblock %}
-{% block additional_styles%}
- .mt-5{margin-top:6rem!important; } nav{ background-color: rgb(255 238 7 /70%); } 
-{%endblock %} {% block body %}
+{% load static %} {% include 'admin/navbar.html' %} 
+{% block additional_styles%} .mt-5{margin-top:6rem!important; } nav{
+background-color: rgb(255 238 7 /70%); } {%endblock %} {% block body %}
 
 <div class="container mt-5">
   {% comment %}
@@ -123,7 +120,7 @@
         </div>
       </div>
     </div>
-<br> </br>
+    <br> </br>
 
     <table class="table table-hover bg-light">
       <thead>
@@ -133,8 +130,9 @@
           <th scope="col">ACTION</th>
         </tr>
       </thead>
+              {%for s in stu%}
+
       <tbody>
-        {%for s in stu%}
         <tr>
           <td>{{ s.id }}</td>
           <td>{{ s.categories }}</td>
@@ -147,9 +145,76 @@
               {% csrf_token %}
               <input type="submit" class="btn btn-danger" value="Delete" />
             </form>
+            
+
+<!-- Button trigger modal -->
+<button
+type="button"
+class="btn btn-primary"
+data-toggle="modal"
+data-target="#addCategoryModal1"
+>
+Edit
+</button>
+
+<!-- Modal -->
+<div
+class="modal fade"
+id="addCategoryModal1"
+tabindex="-1"
+role="dialog"
+aria-labelledby="addCategoryModal1Label"
+aria-hidden="true"
+>
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="addCategoryModalLabel">Edit CATEGORY</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form
+        action="{% url "edit_category" s.id %}"
+        class="d-flex px-4"
+        method="post"
+      >
+        {% csrf_token %}
+        <input
+          class="form-control border-success"
+          type="text"
+          name="category"
+          required=""
+          placeholder=""
+          value="{{s.categories}}"
+        />
+        <button class="btn btn-outline-success" type="submit">Save</button>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-dismiss="modal"
+      >
+        Close
+      </button>
+      {% endfor %}
+
+      <!-- You can remove this Save Changes button if you don't need it -->
+      <!-- <button type="button" class="btn btn-primary">Save Changes</button> -->
+    </div>
+  </div>
+</div>
+</div>
           </td>
         </tr>
-        {% endfor %}
       </tbody>
     </table>
   </div>

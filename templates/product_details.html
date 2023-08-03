@@ -24,7 +24,7 @@
   <div class="container px-4 px-lg-5 my-5" style="max-width: 1000px">
     <div class="row gx-4 gx-lg-5 align-items-center rounded-3">
       <div class="col-md-6">
-        <div class="product-image">
+        <div class="product-image-container">
           <img
             src="{{product.product_Image.url}}"
             alt="Product Image"
@@ -50,12 +50,16 @@
                 Select Strap Type
               </h2>
 
-              <select class="form-control" id="strap_id" name="strap_id" required>
+              <select
+                class="form-control"
+                id="strap_id"
+                name="strap_id"
+                required
+              >
                 <option value="" selected>Select</option>
                 {% for i in product.strap_set.all %}
                 <option value="{{i.id}}">{{i.strap | capfirst }}</option>
-                
-                
+
                 {% endfor %}
               </select>
             </div>
@@ -71,7 +75,7 @@
                       column-gap: 20px;
                     "
                   >
-                    {% if product.stock <= 0 %}
+                    {% if strap_id.quantity <= 0 %}
                     <h5 class="text-danger">Out of Stock</h5>
                     {% else %} {% if in_cart %}
                     <a href="{% url 'cart' %}" class="btn hero-btn"
@@ -81,13 +85,11 @@
                     <button type="submit" class="btn hero-btn">
                       Add to Cart<i class="flaticon-shopping-cart"></i>
                     </button>
-                    {% endif %} {% endif %}
-                     {% if product.stock <= 0 %} 
-                     {% else %}
+                    {% endif %} {% endif %} 
                     <a href="#" class="btn hero-btn"
                       >Buy Now <i class="ti-package"></i
                     ></a>
-                    {% endif %}
+                    
                   </div>
                 </div>
               </div>
@@ -98,8 +100,6 @@
     </div>
   </div>
 </section>
-
-
 
 <!-- Shop Method -->
 <div class="shop-method-area" style="padding-top: 40px">
@@ -131,6 +131,21 @@
     </div>
   </div>
 </div>
+<style>
+  .product-image-container {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .product-image-container img {
+    transition: transform 0.3s ease;
+  }
+
+  .product-image-container:hover img {
+    transform: scale(1.8); /* Adjust the scale value for desired zoom level */
+  }
+</style>
+
 {% endblock body %}
 
 <!-- Shop Method End-->

@@ -52,7 +52,7 @@ class CartItem(models.Model):
 
 class Strap(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-    strap = models.CharField(max_length=50)
+    strap = models.CharField(max_length=100)
     quantity=models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
 

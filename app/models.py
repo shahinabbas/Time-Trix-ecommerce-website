@@ -2,7 +2,6 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager, Group, Per
 from django.db import models
 from django.utils.translation import gettext as _
 
-
 class CustomUserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
 
@@ -73,10 +72,11 @@ class Product(models.Model):
     offer_price = models.DecimalField(
         max_digits=8, decimal_places=2, default=0)
     product_Image = models.ImageField(upload_to='product_images')
-    shape = models.CharField(max_length=50)
+    shape = models.CharField(max_length=100)
     category = models.ForeignKey('category', on_delete=models.CASCADE)
     is_deleted = models.BooleanField(default=False)
-    
+
+
     def soft_delete(self):
         self.is_deleted = True
         self.save()

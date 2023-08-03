@@ -16,6 +16,7 @@
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
+<link rel="stylesheet" href='{% static "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-JyKoYn1tkgFJ5s1oi41p3r2XZpAnZxX7WnG5ZKNmZYRP/dfkX9vLoArqgeLP7aCfFM6u0R/L3qkX+rYdVaz5w==" crossorigin="anonymous" referrerpolicy="no-referrer" %}' />
 
     <title>Admin</title>
   </head>
@@ -45,14 +46,17 @@
             <li class="nav-item mr-3">
               <a class="nav-link" href="{% url 'users' %}">User</a>
             </li>
+
+              <li class="dropdown nav-item mr-3">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color: white;">Products</a>
+                  <ul class="dropdown-menu" >
+                      <li><a href="{% url 'products' %}" >Products</a></li>
+                      <li><a href="{% url 'add_product' %}" >Add products</a></li>
+                  </ul>
+              </li>
+          
             <li class="nav-item mr-3">
-              <a class="nav-link" href="{% url 'products' %}">Product</a>
-            </li>
-            <li class="nav-item mr-3">
-              <a class="nav-link" href="{% url 'add_product' %}">Add Product</a>
-            </li>
-            <li class="nav-item mr-3">
-              <a class="nav-link" href="{% url 'category' %}">Category</a>
+              <a class="nav-link" href="{% url 'category_list' %}">Category</a>
             </li>
             <li class="nav-item mr-3">
               <a class="nav-link" href="#">Coupon</a>

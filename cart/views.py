@@ -55,7 +55,7 @@ def cart_minus(request,strap_id):
         cart_item.quantity -= 1
         cart_item.save()
     else:
-        return delete_cart_item(request)
+        cart_item.delete()
     return redirect('cart')
 
 

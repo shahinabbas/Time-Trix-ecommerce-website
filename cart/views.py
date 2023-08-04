@@ -10,6 +10,19 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 @login_required(login_url='login')
+def create_order(request):
+    user=request.user
+    if request.method == 'POST':
+        address=request.POST.get('address')
+        payment_method=request.get('payment_method')
+
+
+
+    return render(request,'order.html')
+
+
+
+@login_required(login_url='login')
 def add_cart(request, product_id):
     product=get_object_or_404(Product,id=product_id)
     if request.method=='POST':

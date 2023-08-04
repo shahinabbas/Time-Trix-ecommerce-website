@@ -86,7 +86,7 @@
       padding: 20px;
       cursor: pointer;
     }
-  
+
     .add-address-text {
       color: #ff0000; /* Change this to the desired text color */
     }
@@ -176,13 +176,18 @@
                   <p>Selected Strap: {{cart_item.strap.strap}}</p>
                   <p>Quantity: {{cart_item.quantity}}</p>
 
-                  {% comment %} <a href="{% url 'delete_cart_item' cart_item.product.id %}"
+                  {% comment %}
+                  <a href="{% url 'delete_cart_item' cart_item.product.id %}"
                     ><button
                       type="button"
                       class="btn btn-primary"
                       data-mdb-toggle="tooltip"
                       title="Remove item"
-                      style="padding: 15px 20px; font-size: 12px; line-height: 1;"
+                      style="
+                        padding: 15px 20px;
+                        font-size: 12px;
+                        line-height: 1;
+                      "
                     >
                       <i class="fas fa-trash"></i></button
                   ></a>
@@ -192,22 +197,16 @@
                     class="btn btn-danger"
                     data-mdb-toggle="tooltip"
                     title="Move to the wish list"
-                    style="padding: 15px 20px; font-size: 12px; line-height: 1;"
+                    style="padding: 15px 20px; font-size: 12px; line-height: 1"
                   >
                     <i class="fas fa-heart"></i>
-                  </button> {% endcomment %}
+                  </button>
+                  {% endcomment %}
                   <!-- Data -->
                 </div>
 
                 <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                  
-
-                 
-
                   <!-- Price -->
-                  <br></br>
-                  
-        
 
                   <p class="text-start text-md-center">
                     <strong>₹<s>{{ cart_item.price }}</s> </strong
@@ -226,56 +225,224 @@
           </div>
           <div class="card mb-4">
             <div class="card-body">
-              {% for user_profile in user_profile %}
-                <div class="card mb-4">
+              {% comment %} {% for user_profile in user_profile %}
+              <div class="card mb-4">
                 <div class="card-body">
-                  {{user_profile.name}} {{user_profile.phone_number}} 
+                  {{user_profile.name}} {{user_profile.phone_number}}
                   <br />
-                  {{user_profile.address}}, {{user_profile.country}}, {{user_profile.state}}, {{user_profile.street}} - {{user_profile.pin_code}}
-
+                  {{user_profile.address}}, {{user_profile.country}},
+                  {{user_profile.state}}, {{user_profile.street}} -
+                  {{user_profile.pin_code}}
                 </div>
               </div>
-            
-              {% endfor %}
-           
-          <div class="card mb-4" id="addAddressCard">
-            <div class="card-body dotted-box">
-              <a href="{% url 'add_address' %}" class="stretched-link">
-                <div class="text-center">
-                  <h5 class="card-title">Add Address</h5>
+              {% endcomment %}
+
+              <li class="checkout-item">
+                <div class="avatar checkout-icon p-1">
+                  <div class="avatar-title rounded-circle bg-primary">
+                    <i class="bx bxs-truck text-white font-size-20"></i>
+                  </div>
                 </div>
-              </a>
+                <div class="feed-item-list">
+                  <form action="{% url 'create_order' %}" method="post">
+                    {% csrf_token %}
+                    <div>
+                      <h5 class="font-size-16 mb-1">Shipping Info</h5>
+                      <p class="text-muted text-truncate mb-4">
+                        Select your address
+                      </p>
+                      <div class="mb-3">
+                        <div class="row">
+                          {% for user_profile in user_profile %}
+                          <div class="col-lg-4 col-sm-6">
+                            <div data-bs-toggle="collapse">
+                              <label class="card-radio-label mb-0">
+                                {% comment %} <input
+                                  type="radio"
+                                  name="address"
+                                  id="info-address{{ forloop.counter }}"
+                                  class="card-radio-input"
+                                  {%
+                                  if
+                                  forloop.first
+                                  %}checked{%
+                                  endif
+                                  %}
+                                /> {% endcomment %}
+
+                                <input
+                                  type="radio"
+                                  name="address"
+                                  id="info-address1"
+                                  class="card-radio-input"
+                                  checked=""
+                                />
+                                
+                                <div class="card-radio text-truncate p-3">
+                                  <span class="fs-14 mb-4 d-block"
+                                    >Address {{ forloop.counter }}</span
+                                  >
+                                  <span class="fs-14 mb-2 d-block">
+                                    {{user_profile.name}}
+                                  </span>
+                                  <span
+                                    class="text-muted fw-normal text-wrap mb-1 d-block"
+                                    >{{user_profile.phone_number}}</span
+                                  >
+                                  <span
+                                    class="text-muted fw-normal text-wrap mb-1 d-block"
+                                    >{{user_profile.address}}</span
+                                  >
+                                  <span
+                                    class="text-muted fw-normal text-wrap mb-1 d-block"
+                                    >{{user_profile.country}},{{user_profile.state}}</span
+                                  >
+                                  <span
+                                    class="text-muted fw-normal text-wrap mb-1 d-block"
+                                    >{{user_profile.street}},{{user_profile.pin_code}}</span
+                                  >
+                                </div>
+                              </label>
+                              <div class="edit-btn bg-light rounded">
+                                <a
+                                  href="#"
+                                  data-bs-toggle="tooltip"
+                                  data-placement="top"
+                                  title=""
+                                  data-bs-original-title="Edit"
+                                >
+                                  <i class="bx bx-pencil font-size-16"></i>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </li>
+
+              <div class="card mb-4" id="addAddressCard">
+                <div class="card-body dotted-box">
+                  <a href="{% url 'add_address' %}" class="stretched-link">
+                    <div class="text-center">
+                      <h5 class="card-title">Add Address</h5>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4 mb-lg-0">
+            <div class="card-body">
+              <li class="checkout-item">
+                <div class="avatar checkout-icon p-1">
+                  <div class="avatar-title rounded-circle bg-primary">
+                    <i class="bx bxs-wallet-alt text-white font-size-20"></i>
+                  </div>
+                </div>
+                <div class="feed-item-list">
+                  <div>
+                    <h5 class="font-size-16 mb-1">Payment Info</h5>
+                    <p class="text-muted text-truncate mb-4">
+                      Select the payment method
+                    </p>
+                  </div>
+                  <div>
+                    <h5 class="font-size-14 mb-3">Payment method :</h5>
+                    <div class="row">
+                      <div class="col-lg-3 col-sm-6">
+                        <div data-bs-toggle="collapse">
+                          <label class="card-radio-label">
+                            <input
+                              type="radio"
+                              name="pay-method"
+                              id="pay-methodoption1"
+                              class="card-radio-input"
+                            />
+                            <span
+                              class="card-radio py-3 text-center text-truncate"
+                            >
+                              <i class="bx bx-credit-card d-block h2 mb-3"></i>
+                              Credit / Debit Card
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-3 col-sm-6">
+                        <div>
+                          <label class="card-radio-label">
+                            <input
+                              type="radio"
+                              name="pay-method"
+                              id="pay-methodoption2"
+                              class="card-radio-input"
+                            />
+                            <span
+                              class="card-radio py-3 text-center text-truncate"
+                            >
+                              <i class="bx bxl-paypal d-block h2 mb-3"></i>
+                              Paypal
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-3 col-sm-6">
+                        <div>
+                          <label class="card-radio-label">
+                            <input
+                              type="radio"
+                              name="pay-method"
+                              id="pay-methodoption3"
+                              class="card-radio-input"
+                              checked=""
+                            />
+
+                            <span
+                              class="card-radio py-3 text-center text-truncate"
+                            >
+                              <i class="bx bx-money d-block h2 mb-3"></i>
+                              <span>Cash on Delivery</span>
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </li>
+            </div>
+          </div>
+          <div class="card mb-4 mb-lg-0">
+            <div class="card-body">
+              <p><strong>We accept</strong></p>
+              <img
+                class="me-2"
+                width="45px"
+                src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+                alt="Visa"
+              />
+              <img
+                class="me-2"
+                width="45px"
+                src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+                alt="American Express"
+              />
+              <img
+                class="me-2"
+                width="45px"
+                src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+                alt="Mastercard"
+              />
             </div>
           </div>
         </div>
-      </div>
 
-     
-              <div class="card mb-4 mb-lg-0">
-                <div class="card-body">
-                  <p><strong>We accept</strong></p>
-                  <img
-                    class="me-2"
-                    width="45px"
-                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
-                    alt="Visa"
-                  />
-                  <img
-                    class="me-2"
-                    width="45px"
-                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
-                    alt="American Express"
-                  />
-                  <img
-                    class="me-2"
-                    width="45px"
-                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
-                    alt="Mastercard"
-                  />
-                </div>
-              </div>
-            </div>
-       
         <!-- total -->
         <div class="col-md-4">
           <div class="card mb-4">
@@ -320,9 +487,10 @@
                 </li>
               </ul>
               <a href="{% url 'checkout' %}">
-              <button type="button" class="btn btn-primary btn-lg btn-block">
-                Place Order
-              </button></a>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                  Place Order
+                </button></a
+              >
 
               <style>
                 .dotted-line {
@@ -340,6 +508,8 @@
         </div>
       </div>
     </div>
+  </form>
+
   </section>
 
   <div class="shop-method-area" style="padding-top: 40px">

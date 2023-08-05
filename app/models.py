@@ -101,3 +101,6 @@ class User_Profile(models.Model):
     def __str__(self):
         return self.user.name
 
+class Wishlist(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    product=models.ForeignKey(Product, on_delete=models.CASCADE)

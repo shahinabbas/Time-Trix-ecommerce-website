@@ -75,7 +75,7 @@
                       column-gap: 20px;
                     "
                   >
-                    {% if strap_id.quantity <= 0 %}
+                    {% if Strap.quantity <= 0 %}
                     <h5 class="text-danger">Out of Stock</h5>
                     {% else %} {% if in_cart %}
                     <a href="{% url 'cart' %}" class="btn hero-btn"
@@ -86,8 +86,8 @@
                       Add to Cart<i class="flaticon-shopping-cart"></i>
                     </button>
                     {% endif %} {% endif %} 
-                    <a href="#" class="btn hero-btn"
-                      >Buy Now <i class="ti-package"></i
+                    <a href="{% url 'add_to_wishlist' product.id%}" class="btn hero-btn"
+                      >Add to whishlist <i class="flaticon-heart"></i
                     ></a>
                     
                   </div>

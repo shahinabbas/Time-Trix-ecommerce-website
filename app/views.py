@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404,HttpResponse
 from django.contrib import messages
-from app.models import CustomUser, category, Product,User_Profile
+from app.models import CustomUser, category, Product,User_Profile,Wishlist
 from cart.models import Strap
 import random
 from twilio.rest import Client
@@ -13,7 +13,20 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 # from cart.views import _cart_id
 
+def add_to_wishlist(request,product_id):
+    user=request.user
+    pro=get_object_or_404(Product,id=product_id)
+    wishlist = Wishlist.objects.filter(user=user)
+    if not wishlist.filter(product=pro).exists():
+        Wishlist.objects.create(user=user,product=pro)
+    else:
+        wishlist_item = Wishlist.objects.get(user=user, product=pro)
+        wishlist_item.delete()  
+    return redirect('product_details', product_id=product_id)  
 
+def wishlist(request):
+    wishlist=Wishlist.objects.filter(user=request.user)
+    return render(request,'wishlist.html',{"wishlist":wishlist})
 
 def edit_address(request,id):
     user=request.user
@@ -192,10 +205,13 @@ def product_details(request, product_id):
     product = Product.objects.get(id=product_id) 
     all_categories = category.objects.all()
     strap = Strap.objects.all()
+    wishlist=Wishlist.objects.filter(user=request.user)
     context = {
               'product': product, 
               "category":all_categories,
               'strap':strap,
+              'wishlist':wishlist,
+
     }
    
     return render(request,"product_details.html",context)

@@ -59,6 +59,11 @@
       font-size: 30px;
     }
   }
+  .product-image {
+    width: 100%; /* You can adjust this value to set the desired width */
+    max-width: 300px; /* Optional: Set a maximum width to prevent image distortion */
+    height: auto; /* Maintain the aspect ratio */
+  }
 </style>
 
 <div class="video-area">
@@ -152,6 +157,7 @@
                 <div class="single-popular-items mb-50 text-center">
                   <div class="popular-img">
                     <a href="{% url 'product_details' pro.id %}">
+                      
                     <img src="{{pro.product_Image.url}}" alt="" />
                     </a>
                     <div class="img-cap">
@@ -164,7 +170,11 @@
 
                     </div>
                     <div class="favorit-items">
-                      <span class="flaticon-heart"></span>
+                      {% if user.is_authenticated %}
+                      <span class="flaticon-heart add-wishlist"></span>
+                      {% else %}
+                      <span class="flaticon-heart disabled"></span>
+                      {% endif %}
                     </div>
                   </div>
                   <div class="popular-caption">

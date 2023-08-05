@@ -1,5 +1,5 @@
 from app.models import Product,User_Profile
-from .models import Cart, CartItem,Strap
+from .models import Cart, CartItem,Strap,Order,OrderItem
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate,login,logout
@@ -11,14 +11,35 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required(login_url='login')
 def create_order(request):
-    user=request.user
     if request.method == 'POST':
-        address=request.POST.get('address')
-        payment_method=request.get('payment_method')
+        address_id=request.POST.get('address')
+        print(address_id)
+        payment_method=request.POST.get('pay_method')
+        print(payment_method)
+    cart=get_object_or_404(Cart,user=request.user)
+    address=get_object_or_404(User_Profile,id=address_id)
+    price1=cart.total_price()
+    payment_amount1=cart.offer_total_price()
+    order=Order.objects.create(
+        user=request.user,
+        address=address,
+        payment_method=payment_method,
+        price=price1,
+        offer_price=payment_amount1,
+        payment_amount=payment_amount1,
+        )
+    for cart_item in CartItem.product.all():
+        OrderItem.objects.create(
+            order=order,
+            product=cart_item.product,
+            strap=cart_item.strap,
+            quantity=cart.quantity,
+            amount=cart.sub_total,
+            )
+    cart.product.all().delete()
+    return redirect('confirmation')
 
-
-
-    return render(request,'order.html')
+    # return render(request,'order.html')
 
 
 

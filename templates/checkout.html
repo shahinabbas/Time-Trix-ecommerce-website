@@ -275,6 +275,7 @@
                                   name="address"
                                   id="info-address1"
                                   class="card-radio-input"
+                                  value="{{user_profile.id}}"
                                   checked=""
                                 />
                                 
@@ -339,83 +340,59 @@
             <div class="card-body">
               <li class="checkout-item">
                 <div class="avatar checkout-icon p-1">
-                  <div class="avatar-title rounded-circle bg-primary">
-                    <i class="bx bxs-wallet-alt text-white font-size-20"></i>
-                  </div>
+                    <div class="avatar-title rounded-circle bg-primary">
+                        <i class="bx bxs-wallet-alt text-white font-size-20"></i>
+                    </div>
                 </div>
                 <div class="feed-item-list">
-                  <div>
-                    <h5 class="font-size-16 mb-1">Payment Info</h5>
-                    <p class="text-muted text-truncate mb-4">
-                      Select the payment method
-                    </p>
-                  </div>
-                  <div>
-                    <h5 class="font-size-14 mb-3">Payment method :</h5>
-                    <div class="row">
-                      <div class="col-lg-3 col-sm-6">
-                        <div data-bs-toggle="collapse">
-                          <label class="card-radio-label">
-                            <input
-                              type="radio"
-                              name="pay-method"
-                              id="pay-methodoption1"
-                              class="card-radio-input"
-                            />
-                            <span
-                              class="card-radio py-3 text-center text-truncate"
-                            >
-                              <i class="bx bx-credit-card d-block h2 mb-3"></i>
-                              Credit / Debit Card
-                            </span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div class="col-lg-3 col-sm-6">
-                        <div>
-                          <label class="card-radio-label">
-                            <input
-                              type="radio"
-                              name="pay-method"
-                              id="pay-methodoption2"
-                              class="card-radio-input"
-                            />
-                            <span
-                              class="card-radio py-3 text-center text-truncate"
-                            >
-                              <i class="bx bxl-paypal d-block h2 mb-3"></i>
-                              Paypal
-                            </span>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div class="col-lg-3 col-sm-6">
-                        <div>
-                          <label class="card-radio-label">
-                            <input
-                              type="radio"
-                              name="pay-method"
-                              id="pay-methodoption3"
-                              class="card-radio-input"
-                              checked=""
-                            />
-
-                            <span
-                              class="card-radio py-3 text-center text-truncate"
-                            >
-                              <i class="bx bx-money d-block h2 mb-3"></i>
-                              <span>Cash on Delivery</span>
-                            </span>
-                          </label>
-                        </div>
-                      </div>
+                    <div>
+                        <h5 class="font-size-16 mb-1">Payment Info</h5>
+                        <p class="text-muted text-truncate mb-4">Select the paymwnt method</p>
                     </div>
-                  </div>
-                </div>
+                    <div>
+                        <h5 class="font-size-14 mb-3">Payment method :</h5>
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-6">
+                                <div data-bs-toggle="collapse">
+                                    <label class="card-radio-label">
+                                        <input type="radio" name="pay-method" id="pay-methodoption1" class="card-radio-input" >
+                                        <span class="card-radio py-3 text-center text-truncate">
+                                            <i class="bx bx-credit-card d-block h2 mb-3"></i>
+                                            Credit / Debit Card
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-3 col-sm-6">
+                                <div>
+                                    <label class="card-radio-label">
+                                        <input type="radio" name="pay-method" id="pay-methodoption2" class="card-radio-input">
+                                        <span class="card-radio py-3 text-center text-truncate">
+                                            <i class="bx bxl-paypal d-block h2 mb-3"></i>
+                                            Paypal
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
 
-              </li>
+                            <div class="col-lg-3 col-sm-6">
+                                <div>
+                                    <label class="card-radio-label">
+                                        <input type="radio" name="pay-method" id="pay-methodoption3" class="card-radio-input" value="cod" checked="">
+
+                                        <span class="card-radio py-3 text-center text-truncate">
+                                            <i class="bx bx-money d-block h2 mb-3"></i>
+                                            <span>Cash on Delivery</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </li>
             </div>
           </div>
           <div class="card mb-4 mb-lg-0">

@@ -70,11 +70,73 @@
                         <ul>
                         
                             <li>
-                                <div class="nav-search search-switch">
+                                {% comment %} <div class="nav-search search-switch">
                                     <span class="flaticon-search"></span>
-                                </div>
+                                </div>  {% endcomment %}
+                                
+
+                             <div class="input-group">
+                                    <div class="form-outline">
+                                        <form action="{% url 'autocomplete' %}" class="search" method="GET" onsubmit="handleSearchForm(event)">
+                                      <input type="text" value="{% if search_query %}{{ search_query }}{% endif %}" id="form1" class="form-control"  placeholder="Search..."/>
+                                    </div>
+                                    <button type="submit" class="btns btn-secondary">
+                                      <i class="fas fa-search"></i>
+                                    </button>
+                                </form>
+                                  </div>
+
+                                   {% comment %} <div class="input-group d-none d-lg-flex mx-1">
+                                    <form class="w-100 nav-search-form"  id="nav-search-form"  onsubmit="handleSearchForm(event)">
+                                        <input value="{% if search_query %}{{ search_query }}{% endif %}" class=" form-control bg-black border-0 text-light" type="search" placeholder="Search Products..." id="nav-search-input">
+                                      
+                                    </form>
+                                                                      </div>
+ {% endcomment %}
+                                    <!-- <div class="ui-widget">
+                                      <label for="tags">Tags: </label>
+                                      <input id="tags">
+                                    </div> -->
+                          
+                                  
+                                  <style>
+                                    /* Reduce the button height */
+                                    .btn-secondary {
+                                      height: 37px;
+                                      background-color: #ff0000; /* Set the initial button background color */
+                                    }
+                                  
+                                    /* Change button background color and border color on hover */
+                                    .btn-secondary:hover {
+                                      background-color: #ff0062; /* Set the button background color on hover */
+                                    }
+                                  
+                                    /* Adjust the position of the "Search" label */
+                                    .form-outline {
+                                      position: relative;
+                                    }
+                                  
+                                 
+                                  </style> 
+                                  
+                        
+
+
+                                 
+
+
+
+
+
+
+
+
+
+
+
+
                             </li>
-                            
+
                             <li> <a href="{% url 'user_profile' %}"><span class="flaticon-user"></span></a></li>
                             <li><a href="{% url 'cart' %}"><span class="flaticon-shopping-cart"></span></a> </li>
                             <li><a href="{% url 'wishlist' %}"><span class="flaticon-heart"></span></a> </li>

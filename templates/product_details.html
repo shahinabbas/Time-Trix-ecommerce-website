@@ -1,8 +1,6 @@
 {% extends 'layouts/main.html' %} {% load static %} {% block additional_styles%}
 .product-image { max-width: 100%; height: auto; } {% endblock %} {% block body%}
-<!-- Header Start -->
-{% include 'inc/navbar.html' %}
-<!-- Header End -->
+
 
 <!-- Product section-->
 {% for message in messages %}
@@ -86,9 +84,16 @@
                       Add to Cart<i class="flaticon-shopping-cart"></i>
                     </button>
                     {% endif %} {% endif %} 
+
+                    {% if in_Wishlist %}
                     <a href="{% url 'add_to_wishlist' product.id%}" class="btn hero-btn"
-                      >Add to whishlist <i class="flaticon-heart"></i
+                      > Remove from whishlist <i class="flaticon-heart"></i
                     ></a>
+                    {% else %}
+                    <a href="{% url 'add_to_wishlist' product.id%}" class="btn hero-btn"
+                    >Add to wishlist <i class="flaticon-heart"></i
+                  ></a>
+                  {% endif %}
                     
                   </div>
                 </div>

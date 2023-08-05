@@ -14,7 +14,7 @@ def create_order(request):
     if request.method == 'POST':
         address_id=request.POST.get('address')
         print(address_id)
-        payment_method=request.POST.get('pay_method')
+        payment_method=request.POST.get('pay-method')
         print(payment_method)
     cart=get_object_or_404(Cart,user=request.user)
     address=get_object_or_404(User_Profile,id=address_id)
@@ -28,16 +28,16 @@ def create_order(request):
         offer_price=payment_amount1,
         payment_amount=payment_amount1,
         )
-    for cart_item in CartItem.product.all():
+    for cart_item in CartItem.objects.all():
         OrderItem.objects.create(
             order=order,
             product=cart_item.product,
             strap=cart_item.strap,
             quantity=cart.quantity,
-            amount=cart.sub_total,
+            amount=payment_amount1,
             )
-    cart.product.all().delete()
-    return redirect('confirmation')
+    cart.delete()
+    return render(request,'confirmation.html',{"address":address})
 
     # return render(request,'order.html')
 

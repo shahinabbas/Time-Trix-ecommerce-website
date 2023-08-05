@@ -1,36 +1,99 @@
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect, get_object_or_404,HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib import messages
-from app.models import CustomUser, category, Product,User_Profile,Wishlist
+from app.models import CustomUser, category, Product, User_Profile, Wishlist
 from cart.models import Strap
 import random
 from twilio.rest import Client
 import os
 from django.contrib.auth.models import auth
 from django.views.decorators.cache import never_cache
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 # from cart.views import _cart_id
 
-def add_to_wishlist(request,product_id):
-    user=request.user
-    pro=get_object_or_404(Product,id=product_id)
+def index(request):
+    search_query = request.GET.get('query')
+
+    if search_query:
+        terms = search_query.split()  # Split the search query into individual terms
+        for term in terms:
+            product = [
+                        product for product in product
+                        if term.lower() in product.get_product_name().lower()
+                    ]
+    return render(request, 'index.html',{"search_query":search_query})
+# def autocomplete(request): 
+#     product=request.GET.get('product')
+#     a=[]
+#     if product:
+#         pro=Product.objects.filter(is_deleted=False)
+#         for pros in pro:
+#             a.append(pros.product_name)
+
+#     return JsonResponse({'status':200,'data':a})
+
+def autocomplete(request):
+    if 'term' in request.GET:
+        # search_query = request.GET.get('term')
+        product = Product.objects.filter(Q(is_active=True) & Q(product_name__icontains=request.GET.get('term')))
+        terms = list() 
+        for term in product:
+            terms.append(term.termss)
+        return JsonResponse(terms,safe=False)
+    return render(request,'index.html')
+    #         product_variants = [
+    #                         product for product in product_variants
+    #                         if term.lower() in product.get_product_name().lower()
+    #                     ]
+            
+        
+    #     title = []
+    #     title += [ x.get_product_name() for x in product_variants ]
+    #     return JsonResponse(title,safe=False)
+    # else:
+    #     return JsonResponse({
+    #         'status':400
+    #     })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@login_required(login_url='login')
+def add_to_wishlist(request, product_id):
+    user = request.user
+    pro = get_object_or_404(Product, id=product_id)
     wishlist = Wishlist.objects.filter(user=user)
     if not wishlist.filter(product=pro).exists():
-        Wishlist.objects.create(user=user,product=pro)
+        Wishlist.objects.create(user=user, product=pro)
     else:
         wishlist_item = Wishlist.objects.get(user=user, product=pro)
-        wishlist_item.delete()  
-    return redirect('product_details', product_id=product_id)  
+        wishlist_item.delete()
+    return redirect('product_details', product_id=product_id)
 
+
+@login_required(login_url='login')
 def wishlist(request):
-    wishlist=Wishlist.objects.filter(user=request.user)
-    return render(request,'wishlist.html',{"wishlist":wishlist})
+    wishlist = Wishlist.objects.filter(user=request.user)
+    return render(request, 'wishlist.html', {"wishlist": wishlist})
 
-def edit_address(request,id):
-    user=request.user
-    profile_address=get_object_or_404(User_Profile,pk=id)
+
+def edit_address(request, id):
+    user = request.user
+    profile_address = get_object_or_404(User_Profile, pk=id)
 
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -41,45 +104,45 @@ def edit_address(request,id):
         state = request.POST.get('state')
         country = request.POST.get('country')
         pin_code = request.POST.get('pin_code')
-        
 
-        profile_address.name=name
-        profile_address.phone_number=phone_number
-        profile_address.house_no=house_no
+        profile_address.name = name
+        profile_address.phone_number = phone_number
+        profile_address.house_no = house_no
         profile_address.street = street
         profile_address.city = city
         profile_address.state = state
         profile_address.country = country
         profile_address.pin_code = pin_code
         profile_address.save()
-        messages.success(request,"successful")
+        messages.success(request, "successful")
         return redirect('address')
-    return render(request,'edit_address.html',{"profile_address":profile_address})
+    return render(request, 'edit_address.html', {"profile_address": profile_address})
 
 
-def delete_address(request,id):
-    user=request.user
-    profile=get_object_or_404(User_Profile,pk=id,user=user)
+def delete_address(request, id):
+    user = request.user
+    profile = get_object_or_404(User_Profile, pk=id, user=user)
     profile.delete()
     return redirect('address')
 
 
 @login_required(login_url='login')
 def reset(request):
-    user=request.user
-    if request.method=='POST':
-        password=request.POST.get('password')
-        confirm_password=request.POST.get('confirm_password')
+    user = request.user
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
         if password == confirm_password:
             user.set_password(password)
             user.save()
-            messages.success(request,'Password changed succsessfully')
+            messages.success(request, 'Password changed succsessfully')
             return redirect('reset')
         else:
-            messages.error(request,'Entered passwords are not same')
-        return redirect('reset')  
-    return render(request,'reset.html')
-   
+            messages.error(request, 'Entered passwords are not same')
+        return redirect('reset')
+    return render(request, 'reset.html')
+
+
 def add_address(request):
     user = request.user
     if request.method == 'POST':
@@ -93,41 +156,40 @@ def add_address(request):
         pin_code = request.POST.get('pin_code')
 
         profile_address = User_Profile(user=user)
-        profile_address.name=name
-        profile_address.phone_number=phone_number
-        profile_address.house_no=house_no
+        profile_address.name = name
+        profile_address.phone_number = phone_number
+        profile_address.house_no = house_no
         profile_address.street = street
         profile_address.city = city
         profile_address.state = state
         profile_address.country = country
         profile_address.pin_code = pin_code
         profile_address.save()
-        messages.success(request,"successful")
+        messages.success(request, "successful")
         return redirect('address')
-    return render(request,'add_address.html')
-   
+    return render(request, 'add_address.html')
+
+
 @login_required
 def user_profile(request):
-    user=request.user
-    user_profile=User_Profile.objects.filter(user=user)
+    user = request.user
+    user_profile = User_Profile.objects.filter(user=user)
     print(user)
     if user_profile.exists():
-        user_profile=user_profile.all()
+        user_profile = user_profile.all()
     else:
-        user_profile=None
+        user_profile = None
 
-    context={
-        'user':user,
-        'user_profile':user_profile
+    context = {
+        'user': user,
+        'user_profile': user_profile
     }
-    return render(request, 'profile.html',context)
+    return render(request, 'profile.html', context)
 
 
 def edit_profile(request):
     return render(request, 'edit_profile.html')
 
-
-    
 
 # def reset_passwordpage(request):
 #     error_message = None
@@ -158,21 +220,22 @@ def edit_profile(request):
 
 @never_cache
 def address(request):
-    user=request.user
-    user_profile=User_Profile.objects.filter(user=user)
+    user = request.user
+    user_profile = User_Profile.objects.filter(user=user)
 
     if user_profile.exists():
-        user_profile=user_profile.all()
+        user_profile = user_profile.all()
     else:
-        user_profile=None
+        user_profile = None
 
-    context={
-        'user':user,
-        'user_profile':user_profile
+    context = {
+        'user': user,
+        'user_profile': user_profile
     }
-    return render(request, 'address.html',context)
+    return render(request, 'address.html', context)
 
 # @login_required(login_url='send_otp')
+
 
 @never_cache
 def loginpage(request):
@@ -190,11 +253,8 @@ def loginpage(request):
     return render(request, 'login.html')
 
 
-
-
-
-
-
+def new(request):
+    return render(request, 'new.html')
 
 
 def listpage(request, id):
@@ -202,26 +262,26 @@ def listpage(request, id):
 
 
 def product_details(request, product_id):
-    product = Product.objects.get(id=product_id) 
+    product = Product.objects.get(id=product_id)
     all_categories = category.objects.all()
     strap = Strap.objects.all()
-    wishlist=Wishlist.objects.filter(user=request.user)
+    # wishlist=Wishlist.objects.filter(user=request.user)
     context = {
-              'product': product, 
-              "category":all_categories,
-              'strap':strap,
-              'wishlist':wishlist,
+        'product': product,
+        "category": all_categories,
+        'strap': strap,
+        #   'wishlist':wishlist,
 
     }
-   
-    return render(request,"product_details.html",context)
+
+    return render(request, "product_details.html", context)
     # try:
     #     product = Product.objects.get(pk=product_id)
     #     in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request),product=product).exists()
-        
+
     # except Exception as e:
     #     raise e
-    
+
     # context = {
     #     'product': product,
     #     'in_cart': in_cart,
@@ -229,13 +289,14 @@ def product_details(request, product_id):
     # return render(request, 'product_details.html', context)
 
 # @login_required
+
+
 def shoppage(request):
     product = Product.objects.all().filter(is_deleted=False)
     return render(request, 'shop.html', {'product': product})
 
 
-def index(request):
-    return render(request, 'index.html')
+
 
 
 def aboutpage(request):
@@ -250,9 +311,6 @@ def blogdetailspage(request):
     return render(request, 'blog-details.html')
 
 
-
-
-
 def contactpage(request):
     return render(request, 'contact.html')
 
@@ -263,8 +321,6 @@ def confirmpage(request):
 
 def elementspage(request):
     return render(request, 'elements.html')
-
-
 
 
 def signuppage(request):
@@ -362,9 +418,6 @@ def enter_otppage(request):
             messages.error(request, 'Phone number not found in session.')
     phone_number = request.session.get('phone_number')
     return render(request, 'enter_otp.html', {'phone_number': phone_number})
-
-
-
 
 
 def confirmationpage(request):

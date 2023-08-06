@@ -1,0 +1,111 @@
+{% extends 'admin/navbar.html' %}
+{% block body %}
+
+<div class="container mt-5">
+    <h6>User Details</h6>
+    <style>
+        h6 {
+            color: black;
+            text-align: center;
+            padding-top: 100px;
+            font-size: 36px;      
+          }
+    </style>
+<table class="table table-borderless table-responsive card-1 p-4 mt-5">
+<thead>
+<tr class="border-bottom">
+<th><span class="ml-2">Id</span></th>
+<th><span class="ml-2">Name</span></th>
+<th><span class="ml-2">Phone Number</span></th>
+<th><span class="ml-2">Status</span></th>
+<th><span class="ml-4">Action</span></th>
+</tr>
+</thead>
+<tbody>
+
+    {%for s in stu%}
+    <tr class="border-bottom">
+<td>
+  <div class="p-2">
+      <span class="d-block font-weight-bold">{{s.id}}</span>
+      
+  </div>
+</td>
+<td>
+   <div class="p-2 d-flex flex-row align-items-center mb-2">
+    <img
+    src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp"
+    class="rounded-circle shadow-4"
+    style="width: 30px"
+    alt="Avatar"
+  />      <div class="d-flex flex-column ml-2">
+          <span class="d-block font-weight-bold">{{d.name}}</span>
+          <small class="text-muted">{{s.email}}</small>
+      </div>
+  </div>
+
+</td>
+<td>
+  <div class="p-2">
+      <span class="font-weight-bold">{{s.phone_number}}</span>
+  </div>
+</td>
+<td>
+    {% if s.is_active %}
+    <span class="badge badge-success rounded-pill d-inline">Active</span>
+    {% else %}
+    <span class="badge badge-danger rounded-pill d-inline">Blocked</span>
+    {% endif %}
+  </td>
+  
+  <td>
+    {% if s.is_active %}
+    <form
+      action="{% url 'user_block' s.id %}"
+      method="post"
+      class="d-inline"
+    >
+      {% csrf_token %}
+      <input type="submit" class="btn btn-danger" value="Block" />
+    </form>
+    {% else %}
+    <form
+      action="{% url 'user_unblock' s.id %}"
+      method="post"
+      class="d-inline"
+    >
+      {% csrf_token %}
+      <input type="submit" class="btn btn-success" value="Unblock" />
+    </form>
+    {% endif %}
+  </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% comment %} <td>
+  <div class="p-2 d-flex flex-column">
+      <span>{{s.is_active}}</span>
+     
+  </div>
+</td>
+<td>
+    <div class="p-2">
+        <label class="switch">
+
+            <input type="checkbox" {% if user.is_active %}checked{% endif %} data-user-id="{{ s.id }}" class="block-unblock-checkbox">
+            <span class="slider"></span>
+        </label>
+    </div>
+    
+</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+</table> {% endcomment %}
+
+ 
+</div>
+{% endblock body %}

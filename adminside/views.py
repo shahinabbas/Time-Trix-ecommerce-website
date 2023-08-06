@@ -18,46 +18,38 @@ from django.contrib.auth.decorators import login_required
 # @login_required(login_url='admin_signin')
 def add_product(request):
     categories = category.objects.all()
-    strap = ['Rubber', 'Leather', 'Chain']
+
     if request.method == 'POST':
         product_name = request.POST.get('name')
         category_name = request.POST.get('category')
+        category1 = category.objects.get(categories=category_name)
         product_Image = request.FILES.get('image')
         description = request.POST.get('description')
         price = request.POST.get('price')
+        shape=request.POST.get('shape')
         offer_price = request.POST.get('offer_price')
-        print('product image:', product_Image)
 
         if Product.objects.filter(product_name=product_name).exists():
-            return render(request, 'admin/add_product.html', {'error_message': 'Product already exists.'})
+            return render(request, 'admin/add_products.html', {'error_message': 'Product already exists.'})
         else:
-            try:
-                selected_category = category.objects.get(
-                    categories=category_name)
-            except category.DoesNotExist:
-                selected_category = category.objects.create(
-                    category_name=category_name)
-
             product = Product(
                 product_name=product_name,
-                category=selected_category,
+                category=category1,
                 product_Image=product_Image,
                 description=description,
-                # strap=strap,
                 price=price,
                 offer_price=offer_price,
-                # quantity=quantity,
+                shape=shape,
             )
             product.save()
-            messages.success(request, 'New product added successfully')
-        for straps in strap:
-            quantity = request.POST.get(f'quantity-{straps}')
-            print(f'{straps} quantity: {quantity}')
-            strap.append({'name':straps,'quantity':quantity})
-            strap=Strap(product_id=product,strap=strap,quantity=quantity)
-            strap.save()
+        quantity = request.POST.get('quantity')
+        sele_strap=request.POST.get('strap')
+        strap1=Strap(product_id=product,strap=sele_strap,quantity=quantity)
+        print(sele_strap)
+        strap1.save()
+        messages.success(request, 'New product added successfully')
 
-    return render(request, "admin/add_product.html", {'categories': categories, 'strap': strap})
+    return render(request, "admin/add_products.html", {'categories': categories})
 
 
 
@@ -192,7 +184,7 @@ def productspage(request):
 
 
 @login_required(login_url='admin_signin')
-def delete_productpage(request, id):
+def delete_product(request, id):
     if request.method == 'POST':
         product = get_object_or_404(Product, pk=id)
         product.soft_delete()
@@ -208,17 +200,17 @@ def undo_productpage(request, id):
         return redirect('products')
 
 
-
 def admin_signin(request):
     if request.user.is_authenticated:
-        return redirect('/')
+        return redirect('admin_index')
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
         user = authenticate(request, email=email, password=password)
-        if user.is_superuser:
+        if user is not None and user.is_superuser:
+
             auth.login(request, user)
-            return redirect('/users')
+            return redirect('admin_index')
         else:
             messages.error(request, "User email or password is incorrect")
             return redirect('/admin_signin')

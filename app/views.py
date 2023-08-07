@@ -15,26 +15,17 @@ from django.db.models import Q
 # from cart.views import _cart_id
 
 def index(request):
-    search_query = request.GET.get('query')
+    return render(request, 'index.html')
 
-    if search_query:
-        terms = search_query.split()  # Split the search query into individual terms
-        for term in terms:
-            product = [
-                        product for product in product
-                        if term.lower() in product.get_product_name().lower()
-                    ]
-    return render(request, 'index.html',{"search_query":search_query})
-# def autocomplete(request): 
-#     product=request.GET.get('product')
-#     a=[]
-#     if product:
-#         pro=Product.objects.filter(is_deleted=False)
-#         for pros in pro:
-#             a.append(pros.product_name)
-
-#     return JsonResponse({'status':200,'data':a})
-
+def search(request):
+    if request.method=='GET':
+        query=request.GET.get('query')
+        if query:
+            product=Product.objects.filter(Q(price__icontains=query)|Q(offer_price__icontains=query)|Q(product_name__icontains=query)|Q(shape__icontains=query))
+            return render(request,'search.html',{'product':product})
+        else:
+            print("No information to show")
+            return render(request,'search.html')
 def autocomplete(request):
     if 'term' in request.GET:
         # search_query = request.GET.get('term')

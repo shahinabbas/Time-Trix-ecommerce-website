@@ -1,6 +1,6 @@
 from django.db import models
 from app.models import CustomUser, Product,User_Profile
-
+import uuid
 # Create your models here.
 
 
@@ -81,6 +81,7 @@ class Order(models.Model):
     )
  
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    order_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     order_date = models.DateTimeField(auto_now_add=True)
     order_status = models.CharField(max_length=50, choices=ORDER_STATUS,default="pending")
     payment_status = models.CharField(max_length=50, choices=PAYMENT_STATUS,default="pending")

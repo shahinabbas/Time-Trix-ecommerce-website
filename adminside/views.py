@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404,HttpResponse
 from django.contrib import messages
 from app.models import CustomUser, category, Product,User_Profile
-from cart.models import Strap
+from cart.models import Order, OrderItem, Strap
 from django.contrib.auth.models import auth
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseNotFound
@@ -12,7 +12,18 @@ from django.contrib.auth.decorators import login_required
 
 
 
-
+def orders(request):
+    use=CustomUser.objects.all()
+    order=Order.objects.all()
+    order_item=OrderItem.objects.all()
+    order_status_choices=OrderItem.ORDER_STATUS
+    context={
+        'order': order,
+        'order_item':order_item,
+        'choice':order_status_choices
+    }
+    return render(request,"admin/orders.html",context)
+ 
 
 @never_cache
 # @login_required(login_url='admin_signin')

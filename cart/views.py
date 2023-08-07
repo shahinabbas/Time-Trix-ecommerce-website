@@ -1,4 +1,4 @@
-from app.models import Product,User_Profile
+from app.models import CustomUser, Product,User_Profile
 from .models import Cart, CartItem,Strap,Order,OrderItem
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
@@ -9,6 +9,19 @@ from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+def my_order(request):
+    user=request.user
+    order=Order.objects.filter(user=user)
+    order_item=OrderItem.objects.filter(order_no__in=order)
+    context={
+        'user':user,
+        'order':order,
+        'order_item':order_item,
+    }
+    return render(request,'my_order.html',context)
+
+
+
 @login_required(login_url='login')
 def create_order(request):
     if request.method == 'POST':

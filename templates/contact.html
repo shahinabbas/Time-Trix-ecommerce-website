@@ -1,20 +1,7 @@
 {% extends 'layouts/main.html' %} {% load static %} {% block body %}
 
-<!-- Header Start -->
-{% include 'inc/navbar.html' %}
-<!-- Header End -->
 
-<!--? Preloader Start -->
-<div id="preloader-active">
-  <div class="preloader d-flex align-items-center justify-content-center">
-    <div class="preloader-inner position-relative">
-      <div class="preloader-circle"></div>
-      <div class="preloader-img pere-text">
-        <img src="assets/img/logo/logo.png" alt="" />
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <main>
   <!--? Hero Area Start-->
@@ -35,7 +22,7 @@
   <!-- ================ contact section start ================= -->
   <section class="contact-section">
     <div class="container">
-      <div class="d-none d-sm-block mb-5 pb-4">
+      {% comment %} <div class="d-none d-sm-block mb-5 pb-4">
         <div
           id="map"
           style="height: 480px; position: relative; overflow: hidden"
@@ -1596,7 +1583,7 @@
           }
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpfS1oRGreGSBU5HHjMmQ3o5NLw7VdJ6I&amp;callback=initMap"></script>
-      </div>
+      </div> {% endcomment %}
 
       <div class="row">
         <div class="col-12">
@@ -1676,21 +1663,21 @@
           <div class="media contact-info">
             <span class="contact-info__icon"><i class="ti-home"></i></span>
             <div class="media-body">
-              <h3>Buttonwood, California.</h3>
-              <p>Rosemead, CA 91770</p>
+              <h3>Ernakulam, India.</h3>
+              <p>Maradu, PS 60942</p>
             </div>
           </div>
           <div class="media contact-info">
             <span class="contact-info__icon"><i class="ti-tablet"></i></span>
             <div class="media-body">
-              <h3>+1 253 565 2365</h3>
-              <p>Mon to Fri 9am to 6pm</p>
+              <h3>+91 123 456 7890</h3>
+              <p>Mon to Fri 10am to 4pm</p>
             </div>
           </div>
           <div class="media contact-info">
             <span class="contact-info__icon"><i class="ti-email"></i></span>
             <div class="media-body">
-              <h3>support@colorlib.com</h3>
+              <h3>timetrix@gmail.com</h3>
               <p>Send us your query anytime!</p>
             </div>
           </div>

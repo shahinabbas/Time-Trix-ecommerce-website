@@ -27,7 +27,7 @@ urlpatterns = [
     path('delete_product/<int:id>/',views.delete_product,name='delete_product'),
     path('undo_product/<int:id>/',views.undo_productpage,name='undo_product'),
        
-   
+    path('orders',views.orders,name='orders'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

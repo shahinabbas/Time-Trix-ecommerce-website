@@ -1,7 +1,5 @@
 {% extends 'layouts/main.html' %} {% load static %} {% block body %}
-<!-- Header Start -->
-{% include 'inc/navbar.html' %}
-<!-- Header End -->
+
 
 {% if not cart_items %}
 <div
@@ -39,6 +37,36 @@
   </div>
 </div>
 
+<div class="shop-method-area" style="padding-top: 40px">
+    <div class="container">
+      <div class="method-wrapper">
+        <div class="row d-flex justify-content-between">
+          <div class="col-xl-4 col-lg-4 col-md-6">
+            <div class="single-method mb-40">
+              <i class="ti-package"></i>
+              <h6>Free Shipping Method</h6>
+              <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6">
+            <div class="single-method mb-40">
+              <i class="ti-unlock"></i>
+              <h6>Secure Payment System</h6>
+              <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6">
+            <div class="single-method mb-40">
+              <i class="ti-reload"></i>
+              <h6>Secure Payment System</h6>
+              <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Shop Method End-->
 {% else %}
 
 <main>
@@ -200,7 +228,7 @@
                       class="input-number"
                       type="text"
                       value="{{cart_item.quantity}}"
-                      min="0"
+                      min="1"
                       max="10"
                       size="3"
                     />
@@ -216,9 +244,9 @@
                   <!-- Price -->
                   <br></br>
                   <p class="text-start text-md-center">
-                    <strong>₹<s>{{ cart_item.price }}</s> </strong
+                    <strong>₹<s>{{price}}</s> </strong
                     >&nbsp&nbsp&nbsp
-                    <strong>₹ {{ cart_item.sub_total}}</strong>
+                    <strong>₹ {{ cart_item.sub_total }}</strong>
                   </p>
                   <!-- Price -->
                 </div>

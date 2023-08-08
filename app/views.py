@@ -34,36 +34,20 @@ def search(request):
         else:
             print("No information to show")
             return render(request,'search.html')
-def autocomplete(request):
-    if 'term' in request.GET:
-        # search_query = request.GET.get('term')
-        product = Product.objects.filter(Q(is_active=True) & Q(product_name__icontains=request.GET.get('term')))
-        terms = list() 
-        for term in product:
-            terms.append(term.termss)
-        return JsonResponse(terms,safe=False)
-    return render(request,'index.html')
-    #         product_variants = [
-    #                         product for product in product_variants
-    #                         if term.lower() in product.get_product_name().lower()
-    #                     ]
-            
         
-    #     title = []
-    #     title += [ x.get_product_name() for x in product_variants ]
-    #     return JsonResponse(title,safe=False)
-    # else:
-    #     return JsonResponse({
-    #         'status':400
-    #     })
 
 
 
-
-
-
-
-
+# def autocomplete(request):
+#     if 'term' in request.GET:
+#         # search_query = request.GET.get('term')
+#         product = Product.objects.filter(product_name__icontains=request.GET.get('term'))
+#         terms = list() 
+#         for term in product:
+#             terms.append(term.termss)
+#         return JsonResponse(terms,safe=False)
+#     return render(request,'index.html')
+ 
 
 
 

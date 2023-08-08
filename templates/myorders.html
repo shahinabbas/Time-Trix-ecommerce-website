@@ -1,42 +1,49 @@
 {% extends 'layouts/main.html' %} {% block body %}
+
 <section class="h-100 gradient-custom">
-  <div class="container py-5 h-100">
+    
+  {% for order_item in order_item %}
+  <div class="container py-5 h-90">
     <div class="card shadow-0 border mb-4">
       <div class="card-body">
         <div class="row">
-          <div class="col-md-2">
-            <img
-              src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/13.webp"
-              class="img-fluid"
-              alt="Phone"
-            />
+            <div class="col-md-2">
+                <img
+                    src="{{ order_item.product.product_Image.url }}"
+                    alt="Phone"
+                    width="90" 
+                    height="90" 
+                />
+            </div>
+            
+          <div
+            class="col-md-2 text-center d-flex justify-content-center align-items-center"
+          >
+            <p class="text-muted mb-0">{{order_item.product}}</p>
           </div>
           <div
             class="col-md-2 text-center d-flex justify-content-center align-items-center"
           >
-            <p class="text-muted mb-0">Samsung Galaxy</p>
+            <p class="text-muted mb-0 small">{{order_item.strap.strap}}</p>
+          </div>
+          
+          <div
+            class="col-md-2 text-center d-flex justify-content-center align-items-center"
+          >
+            <p class="text-muted mb-0 small">Qty: {{order_item.quantity}}</p>
           </div>
           <div
             class="col-md-2 text-center d-flex justify-content-center align-items-center"
           >
-            <p class="text-muted mb-0 small">White</p>
+            <p class="text-muted mb-0 small">{{order_item.amount}}</p>
           </div>
           <div
             class="col-md-2 text-center d-flex justify-content-center align-items-center"
           >
-            <p class="text-muted mb-0 small">Capacity: 64GB</p>
-          </div>
-          <div
-            class="col-md-2 text-center d-flex justify-content-center align-items-center"
-          >
-            <p class="text-muted mb-0 small">Qty: 1</p>
-          </div>
-          <div
-            class="col-md-2 text-center d-flex justify-content-center align-items-center"
-          >
-            <p class="text-muted mb-0 small">$499</p>
+            <p class="text-muted mb-0 small">{{order_item.order_status}}</p>
           </div>
         </div>
+
         <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1" />
         <div class="row d-flex align-items-center">
           <div class="col-md-2">
@@ -66,6 +73,7 @@
       </div>
     </div>
   </div>
+  {% endfor %}
 </section>
 
 {% endblock body %}

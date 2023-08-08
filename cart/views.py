@@ -119,8 +119,7 @@ def cartpage(request, total=0, quantity=0, cart_items=None):
             quantity += cart_item.quantity
         tax = (3 * total)//100
         grand_total = total + tax
-        # tot = (cart_item.product.price * cart_item.quantity)
-        # org_tot = grand_total - tot
+       
 
     except ObjectDoesNotExist:
         pass
@@ -131,7 +130,7 @@ def cartpage(request, total=0, quantity=0, cart_items=None):
         'tax': tax,
         'grand_total': grand_total,
         'org_tot': org_tot,
-        # 'shipping_charge':CartItem.shipping_charge,
+        'cart': cart,
     }
     return render(request, 'cart.html', context)
 

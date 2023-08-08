@@ -1,3 +1,8 @@
 from django.contrib import admin
+from coupon.models import Coupon, UserCoupon
 
-# Register your models here.
+class couponAdmin(admin.ModelAdmin):
+    list_display = ['coupon_code','valid_to','discount']
+
+admin.site.register(Coupon,couponAdmin)
+admin.site.register(UserCoupon)

@@ -24,7 +24,7 @@ urlpatterns = [
     path('', include('app.urls')),
     path('cart/', include("cart.urls")),
     # path('order/', include("order.urls"))
-    # path('coupon/', include("coupon.urls")),
+    path('coupon/', include("coupon.urls")),
     path('adminside/', include("adminside.urls"))
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

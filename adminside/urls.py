@@ -28,6 +28,9 @@ urlpatterns = [
     path('undo_product/<int:id>/',views.undo_productpage,name='undo_product'),
        
     path('orders',views.orders,name='orders'),
+    path('coupon_list',views.coupon_list,name='coupon_list'),
+    path('add_coupon',views.add_coupon,name='add_coupon'),
+    path('edit_coupon/<int:id>',views.edit_coupon,name='edit_coupon'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

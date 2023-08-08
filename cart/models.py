@@ -1,6 +1,8 @@
 from django.db import models
 from app.models import CustomUser, Product,User_Profile
 import uuid
+
+from coupon.models import Coupon
 # Create your models here.
 
 
@@ -11,6 +13,7 @@ class Cart(models.Model):
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     quantity = models.PositiveIntegerField(default=1)
+    coupon_applied=models.ForeignKey(Coupon,on_delete=models.CASCADE,null=True)
 
 
     def __str__(self):
@@ -30,11 +33,23 @@ class Cart(models.Model):
         return sum(item.sub_total() for item in self.cart_items.all())
 
     def offer_total_price(self):
-        return sum(item.sub_total() for item in self.cart_items.all())
+        return sum(item.offer_sub_total() for item in self.cart_items.all())
     
 
     def price(self):
         return self.product.price * self.quantity
+    
+
+    def coupon_discount(self):
+        if self.coupon_applied and self.coupon_applied.is_valid():
+            if self.coupon_applied == 'amount':
+                return self.coupon_applied.discount
+            elif self.coupon_applied.discount_type == 'percentage':
+                return (self.coupon_applied.discount * self.total_price())/100
+    def total(self):
+        return  self.offer_total_price() + self.shipping_charge()  
+    # - self.coupon_discount()
+
 
 class CartItem(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
@@ -47,9 +62,12 @@ class CartItem(models.Model):
 
     def __unicode__(self):
         return self.product
+    
+    def offer_sub_total(self):
+        return self.product.offer_price * self.quantity
 
     def sub_total(self):
-        return self.product.offer_price * self.quantity
+        return self.product.price * self.quantity
 
    
 

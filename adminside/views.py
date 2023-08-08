@@ -8,8 +8,65 @@ from django.contrib.auth.models import auth
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
-# Create your views here.
 
+from coupon.models import Coupon
+# Create your views here.
+def edit_coupon(request,id):
+    coupon=get_object_or_404(Coupon,pk=id)
+    if request.method=='POST':
+        coupon_code=request.POST.get('coupon_code')
+        description=request.POST.get('description')
+        minimum_amount=request.POST.get('minimum_amount')
+        discount_type=request.POST.get('discount_type')
+        discount=request.POST.get('discount')
+        valid_from=request.POST.get('valid_from')
+        valid_to=request.POST.get('valid_to')
+
+        
+        coupon.coupon_code=coupon_code,
+        coupon.description=description,
+        coupon.minimum_amount=minimum_amount,
+        coupon.discount_type=discount_type,
+        coupon.discount=discount,
+        coupon.valid_from=valid_from,
+        coupon.valid_to=valid_to,
+        
+        coupon.save()
+        return redirect('coupon_list')
+    return render(request,'admin/coupon_list.html',{'coupon':coupon})
+
+def add_coupon(request):
+    if request.method=='POST':
+        coupon_code=request.POST.get('coupon_code')
+        description=request.POST.get('description')
+        minimum_amount=request.POST.get('minimum_amount')
+        discount_type=request.POST.get('discount_type')
+        discount=request.POST.get('discount')
+        valid_from=request.POST.get('valid_from')
+        valid_to=request.POST.get('valid_to')
+
+        coupon=Coupon(
+            coupon_code=coupon_code,
+            description=description,
+            minimum_amount=minimum_amount,
+            discount_type=discount_type,
+            discount=discount,
+            valid_from=valid_from,
+            valid_to=valid_to,
+        )
+        coupon.save()
+        return redirect('coupon_list')
+    return render(request,'admin/coupon_list.html')
+
+
+
+
+def coupon_list(request):
+    coupon = Coupon.objects.all()
+    context ={
+        'coupon':coupon,
+    }
+    return render(request,"admin/coupon_list.html",context)
 
 
 def orders(request):

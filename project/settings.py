@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'app',
     'cart',
     'adminside',
-    # 'coupon',
+    'coupon',
 ]
 
 MIDDLEWARE = [

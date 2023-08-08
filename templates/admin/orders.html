@@ -1,4 +1,97 @@
 {% extends 'admin/navbar.html' %} {% block body %}
+<div class="container mt-2">
+  <div style="text-align: center; padding-top: 70px">
+    <h2>Orders</h2>
+  </div>
+  <div class="table-responsive">
+    <table class="table align-middle mb-0 bg-white mt-2">
+      <thead class="bg-light">
+        <tr>
+          <th>Product_id</th>
+          <th>Product name</th>
+          <th>Strap</th>
+          <th>Prices</th>
+          <th>Quantity</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order_item in order_item %}
+        
+        <tr>
+          <td>{{order_item.order_no.order_id}}</td>
+          
+      
 
+          <td>
+            <p class="fw-bold mb-1">{{order_item.product}}</p>
+          </td>
+         
+          <td>
+            <p class="fw-bold mb-1">{{order_item.strap.strap}}</p>
+          </td>
 
+          <td>
+            <p class="fw-bold mb-1">{{order_item.amount}}</p>
+          </td>
+
+        
+
+          <td>
+            <p class="fw-bold mb-1">{{order_item.quantity}}</p>
+            <br />
+          </td>
+          <td>
+            {% if product.is_deleted %}
+            <span class="badge badge-danger rounded-pill d-inline" style="color: white; background-color: red"
+              >Un Available</span
+            >
+            {% else %}
+            <span class="badge badge-success rounded-pill d-inline" style="color: black; background-color: green"
+              >Available</span
+            >
+            {% endif %}
+          </td>
+          
+          
+
+          <td>
+            <form action="" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-success">
+                <i class="fas fa-edit"></i>Edit
+              </button>
+            </form>
+
+            {% if product.is_deleted %}
+            <form
+              action=""
+              method="post"
+              class="d-inline"
+            >
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">
+                <i class="fa fa-undo" aria-hidden="true"></i>Undo
+              </button>
+            </form>
+            {% else %}
+            <form
+              action=""
+              method="post"
+              class="d-inline"
+            >
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">
+                <i class="fa fa-ban" aria-hidden="true"></i>Delete
+              </button>
+            </form>
+            {% endif %}
+          </td>
+          {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock body %}

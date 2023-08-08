@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404,HttpResponse
 from django.contrib import messages
-from app.models import CustomUser, category, Product,User_Profile
+from app.models import CustomUser, Category, Product,User_Profile
 from cart.models import Order, OrderItem, Strap
 from django.contrib.auth.models import auth
 from django.views.decorators.cache import never_cache
@@ -28,12 +28,12 @@ def orders(request):
 @never_cache
 # @login_required(login_url='admin_signin')
 def add_product(request):
-    categories = category.objects.all()
+    categories = Category.objects.all()
 
     if request.method == 'POST':
         product_name = request.POST.get('name')
         category_name = request.POST.get('category')
-        category1 = category.objects.get(categories=category_name)
+        category1 = Category.objects.get(categories=category_name)
         product_Image = request.FILES.get('image')
         description = request.POST.get('description')
         price = request.POST.get('price')
@@ -141,11 +141,11 @@ def admin_index(request):
 def add_category(request):
     if request.method == 'POST':
         category_name = request.POST['categoryname']
-        if category.objects.filter(categories=category_name).exists():
+        if Category.objects.filter(categories=category_name).exists():
             error_message = 'Category name already exists.'
             return render(request, 'admin/category_list.html')
         else:
-            Category = category.objects.create(categories=category_name)
+            Category = Category.objects.create(categories=category_name)
             # stu = category.objects.all()
             return redirect('category_list')
     return render(request, "admin/category_list.html")
@@ -153,15 +153,15 @@ def add_category(request):
 @never_cache
 @login_required(login_url='admin_signin')
 def category_listpage(request):
-    stu = category.objects.all()
+    stu = Category.objects.all()
     return render(request, "admin/category_list.html", {'stu': stu})
 
 @never_cache
 def edit_category(request,id):
-    catgry=category.objects.get(pk=id)
+    catgry=Category.objects.get(pk=id)
     if request.method=='POST':
         categories=request.POST.get('category')
-        if category.objects.filter(categories=categories).exclude(pk=id).exists():
+        if Category.objects.filter(categories=categories).exclude(pk=id).exists():
             messages.error(request,'Category name already exists')
             return redirect('category_list')
         else:
@@ -176,14 +176,14 @@ def edit_category(request,id):
 @login_required(login_url='admin_signin')
 def delete_categorypage(request, id):
     if request.method == 'POST':
-        co = get_object_or_404(category,pk=id)
+        co = get_object_or_404(Category,pk=id)
         co.delete()
         return redirect('category_list')
 
 @never_cache
 @login_required(login_url='admin_signin')
 def productspage(request):
-    stu = category.objects.all()
+    stu = Category.objects.all()
     products = Product.objects.all()
     strap=Strap.objects.all()
     context={

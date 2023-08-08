@@ -102,7 +102,7 @@ class OrderItem(models.Model):
     ('Out for Delivery', 'Out for Delivery'),
     ('Delivered', 'Delivered'),
    )
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order_no=models.ForeignKey(Order,on_delete=models.CASCADE)
     order_status = models.CharField(max_length=50, choices=ORDER_STATUS,default="pending")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     strap = models.ForeignKey(Strap, on_delete=models.CASCADE)

@@ -58,7 +58,7 @@ class CustomUser(AbstractUser):
         Permission, blank=True, related_name='custom_users', help_text='Specific permissions for this user.')
 
 
-class category(models.Model):
+class Category(models.Model):
     categories = models.CharField(max_length=50)
 
     def __str__(self):
@@ -73,7 +73,7 @@ class Product(models.Model):
         max_digits=8, decimal_places=2, default=0)
     product_Image = models.ImageField(upload_to='product_images')
     shape = models.CharField(max_length=100)
-    category = models.ForeignKey('category', on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
     is_deleted = models.BooleanField(default=False)
 
 

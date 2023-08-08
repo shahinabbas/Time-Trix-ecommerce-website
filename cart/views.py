@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
-def my_order(request):
+def myorders(request):
     user=request.user
     order=Order.objects.filter(user=user)
     order_item=OrderItem.objects.filter(order_no__in=order)
@@ -18,17 +18,14 @@ def my_order(request):
         'order':order,
         'order_item':order_item,
     }
-    return render(request,'my_order.html',context)
-
+    return render(request,'myorders.html',context)
 
 
 @login_required(login_url='login')
 def create_order(request):
     if request.method == 'POST':
         address_id=request.POST.get('address')
-        print(address_id)
         payment_method=request.POST.get('pay-method')
-        print(payment_method)
     cart=get_object_or_404(Cart,user=request.user)
     address=get_object_or_404(User_Profile,id=address_id)
     price1=cart.total_price()
@@ -43,7 +40,7 @@ def create_order(request):
         )
     for cart_item in CartItem.objects.all():
         OrderItem.objects.create(
-            order=order,
+            order_no=order,
             product=cart_item.product,
             strap=cart_item.strap,
             quantity=cart.quantity,

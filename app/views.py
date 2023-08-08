@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib import messages
-from app.models import CustomUser, category, Product, User_Profile, Wishlist
+from app.models import CustomUser, Category, Product, User_Profile, Wishlist
 from cart.models import Strap
 import random
 from twilio.rest import Client
@@ -16,6 +16,14 @@ from django.db.models import Q
 
 def index(request):
     return render(request, 'index.html')
+
+def user_category(request,cat):
+    print(cat,'111111111111111111111111111111111')
+    cat=get_object_or_404(Category,categories=cat)
+    print(cat,'222222222222222222222222222222222222222')
+    product=Product.objects.filter(categor=cat)
+    print(product,'333333333333333333333333333333333')
+    return render(request,'user_category',{'product':product})
 
 def search(request):
     if request.method=='GET':
@@ -254,7 +262,7 @@ def listpage(request, id):
 
 def product_details(request, product_id):
     product = Product.objects.get(id=product_id)
-    all_categories = category.objects.all()
+    all_categories = Category.objects.all()
     strap = Strap.objects.all()
     # wishlist=Wishlist.objects.filter(user=request.user)
     context = {

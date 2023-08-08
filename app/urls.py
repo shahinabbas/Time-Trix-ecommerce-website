@@ -14,7 +14,8 @@ urlpatterns = [
 
     path("autocomplete/",views.autocomplete,name='autocomplete'),
     path("search/",views.search,name='search'),
-
+    
+    path('user_category/<str:cat>/',views.user_category,name='user_category'),
 
     path('logout/',views.logoutpage,name='logout'),
     path('enter_otp/',views.enter_otppage,name='enter_otp'),

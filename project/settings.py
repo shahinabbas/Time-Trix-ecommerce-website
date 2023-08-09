@@ -159,5 +159,4 @@ MESSAGE_TAGS={
     messages.ERROR:'danger'
 }
 
-razor_pay_key_id = 'rzp_test_TXzXHyrWInmPx4'
-key_secret = 'O8kYv6FbIQh2tKCSWoIhSYTw'
+

@@ -1,6 +1,6 @@
-from datetime import timezone
+from django.utils import timezone
 from django.db import models
-
+from datetime import date
 from app.models import CustomUser
 
 # Create your models here.
@@ -24,9 +24,10 @@ class Coupon(models.Model):
         return self.coupon_code
     
     def is_valid(self):
-        now=timezone.now()
+        # now=timezone.now()
+        # return self.active and self.valid_from <= now and self.valid_to >= now
+        now = date.today()  # Convert datetime.datetime to datetime.date
         return self.active and self.valid_from <= now and self.valid_to >= now
-
 
 class UserCoupon(models.Model):
     user=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True) 

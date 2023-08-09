@@ -2,6 +2,8 @@ from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
+
+from cart.models import Cart
 from .models import Coupon, UserCoupon
 # Create your views here.
 
@@ -22,18 +24,20 @@ class CouponView(View):
             if not coupon.is_valid():
                 messages.warning(request,'Enter valid coupon')
                 return redirect(reverse('cart'))
-            if UserCoupon.objects.filter(user=user,coupon_applied=coupon).exist():
-                messages.warning(request,"Try another coupon it's already used")
+            if UserCoupon.objects.filter(user=user,coupon_applied=coupon).exists():
+                # messages.warning(request,"Try another coupon it's already used")
                 return redirect(reverse('cart'))
-            cart=get_object_or_404(user=user)
-            if cart.total <= coupon.minimum_amount:
-                messages.warning(request,'Minimum amount is',{{coupon.minimum_amount}})
+            cart= Cart.objects.get_or_create(user=user)  
+            if cart.total() < coupon.minimum_amount:
+                # messages.warning(request,'Minimum amount is',{{coupon.minimum_amount}})
                 return redirect(reverse('cart'))
             else:
                 cart.coupon_applied = coupon
                 cart.save()
                 UserCoupon.objects.create(user=user, coupon_applied=coupon)
-                messages.success(request, "success")
+                # messages.success(request, "success")
+                print('11111111111111111111111111111111111111111')
+
                 return render(request,self.template)
         return render(request,'template')
 

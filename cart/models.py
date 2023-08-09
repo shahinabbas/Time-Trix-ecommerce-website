@@ -1,7 +1,8 @@
+
 from django.db import models
 from app.models import CustomUser, Product,User_Profile
 import uuid
-
+from decimal import Decimal
 from coupon.models import Coupon
 # Create your models here.
 
@@ -28,17 +29,22 @@ class Cart(models.Model):
             return 0
         else:
             return 140
-
+    
+    
+    
+    
     def total_price(self):
         return sum(item.sub_total() for item in self.cart_items.all())
 
     def offer_total_price(self):
         return sum(item.offer_sub_total() for item in self.cart_items.all())
-    
+   
 
     def price(self):
         return self.product.price * self.quantity
     
+    def save(self):
+        return self.total_price - self.offer_total_price
 
     def coupon_discount(self):
         if self.coupon_applied and self.coupon_applied.is_valid():
@@ -47,8 +53,12 @@ class Cart(models.Model):
             elif self.coupon_applied.discount_type == 'percentage':
                 return (self.coupon_applied.discount * self.total_price())/100
     def total(self):
-        return  self.offer_total_price() + self.shipping_charge()  
-    # - self.coupon_discount()
+        offer_price = self.offer_total_price() or Decimal('0.0')
+        shipping_charge = self.shipping_charge() or Decimal('0.0')
+        coupon_discount = self.coupon_discount() or Decimal('0.0')
+    
+        return offer_price + shipping_charge - coupon_discount
+  
 
 
 class CartItem(models.Model):
@@ -114,7 +124,7 @@ class Order(models.Model):
 class OrderItem(models.Model):
     ORDER_STATUS = (
     ('Pending', 'Pending'),
-    ('Out for Shipping', 'Out for Shipping'),
+    ('Shipped', 'Shipped'),
     ('Confirmed', 'Confirmed'),
     ('Cancelled', 'Cancelled'),
     ('Out for Delivery', 'Out for Delivery'),

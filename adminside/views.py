@@ -11,6 +11,14 @@ from django.contrib.auth.decorators import login_required
 
 from coupon.models import Coupon
 # Create your views here.
+def delete_coupon(request,id):
+    print('11111111111111111111111111111111111111111111111111111111111111111')
+    coupon=get_object_or_404(Coupon,pk=id)
+    print(coupon,'22222222222222222222222222222222222222222222222222      ')
+    if request.method=='POST':
+        coupon.delete()
+        return redirect('coupon_list')
+
 def edit_coupon(request,id):
     coupon=get_object_or_404(Coupon,pk=id)
     if request.method=='POST':
@@ -35,6 +43,14 @@ def edit_coupon(request,id):
         return redirect('coupon_list')
     return render(request,'admin/coupon_list.html',{'coupon':coupon})
 
+def update_order_status(request,id):
+    if request.method=='POST':
+        stu=request.POST.get('order_status')
+        edit=OrderItem.objects.get(id=id)
+        edit.order_status=stu
+        edit.save()
+        return redirect('orders')
+    
 def add_coupon(request):
     if request.method=='POST':
         coupon_code=request.POST.get('coupon_code')

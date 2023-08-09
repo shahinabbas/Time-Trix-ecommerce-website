@@ -239,17 +239,27 @@
     </style>
     
     <script>
+
+
+        {% comment %} $(document).ready(function() {
+            $('#deletesubcategoryModal').on('show.bs.modal', function(e) {
+                var id = $(e.relatedTarget).data('p-id');
+                var form = $(this).find('form'); // Get the form within the modal
+                form.attr('action', "{% url 'delete_coupon' %}" + id + "/"); // Update form action
+                $(this).find('.modal-body p').html("Are you sure you want to delete the Product with ID " + id + "?");
+            });
+        }); {% endcomment %}
+{% comment %}         
         $(document).ready(function() {
             $('#deletesubcategoryModal').on('show.bs.modal', function(e) {
                 var id = $(e.relatedTarget).data('p-id');
                 $(this).find('.modal-body p').html("Are you sure you want to delete the Product with ID " + id + "?");
                 $(this).find('.modal-footer input[type="submit"]').attr('formaction', "/deleteproduct/" + id + "/");
-            });
+            }); {% endcomment %}
             $('.edit').on('click', function() {
                 var couponId = $(this).data('p-id');
                 $('#coupon-id-input').val(couponId);
             });
-        });
     </script>
 <div class="table-responsive" style="padding-top: 100px;">
     <div class="table-wrapper">
@@ -297,7 +307,11 @@
                         title="Edit"
                         >&#xE254;</i
                       ></a>
-                    <a href="#deletesubcategoryModal" class="delete" data-toggle="modal" data-p-id="{{ c.id }}"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>
+                      <a href="#deleteModal" class="delete" data-toggle="modal" data-p-id="{{ c.id }}">
+                        <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                    </a>
+                    
+                    {% comment %} <a href="#deletesubcategoryModal" class="delete" data-toggle="modal" data-p-id="{{ c.id }}"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td> {% endcomment %}
                 </tr>{% endfor %}
                 
             </tbody>
@@ -311,7 +325,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             
-            <form method="post" action="{% url 'edit_coupon' id %}">
+            <form method="post" action="">
+                {% comment %} {% url 'edit_coupon' id %} {% endcomment %}
                 {% csrf_token %}
                 <div class="modal-header">						
                     <h4 class="modal-title">Add coupon</h4>
@@ -416,7 +431,7 @@
 </div>
 
 <!-- Delete Modal HTML -->
-<div id="deletesubcategoryModal" class="modal fade">
+<div id="deleteModal" class="modal fade">
 <div class="modal-dialog">
     <div class="modal-content">
         <form method="post" action="">
@@ -435,6 +450,14 @@
         </form>
     </div>
 </div></div>
+<script>
+    $(document).ready(function() {
+        $('#deleteModal').on('show.bs.modal', function(e) {
+            var id = $(e.relatedTarget).data('p-id');
+            $(this).find('.modal-footer input[type="submit"]').attr('formaction', "/delete_coupon/" + id + "/");
+        });
+    });
+</script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <!-- Include Bootstrap JavaScript -->

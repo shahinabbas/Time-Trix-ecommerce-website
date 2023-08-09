@@ -6,9 +6,17 @@ from django.contrib.auth import authenticate,login,logout
 from psycopg2 import IntegrityError
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from project.settings import razor_pay_key_id,key_secret
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 
 # Create your views here.
+def razorpay(request):
+    return render(request,'razorpay.html')
+
+
+
 def myorders(request):
     user=request.user
     order=Order.objects.filter(user=user)
@@ -75,32 +83,34 @@ def add_cart(request, product_id):
 
 def cart_plus(request, strap_id):
     user = request.user
-    print(user)
-    strap=get_object_or_404(Strap,id=strap_id)
-    print(strap)
-    cart_item = CartItem.objects.get(strap = strap )
-    print(cart_item)
+    strap = get_object_or_404(Strap, id=strap_id)
+    cart_item = CartItem.objects.get(strap=strap)
 
     if cart_item.quantity >= 1:
         cart_item.quantity += 1
         if cart_item.quantity > cart_item.strap.quantity:
-                cart_item.quantity = cart_item.strap.quantity
-                messages.info(request,'Out of stock')
+            cart_item.quantity = cart_item.strap.quantity
+            messages.info(request, 'Out of stock')
         cart_item.save()
-    return redirect('cart')
+
+    updated_html = render_to_string('cart.html', {'cart_item': cart_item})
+    return JsonResponse({'html': updated_html})
 
 
+def cart_minus(request, strap_id):
+    user = request.user
+    strap = get_object_or_404(Strap, id=strap_id)
+    cart_item = CartItem.objects.get(strap=strap)
 
-def cart_minus(request,strap_id):
-    user=request.user
-    strap=get_object_or_404(Strap,id=strap_id)
-    cart_item=CartItem.objects.get(strap=strap)
     if cart_item.quantity > 1:
         cart_item.quantity -= 1
         cart_item.save()
     else:
         cart_item.delete()
-    return redirect('cart')
+
+    updated_html = render_to_string('cart.html', {'cart_item': cart_item})
+    return JsonResponse({'html': updated_html})
+
 
 
 
@@ -358,4 +368,3 @@ def checkout(request, total=0, quantity=0, cart_items=None):
     #             return redirect('product_details',product_id=product_id)
 
     # return redirect('cart')
-

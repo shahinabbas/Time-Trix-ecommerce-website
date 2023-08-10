@@ -158,5 +158,3 @@ LOGIN_URL = '/login/'
 MESSAGE_TAGS={
     messages.ERROR:'danger'
 }
-
-

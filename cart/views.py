@@ -144,9 +144,10 @@ def cart_plus(request, strap_id):
             cart_item.quantity = cart_item.strap.quantity
             messages.info(request, 'Out of stock')
         cart_item.save()
+    return redirect('cart')
 
-    updated_html = render_to_string('cart.html', {'cart_item': cart_item})
-    return JsonResponse({'html': updated_html})
+    # updated_html = render_to_string('cart.html', {'cart_item': cart_item})
+    # return JsonResponse({'html': updated_html})
 
 
 def cart_minus(request, strap_id):
@@ -159,9 +160,9 @@ def cart_minus(request, strap_id):
         cart_item.save()
     else:
         cart_item.delete()
-
-    updated_html = render_to_string('cart.html', {'cart_item': cart_item})
-    return JsonResponse({'html': updated_html})
+    return redirect('cart')
+    # updated_html = render_to_string('cart.html', {'cart_item': cart_item})
+    # return JsonResponse({'html': updated_html})
 
 
 
@@ -170,7 +171,6 @@ def cartpage(request, total=0, quantity=0, cart_items=None):
     tax = 0
     grand_total = 0
     org_tot = 0
-    tot = 0
     user=request.user
     try:
         cart = Cart.objects.get(user=user)
@@ -179,8 +179,7 @@ def cartpage(request, total=0, quantity=0, cart_items=None):
         for cart_item in cart_items:
             total += (cart_item.product.offer_price * cart_item.quantity)
             quantity += cart_item.quantity
-        tax = (3 * total)//100
-        grand_total = total + tax
+       
        
 
     except ObjectDoesNotExist:
@@ -189,8 +188,7 @@ def cartpage(request, total=0, quantity=0, cart_items=None):
         'total': total,
         'quantity': quantity,
         'cart_items': cart_items,
-        'tax': tax,
-        'grand_total': grand_total,
+       
         'org_tot': org_tot,
         'cart': cart,
     }

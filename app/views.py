@@ -180,33 +180,6 @@ def edit_profile(request):
     return render(request, 'edit_profile.html')
 
 
-# def reset_passwordpage(request):
-#     error_message = None
-#     print('hi')
-#     if request.session.has_key('phone_number'):
-#         phone_number= request.session['phone_number']
-#         user = CustomUser.objects.get(phone_number=phone_number)
-#         if request.method == 'POST':
-#             new_password=request.POST.get('new_password')
-#             confirm_password=request.POST.get('confirm_password')
-
-#             if new_password == confirm_password:
-#                 if new_password:
-#                     error_message= "Enter new password"
-#                 elif not confirm_password:
-#                     error_message ="Reenter password"
-#                 elif new_password == user.password:
-#                     error_message = "This password already exist"
-#                 if not error_message:
-#                     user.set_password(new_password)
-#                     print(user.password)
-#                     user.save()
-#                     del request.session['phone_number']
-
-#                 messages.success(request,"password changed Sucess fully")
-#                 return redirect('/login')
-#     return render(request,"reset.html",{'error':error_message})
-
 @never_cache
 def address(request):
     user = request.user

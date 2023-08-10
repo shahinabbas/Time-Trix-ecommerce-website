@@ -12,6 +12,7 @@
           <th>Strap</th>
           <th>Prices</th>
           <th>Quantity</th>
+          <th>Payment</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
@@ -40,18 +41,20 @@
 
           <td>
             <p class="fw-bold mb-1">{{order_item.quantity}}</p>
-            <br />
           </td>
-            {% if order_item.status == 'Confirmed' %}
+          <td>
+            <p class="fw-bold mb-1">{{order.payment_method}}</p>
+          </td>
+            {% if order_item.order_status == 'Confirmed' %}
             <td><span class="badge badge-danger" style="background-color: green; color: black">{{order_item.order_status}}</span></td>
-            {% elif order_item.status == 'Pending' %}
-            <td><span class="badge badge-danger" style="background-color: blue; color: black">{{order_item.order_status}}</span></td>
-            {% elif order_item.status == 'Shipped' %}
+            {% elif order_item.order_status == 'Pending' %}
+            <td><span class="badge badge-danger" style="background-color:blue; color: black">{{order_item.order_status}}</span></td>
+            {% elif order_item.order_status == 'Shipped' %}
             <td><span class="badge badge-danger" style="background-color: yellow; color: black">{{order_item.order_status}}</span></td>
-            {% elif order_item.status == 'Out for Delivery' %}
-            <td><span class="badge badge-primary">{{order_item.order_status}}</span></td>
+            {% elif order_item.order_status == 'Out for Delivery' %}
+            <td><span class="badge badge-primary" style="background-color:red; color: black">{{order_item.order_status}}</span></td>
             {% else %}
-            <td><span class="badge badge-danger" style="background-color: yellow; color: black">{{order_item.order_status}}</span></td>
+            <td><span class="badge badge-danger" style="background-color:red; color: black">{{order_item.order_status}}</span></td>
             {% endif %} 
             {% comment %}          <td>
  {% if product.is_deleted %}

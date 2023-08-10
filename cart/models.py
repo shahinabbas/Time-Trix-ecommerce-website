@@ -26,7 +26,7 @@ class Cart(models.Model):
     def shipping_charge(self):
         ship_tot = self.offer_total_price()
         if ship_tot >= 10000:
-            return 0
+            return 10
         else:
             return 140
     
@@ -45,19 +45,23 @@ class Cart(models.Model):
     
     # def save(self):
     #     return self.total_price - self.offer_total_price
-
+    def tax(self):
+        taxes=self.offer_total_price()
+        return (3 * taxes)//100
+    
     def coupon_discount(self):
         if self.coupon_applied and self.coupon_applied.is_valid():
-            if self.coupon_applied == 'amount':
-                return self.coupon_applied.discount
-            elif self.coupon_applied.discount_type == 'percentage':
-                return (self.coupon_applied.discount * self.total_price())/100
+            # if self.coupon_applied == 'amount':
+            return self.coupon_applied.discount
+            # elif self.coupon_applied.discount_type == 'percentage':
+            #     return (self.coupon_applied.discount * self.total_price())/100
+            
     def total(self):
-        offer_price = self.offer_total_price() or Decimal('0.0')
-        shipping_charge = self.shipping_charge() or Decimal('0.0')
+        offer_price = self.offer_total_price()
+        shipping_charge = self.shipping_charge()
         coupon_discount = self.coupon_discount() or Decimal('0.0')
-    
-        return offer_price + shipping_charge - coupon_discount
+        taxss=self.tax()
+        return offer_price + shipping_charge + taxss - coupon_discount
   
 
 

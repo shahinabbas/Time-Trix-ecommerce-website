@@ -142,30 +142,45 @@ def add_product(request):
 def edit_productpage(request, id):
     try:
         product = Product.objects.get(pk=id)
-        strap=Strap.objects.filter(product=product)
-        categories = category.objects.all()
+        strap=Strap.objects.filter(product_id=product)
+        categories = Category.objects.all()
         context = {
             'product': product,
-            # 'shape': shape,
-            'categories': categories
+            'categories': categories,
+            'strap':strap,
         }
     except Product.DoesNotExist:
         return HttpResponseNotFound("Product not found")
     if request.method == 'POST':
-        product_name = request.POST.get('productName')
-        category_id = request.POST.get('categoryId')
-        category = get_object_or_404(category, pk=category_id)
+        product_name = request.POST.get('name')
         description = request.POST.get('description')
+        category_id = request.POST.get('category')
+        print(category_id,'11111111111111111111111111')
+        category = get_object_or_404(Category, pk=category_id) 
+        print(category,'22222222222222222222222222222222222')
+        shape = request.POST.get('shape')
+        price = request.POST.get('price')
+        offer_price = request.POST.get('offer_price')
         product_image = request.FILES.get('image')
-
-        product.product_name = product_name
-        product.category = category
-        product.description = description
-
-        if product_image:
-            product.product_Image = product_image
+        product=Product(
+            product_name = product_name,
+            category = category,
+            description = description,
+            price=price,
+            offer_price=offer_price,
+            shape=shape,
+            product_Image=product_image,
+        )
         product.save()
-        return redirect('products')
+        for strap in strap:
+            strap=request.POST.get('strap')
+            quantity=request.POST.get('quantity')
+            straps=Strap(
+                strap=strap,
+                quantity=quantity,
+            )
+            strap.save()
+        return redirect('admin/products')
     return render(request, "admin/edit_product.html", context)
 
 

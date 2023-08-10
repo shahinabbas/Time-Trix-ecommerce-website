@@ -255,13 +255,13 @@
               <hr class="my-4" />
 
               {% endfor %}
-              <script>
+              {% comment %} <script>
                 $(document).ready(function () {
                   $(".input-number-increment").on("click", function (e) {
                     e.preventDefault(); // Prevent the default link behavior
                     
                     var productId = $(this).closest(".product_count").attr("id").split("_")[2];
-                    
+                    console.log(productId)
                     $.ajax({
                       type: "GET",
                       url: "{% url 'cart_plus' strap_id=0 %}".replace('0', productId),
@@ -291,7 +291,7 @@
                     });
                   });
                 });
-                </script>
+                </script> {% endcomment %}
                 
                 
               
@@ -338,9 +338,9 @@
             <div class="card-body">
               <ul class="list-group list-group-flush">
                 <li
-                  class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0"
+                  class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0 mb-3"
                 >
-                  Products
+                <strong> Products</strong>
                   <span>₹{{total}}</span>
                 </li>
                 <li
@@ -349,7 +349,7 @@
                   <div>
                     <strong>Shipping Charge</strong>
                   </div>
-                  <span><strong>₹{{Cart.shipping_charge}}</strong></span>
+                  <span><strong>₹{{cart.shipping_charge}}</strong></span>
                 </li>
                 <li
                   class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
@@ -357,9 +357,9 @@
                   <div>
                     <strong>Tax</strong>
                   </div>
-                  <span><strong>₹{{tax}}</strong></span>
+                  <span><strong>₹{{cart.tax}}</strong></span>
                 </li>
-                <li
+                {% comment %} <li
                   class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
                 >
                   <div>
@@ -369,13 +369,13 @@
                     </strong>
                   </div>
                   <span><strong>₹{{cart.offer_total_price}}</strong></span>
-                </li>
+                </li> {% endcomment %}
               </ul>
 
               <form method="post" action="{% url 'coupon_view' %}">
                 {% csrf_token %}
                 <div class="input-group mb-3">
-                  <label for="coupon_code">Enter coupon code:</label>
+                  <label for="coupon_code"><strong>Enter coupon code:</strong></label>
                   <input type="text" class="form-control" name="coupon_code" placeholder="Enter coupon code" aria-label="Recipient's username" aria-describedby="button-addon2">
                   <button type="submit" class=" btn-outline-secondary" id="button-addon2">Verify</button>
                 </div>
@@ -456,42 +456,6 @@
   </div>
   <!-- Shop Method End-->
 </main>
-{% comment %} <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script>
-  var options = {
-      key: "rzp_test_TXzXHyrWInmPx4",
-      amount: "50000", 
-      currency: "INR",
-      name: "timetrix",
-      description: "description",
-      image: "https://example.com/your_logo",
-      order_id: "{{order.provider_order_id}}",
-      callback_url: "{{callback_url}}",
-      redirect: true,
-      prefill: {
-          "name": "Gaurav Kumar",
-          "email": "gaurav.kumar@example.com",
-          "contact": "9999999999"
-      },
-      notes: {
-          "address": "Razorpay Corporate Office"
-      },
-      theme: {
-          "color": "#3399cc"
-      }
-  };
-  var rzp1 = new Razorpay(options);
-  rzp1.on('payment.failed',function(response){
-    alert(response.error.code);
-    alert(response.error.description);
-    alert(response.error.source);
-    alert(response.error.step);
-    alert(response.error.reason);
-    alert(response.error.metadata.order_id);
-    alert(response.error.metadata.payment_id);
-  });
-  document.getElementById()
-  </script> {% endcomment %}
 
 {% endif %}
  {% endblock body %}

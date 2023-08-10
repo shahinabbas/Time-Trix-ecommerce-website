@@ -50,7 +50,18 @@ def update_order_status(request,id):
         edit.order_status=stu
         edit.save()
         return redirect('orders')
-    
+
+def cancel_order(request,id):
+    if request.method == 'POST':
+        order_item = OrderItem.objects.get(pk=id)
+        if order_item:
+            order_item.order_status = 'Cancelled'
+            order_item.save()
+            strap = order_item.strap
+            strap.quantity += order_item.quantity
+            strap.save()    
+        return redirect('myorders')
+
 def add_coupon(request):
     if request.method=='POST':
         coupon_code=request.POST.get('coupon_code')
@@ -204,7 +215,9 @@ def userspage(request):
 # @login_required(login_url='admin_signin')
 def user_blockpage(request, id):
     if request.method == 'POST':
+        print('11111111111111111111111111111111111111111111111111111')
         user = CustomUser.objects.get(pk=id)
+        print('2222222222222222222222222222222222222222222222')
         user.is_active = False
         user.save()
     return redirect('users')

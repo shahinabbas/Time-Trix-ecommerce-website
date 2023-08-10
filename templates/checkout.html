@@ -404,11 +404,13 @@ var options = {
     "currency": "INR",
     "name": "Time Trix",
     "description": "Thanks",
-    "image": "https://example.com/your_logo",
+    "image": "assets/img/logo/time.png",
+    "order_id": "{{payment.id}}", 
     "handler": function (response){
-        alert(response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature)
+
+        window.location.href = 'http://127.0.0.1:8000/cart/success/?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}&razorpay_order_id=${response=razorpay_order_id}'
+
+       
     },
 
     "theme": {

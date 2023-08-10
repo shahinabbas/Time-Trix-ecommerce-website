@@ -12,7 +12,8 @@ urlpatterns = [
     path("cart_plus/<int:strap_id>/",views.cart_plus,name='cart_plus'),
     path('checkout/',views.checkout,name='checkout'),
     path('create_order/',views.create_order,name='create_order'),
-    path("myorders",views.myorders,name="myorders")
-
+    path("myorders",views.myorders,name="myorders"),
+    
+    path("success", views.success, name="success"),
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

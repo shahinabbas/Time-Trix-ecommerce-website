@@ -124,6 +124,10 @@ class Order(models.Model):
     # coupon_discount = models.DecimalField(max_digits=10, decimal_places=2)
     # delivery_charge = models.DecimalField(max_digits=10, decimal_places=2)
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    razor_pay_order_id=models.CharField(max_length=100,null=True,blank=True)
+    razor_pay_payment_id=models.CharField(max_length=100,null=True,blank=True)
+    razor_pay_payment_signature=models.CharField(max_length=100,null=True,blank=True)
+
 
 class OrderItem(models.Model):
     ORDER_STATUS = (

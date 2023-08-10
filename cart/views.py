@@ -1,3 +1,4 @@
+
 from app.models import CustomUser, Product,User_Profile
 from .models import Cart, CartItem,Strap,Order,OrderItem
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
@@ -39,10 +40,11 @@ def checkout(request, total=0, quantity=0, cart_items=None):
     except ObjectDoesNotExist:
         pass
 
-    amount=cart.total() * 100
+    amount=cart.total() * 10
     client = razorpay.Client(auth=(settings.RAZOR_PAY_KEY_ID,settings.KEY_SECRET))
     payment=client.order.create({"amount":float(amount),"currency": "INR","payment_capture" : 1})
-
+    cart.razor_pay_order_id=payment['id']
+    cart.save()
     context = {
         'total': total,
         'cart': cart,
@@ -57,7 +59,15 @@ def checkout(request, total=0, quantity=0, cart_items=None):
     }
     return render(request, 'checkout.html', context)
 
-
+def success(request):
+    order_id = request.GET.get('order_id')
+    cart=Cart.objects.get(razor_pay_order_id=order_id)
+    cart.is_paid=True
+    cart.save()
+    # payment_id = request.GET.get('payment_id')
+    # payment_order_id = request.GET.get('payment_order_id')
+    # payment_sign = request.GET.get('payment_sign')
+    return HttpResponse('Payment Succces')
 
 def myorders(request):
     user=request.user

@@ -6,7 +6,8 @@
   crossorigin="anonymous"
   referrerpolicy="no-referrer"
 />
-
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <header>
   <!-- Header Start -->
   <div class="header-area">
@@ -94,7 +95,6 @@
                   </button>
                 </div>
               </li>
-
               <li>
                 <a href="{% url 'user_profile' %}"
                   ><span class="flaticon-user"></span
@@ -141,10 +141,12 @@
   }
 </style>
 
-{% comment %} <script>
+<script>
   $(function () {
     $("#form1").autocomplete({
-      source: ['jjkk']
+      source: "{% url 'autocomplete' %}",
     });
   });
-</script> {% endcomment %}
+</script>
+
+

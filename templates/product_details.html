@@ -3,20 +3,7 @@
 
 
 <!-- Product section-->
-{% for message in messages %}
-<div
-  class="alert alert-{{message.tags}} alert-dismissible fade show"
-  role="alert"
->
-  {{message}}
-  <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="alert"
-    aria-label="Close"
-  ></button>
-</div>
-{% endfor %}
+
 
 <section class="py-5">
   <div class="container px-4 px-lg-5 my-5" style="max-width: 1000px">
@@ -73,7 +60,7 @@
                       column-gap: 20px;
                     "
                   >
-                    {% if Strap.quantity <= 0 %}
+                    {% if strap.quantity <= 0 %}
                     <h5 class="text-danger">Out of Stock</h5>
                     {% else %} {% if in_cart %}
                     <a href="{% url 'cart' %}" class="btn hero-btn"

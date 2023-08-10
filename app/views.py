@@ -35,6 +35,12 @@ def search(request):
             print("No information to show")
             return render(request,'search.html')
         
+def autocomplete(request):
+    if 'term' in request.GET:
+        products = Product.objects.filter(product_name__icontains=request.GET.get('term'))
+        terms = [product.product_name for product in products]
+        return JsonResponse(terms, safe=False)
+    return render(request, 'index.html')
 
 
 

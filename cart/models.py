@@ -9,11 +9,11 @@ from coupon.models import Coupon
 
 class Cart(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
-    product = models.ManyToManyField('app.product', through='CartItem')
+    # product = models.ManyToManyField('app.product', through='CartItem')
+    # product=models.ForeignKey(Product, on_delete=models.CASCADE)
     cart_id = models.CharField(max_length=250, blank=True)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    quantity = models.PositiveIntegerField(default=1)
     coupon_applied=models.ForeignKey(Coupon,on_delete=models.CASCADE,null=True)
 
 
@@ -43,8 +43,8 @@ class Cart(models.Model):
     def price(self):
         return self.product.price * self.quantity
     
-    def save(self):
-        return self.total_price - self.offer_total_price
+    # def save(self):
+    #     return self.total_price - self.offer_total_price
 
     def coupon_discount(self):
         if self.coupon_applied and self.coupon_applied.is_valid():

@@ -149,57 +149,7 @@
     margin-top: 10px;
     font-size: 13px;
   }
-  /* Custom checkbox */
-  .custom-checkbox {
-    position: relative;
-  }
-  .custom-checkbox input[type="checkbox"] {
-    opacity: 0;
-    position: absolute;
-    margin: 5px 0 0 3px;
-    z-index: 9;
-  }
-  .custom-checkbox label:before {
-    width: 18px;
-    height: 18px;
-  }
-  .custom-checkbox label:before {
-    content: "";
-    margin-right: 10px;
-    display: inline-block;
-    vertical-align: text-top;
-    background: white;
-    border: 1px solid #bbb;
-    border-radius: 2px;
-    box-sizing: border-box;
-    z-index: 2;
-  }
-  .custom-checkbox input[type="checkbox"]:checked + label:after {
-    content: "";
-    position: absolute;
-    left: 6px;
-    top: 3px;
-    width: 6px;
-    height: 11px;
-    border: solid #000;
-    border-width: 0 3px 3px 0;
-    transform: inherit;
-    z-index: 3;
-    transform: rotateZ(45deg);
-  }
-  .custom-checkbox input[type="checkbox"]:checked + label:before {
-    border-color: #03a9f4;
-    background: #03a9f4;
-  }
-  .custom-checkbox input[type="checkbox"]:checked + label:after {
-    border-color: #fff;
-  }
-  .custom-checkbox input[type="checkbox"]:disabled + label:before {
-    color: #b8b8b8;
-    cursor: auto;
-    box-shadow: none;
-    background: #ddd;
-  }
+  
   /* Modal styles */
   .modal .modal-dialog {
     max-width: 400px;
@@ -236,7 +186,7 @@
     font-weight: normal;
   }
 </style>
-<script>
+{% comment %} <script>
   $(document).ready(function () {
     // Activate tooltip
     $('[data-toggle="tooltip"]').tooltip();
@@ -260,30 +210,13 @@
       }
     });
   });
-</script>
+</script> {% endcomment %}
 <script>
-  $(document).ready(function () {
-    $("#deletecategoryModal").on("show.bs.modal", function (e) {
-      var id = $(e.relatedTarget).data("c-id");
-      $(this)
-        .find(".modal-body p")
-        .html(
-          "Are you sure you want to delete the Category with ID " + id + "?"
-        );
-      $(this)
-        .find('.modal-footer input[type="submit"]')
-        .attr("formaction", "/deletecategory/" + id + "/");
-    });
-    $("#deletesubcategoryModal").on("show.bs.modal", function (e) {
-      var id = $(e.relatedTarget).data("s-id");
-      $(this)
-        .find(".modal-body p")
-        .html(
-          "Are you sure you want to delete the Subcategory with ID " + id + "?"
-        );
-      $(this)
-        .find('.modal-footer input[type="submit"]')
-        .attr("formaction", "/deletesubcategory/" + id + "/");
+  $(document).ready(function() {
+    $('#deletecategoryModal').on('show.bs.modal', function(e) {
+        var id = $(e.relatedTarget).data('c-id');
+        $(this).find('.modal-body p').html("Are you sure you want to delete the Category with ID " + id + "?");
+        $(this).find('.modal-footer input[type="submit"]').attr('formaction', "/delete_category/" + id + "/");
     });
   });
 </script>
@@ -293,23 +226,14 @@
         <div class="col-sm-6">
           <h2><b>Category</b></h2>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6" style="padding-top: 120px;">
           <a
             href="#addEmployeeModal"
             class="btn btn-success"
             data-toggle="modal"
             ><i class="material-icons">&#xE147;</i> <span>Add Category</span></a
           >
-          {% comment %}
-          <a
-            href="#deleteEmployeeModal"
-            class="btn btn-danger"
-            data-toggle="modal"
-            ><i class="material-icons">&#xE15C;</i> <span>Delete</span></a
-          >
-          {% endcomment %}
         </div>
-        <h6 style="color: black; text-align: center; font-size: 20px;">Category</h6>
 
       </div>
     </div>
@@ -368,7 +292,7 @@
                     href="#deletecategoryModal"
                     class="delete"
                     data-toggle="modal"
-                    data-c-id="{{ c.id }}"
+                    data-c-id="{{ s.id }}"
                     ><i
                       class="material-icons"
                       data-toggle="tooltip"
@@ -489,10 +413,9 @@
 <div id="deletecategoryModal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
-        {%for s in stu%}
-      <form action="{% url 'delete_category' s.id %}" method="post">
+      <form action="" method="post">
         {% csrf_token %}
-        {% endfor %}
+      
 
         <div class="modal-header">
           <h4 class="modal-title">Delete Category</h4>

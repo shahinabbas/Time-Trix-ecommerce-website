@@ -213,12 +213,13 @@ def admin_index(request):
 @login_required(login_url='admin_signin')
 def add_category(request):
     if request.method == 'POST':
-        category_name = request.POST['categoryname']
-        if Category.objects.filter(categories=category_name).exists():
-            error_message = 'Category name already exists.'
+        category_name = request.POST.get('categoryname')
+        ctg=Category.objects.filter(categories=category_name)
+        if ctg.exists():
+            # error_message = 'Category name already exists.'
             return render(request, 'admin/category_list.html')
         else:
-            Category = Category.objects.create(categories=category_name)
+            category = Category.objects.create(categories=category_name)
             # stu = category.objects.all()
             return redirect('category_list')
     return render(request, "admin/category_list.html")
@@ -247,7 +248,7 @@ def edit_category(request,id):
 
 @never_cache
 @login_required(login_url='admin_signin')
-def delete_categorypage(request, id):
+def delete_category(request, id):
     if request.method == 'POST':
         co = get_object_or_404(Category,pk=id)
         co.delete()

@@ -12,7 +12,7 @@ urlpatterns = [
     path('wishlist/',views.wishlist,name='wishlist'),
     path('add_to_wishlist/<int:product_id>/',views.add_to_wishlist,name='add_to_wishlist'),
 
-    # path("autocomplete/",views.autocomplete,name='autocomplete'),
+    path("autocomplete/",views.autocomplete,name='autocomplete'),
     path("search/",views.search,name='search'),
     
     path('user_category/<str:cat>/',views.user_category,name='user_category'),

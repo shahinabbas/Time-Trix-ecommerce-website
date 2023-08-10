@@ -1,11 +1,16 @@
 {% extends 'layouts/main.html' %} {% block body %}
+<div class="container mt-5 mb-5">
+  <div class="row">
+    <!-- Sidebar Card -->
+
+    {% include 'inc/sidebar.html' %}
 
 <section class="h-100 gradient-custom">
     
   {% for order_item in order_item %}
-  <div class="container py-5 h-90">
-    <div class="card shadow-0 border mb-4">
-      <div class="card-body">
+  <div class="container py-25 h-90">
+    <div class="card shadow-0 border mb-2">
+      <div class="card-body" style="width: 800px;">
         <div class="row">
             <div class="col-md-2">
                 <img

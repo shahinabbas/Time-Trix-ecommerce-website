@@ -46,8 +46,8 @@ def search(request):
             return render(request,'search.html')
         
 def autocomplete(request):
-    if 'term' in request.GET:
-        products = Product.objects.filter(product_name__icontains=request.GET.get('term'))
+    if 'query' in request.GET:
+        products = Product.objects.filter(product_name__icontains=request.GET.get('query'))
         terms = [product.product_name for product in products]
         return JsonResponse(terms, safe=False)
     return render(request, 'index.html')
@@ -78,9 +78,12 @@ def add_to_wishlist(request, product_id):
     wishlist = Wishlist.objects.filter(user=user)
     if not wishlist.filter(product=pro).exists():
         Wishlist.objects.create(user=user, product=pro)
+        messages.success(request,'Added product to wishlist')
     else:
         wishlist_item = Wishlist.objects.get(user=user, product=pro)
         wishlist_item.delete()
+        messages.info(request,'Removed product from wishlist')
+
     return redirect('product_details', product_id=product_id)
 
 

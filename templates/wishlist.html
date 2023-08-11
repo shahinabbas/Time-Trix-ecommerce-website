@@ -1,18 +1,7 @@
 {% extends 'layouts/main.html' %} {% load static %} {% block body %}
 
 <body>
-  <!--? Preloader Start -->
-  <div id="preloader-active">
-    <div class="preloader d-flex align-items-center justify-content-center">
-      <div class="preloader-inner position-relative">
-        <div class="preloader-circle"></div>
-        <div class="preloader-img pere-text">
-          <img src="assets/img/logo/logo.png" alt="" />
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Preloader Start -->
+ 
 {% if not wishlist %}
 
   <div class="container-fluid  mt-100">
@@ -24,7 +13,7 @@
        <div class="card-body cart">
            <div class="col-sm-12 empty-cart-cls text-center">
              <img src="https://imgur.com/KWN43fw.png" width="130" height="130" class="img-fluid mb-4 mr-3">
-             <h3><strong>Your Cart is Empty</strong></h3>
+             <h3><strong>Your wishlist is Empty</strong></h3>
              <h4>Add something to make me happy :)</h4>
              <a href="{% url 'shop' %}" class="btn hero-btn cart-btn-transform m-3" data-abc="true">continue shopping</a>
              
@@ -192,7 +181,7 @@
 
                     </div>
                     <div class="favorit-items">
-                      <span class="flaticon-heart add-wishlist"></span>
+                      <span class="flaticon-delete add-wishlist"></span>
                     
                     </div>
                   </div>

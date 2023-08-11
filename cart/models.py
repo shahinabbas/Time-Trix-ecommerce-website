@@ -58,12 +58,21 @@ class Cart(models.Model):
     #             return (self.coupon_applied.discount * self.total_price())/100
             
             
+    # def coupon_discount(self):
+    #     if self.coupon_applied and self.coupon_applied.is_valid():
+    #         if self.coupon_applied.discount_type == 'percentage':
+    #             return self.offer_total_price() * (self.coupon_applied.discount / 100)
+    #         elif self.coupon_applied.discount_type == 'amount':
+    #             return self.coupon_applied.discount
     def coupon_discount(self):
         if self.coupon_applied and self.coupon_applied.is_valid():
             if self.coupon_applied.discount_type == 'percentage':
                 return self.offer_total_price() * (self.coupon_applied.discount / 100)
             elif self.coupon_applied.discount_type == 'amount':
                 return self.coupon_applied.discount
+        else:
+            return 0
+
             
     def total(self):
         offer_price = self.offer_total_price()

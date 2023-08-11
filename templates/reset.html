@@ -32,10 +32,21 @@
             <form action="{% url 'reset' %}" method="post">
               {% csrf_token %}
               <div class="row mt-3 justify-content-center align-items-center">
+                {% comment %} <div class="col-md-8">
+                  <label class="labels">Enter old password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    placeholder="enter old password"
+                    value=""
+                    name="password"
+                    required
+                  >
+                </div> {% endcomment %}
                 <div class="col-md-8">
                   <label class="labels">Password</label>
                   <input
-                    type="text"
+                    type="password"
                     class="form-control"
                     placeholder="enter new password"
                     value=""
@@ -46,7 +57,7 @@
                 <div class="col-md-8">
                   <label class="labels">Confirm Password</label>
                   <input
-                    type="text"
+                    type="password"
                     class="form-control"
                     placeholder="confirm password"
                     value=""

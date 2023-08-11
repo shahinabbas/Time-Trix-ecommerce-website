@@ -193,6 +193,8 @@
                   </p>
                   <p>Category: {{cart_item.product.category}}</p>
                   <p>Selected Strap: {{cart_item.strap.strap}}</p>
+                  <p>Price: {{cart_item.product.offer_price}}</p>
+
 
                   <a href="{% url 'delete_cart_item' cart_item.id %}"
                     ><button
@@ -205,7 +207,7 @@
                       <i class="fas fa-trash"></i></button
                   ></a>
 
-                  <button
+                  {% comment %} <button
                     type="button"
                     class="btn btn-danger"
                     data-mdb-toggle="tooltip"
@@ -213,7 +215,7 @@
                     style="padding: 15px 20px; font-size: 12px; line-height: 1;"
                   >
                     <i class="fas fa-heart"></i>
-                  </button>
+                  </button> {% endcomment %}
                   <!-- Data -->
                 </div>
 

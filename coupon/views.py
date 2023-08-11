@@ -30,8 +30,7 @@ class CouponView(View):
             cart, created = Cart.objects.get_or_create(user=user)
 
             if cart.total() < coupon.minimum_amount:
-                messages.warning(request, 'Minimum amount is',
-                                 {{coupon.minimum_amount}})
+                messages.warning(request, 'Minimum amount not met')
                 return redirect(reverse('cart'))
             else:
                 cart.coupon_applied = coupon

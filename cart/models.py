@@ -43,18 +43,27 @@ class Cart(models.Model):
     def price(self):
         return self.product.price * self.quantity
     
-    # def save(self):
-    #     return self.total_price - self.offer_total_price
+    def qwe(self):
+        return self.total_price() - self.offer_total_price()
+    
     def tax(self):
         taxes=self.offer_total_price()
         return (3 * taxes)//100
     
+    # def coupon_discount(self):
+    #     if self.coupon_applied and self.coupon_applied.is_valid():
+    #         if self.coupon_applied == 'amount':
+    #             return self.coupon_applied.discount
+    #         elif self.coupon_applied.discount_type == 'percentage':
+    #             return (self.coupon_applied.discount * self.total_price())/100
+            
+            
     def coupon_discount(self):
         if self.coupon_applied and self.coupon_applied.is_valid():
-            # if self.coupon_applied == 'amount':
-            return self.coupon_applied.discount
-            # elif self.coupon_applied.discount_type == 'percentage':
-            #     return (self.coupon_applied.discount * self.total_price())/100
+            if self.coupon_applied.discount_type == 'percentage':
+                return self.offer_total_price() * (self.coupon_applied.discount / 100)
+            elif self.coupon_applied.discount_type == 'amount':
+                return self.coupon_applied.discount
             
     def total(self):
         offer_price = self.offer_total_price()

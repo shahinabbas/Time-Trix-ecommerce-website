@@ -60,14 +60,8 @@ def checkout(request, total=0, quantity=0, cart_items=None):
     return render(request, 'checkout.html', context)
 
 def success(request):
-    order_id = request.GET.get('order_id')
-    cart=Cart.objects.get(razor_pay_order_id=order_id)
-    cart.is_paid=True
-    cart.save()
-    # payment_id = request.GET.get('payment_id')
-    # payment_order_id = request.GET.get('payment_order_id')
-    # payment_sign = request.GET.get('payment_sign')
-    return HttpResponse('Payment Succces')
+    messages.success(request,'Payment Successful now you can place order.')
+    return redirect('checkout')
 
 def myorders(request):
     user=request.user
@@ -80,7 +74,6 @@ def myorders(request):
     }
     return render(request,'myorders.html',context)
 
-
 @login_required(login_url='login')
 def create_order(request):
     if request.method == 'POST':
@@ -90,10 +83,7 @@ def create_order(request):
     address=get_object_or_404(User_Profile,id=address_id)
     price1=cart.total_price()
     payment_amount1=cart.offer_total_price()
-    if payment_method == "razorpay":
-        order.payment_status = 'Completed'
-        print('11111111111111111111111111111111111111111111111')
-        order.save()
+ 
 
     order=Order.objects.create(
         user=request.user,
@@ -103,6 +93,10 @@ def create_order(request):
         offer_price=payment_amount1,
         payment_amount=payment_amount1,
         )
+    if payment_method == "razorpay":
+        order.payment_status = 'Completed'
+        print('11111111111111111111111111111111111111111111111')
+        order.save()
     for cart_item in CartItem.objects.all():
         OrderItem.objects.create(
             order_no=order,
@@ -117,9 +111,56 @@ def create_order(request):
     cart.delete()
     return render(request,'confirmation.html',{"address":address})
 
+# @login_required(login_url='login')
+# def create_order(request):
+#     if request.method == 'POST':
+#         address_id=request.POST.get('address')
+#         print(address_id,'11111111111111111111111111111111111111')
+#         payment_method=request.POST.get('pay-method')
+#         print(payment_method,'222222222222222222222222222222222222')
+#     cart=get_object_or_404(Cart,user=request.user)
+#     print('55555555444444444444444444444444444444555555555555')
+
+#     address=get_object_or_404(User_Profile,address=address_id)
+#     price1=cart.total_price()
+#     payment_amount1=cart.offer_total_price()
+#     print('555555555555555555555555555555555555555552222222222222222222222222555555555555')
+
+
+#     order=Order.objects.create(
+#         user=request.user,
+#         address=address,
+#         payment_method=payment_method,
+#         price=price1,
+#         offer_price=payment_amount1,
+#         payment_amount=payment_amount1,
+#         )
+#     print('55555555555555555555555555555555555555555555555555555')
+#     if payment_method == "razorpay":
+#         order.payment_status = 'Completed'
+#         order.save()
+
+#     for cart_item in CartItem.objects.all():
+#         OrderItem.objects.create(
+#             order_no=order,
+#             product=cart_item.product,
+#             strap=cart_item.strap,
+#             quantity=cart_item.quantity,
+#             amount=payment_amount1,
+#             )
+#     strap=Strap.objects.get(id=cart_item.strap_id)
+#     print(strap,'1111111111111111111111111111111111111111111111111111111111')
+#     print("Before: Strap Quantity =", strap.quantity)
+#     strap.quantity -= cart_item.quantity
+#     strap.save()
+#     print("After: Strap Quantity =", strap.quantity)
+#     cart.delete()
+#     return render(request,'confirmation.html',{"address":address})
+
     # return render(request,'order.html')
 
-
+def payment(request):
+    return render(request,'payment.html')
 
 @login_required(login_url='login')
 def add_cart(request, product_id):

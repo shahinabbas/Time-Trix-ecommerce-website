@@ -81,6 +81,11 @@ class Product(models.Model):
         self.is_deleted = True
         self.save()
 
+    
+    def undo(self):
+        self.is_deleted = False
+        self.save()
+
     def __str__(self):
         return self.product_name
 

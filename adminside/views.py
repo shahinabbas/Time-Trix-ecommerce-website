@@ -215,9 +215,7 @@ def userspage(request):
 # @login_required(login_url='admin_signin')
 def user_blockpage(request, id):
     if request.method == 'POST':
-        print('11111111111111111111111111111111111111111111111111111')
         user = CustomUser.objects.get(pk=id)
-        print('2222222222222222222222222222222222222222222222')
         user.is_active = False
         user.save()
     return redirect('users')
@@ -308,9 +306,9 @@ def delete_product(request, id):
 def undo_productpage(request, id):
     if request.method == 'POST':
         product = get_object_or_404(Product, pk=id)
-        product.is_deleted = False
-        product.save()
+        product.undo()
         return redirect('products')
+        
 
 
 def admin_signin(request):

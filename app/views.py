@@ -17,13 +17,23 @@ from django.db.models import Q
 def index(request):
     return render(request, 'index.html')
 
-def user_category(request,cat):
-    print(cat,'111111111111111111111111111111111')
-    cat=get_object_or_404(Category,categories=cat)
-    print(cat,'222222222222222222222222222222222222222')
-    product=Product.objects.filter(categor=cat)
-    print(product,'333333333333333333333333333333333')
-    return render(request,'user_category',{'product':product})
+from django.shortcuts import render
+from .models import Product, Category
+
+def user_category(request,id):
+    all_category=Category.objects.all()
+    print(all_category,'12312312312312312312323121231232112')
+    category=Category.objects.get(pk=id)
+    product=Product.objects.filter(category=category,is_deleted=False)
+    context={
+        'all_category':all_category,
+        'category': category,
+        'product': product,
+    }
+    return render(request,'user_category.html',context)
+
+
+
 
 def search(request):
     if request.method=='GET':

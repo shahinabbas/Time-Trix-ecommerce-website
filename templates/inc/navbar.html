@@ -34,9 +34,10 @@
                 <li>
                   <a href="#">Categories</a>
                   <ul class="submenu">
-                    <li><a href="">Analog</a></li>
-                    <li><a href="">digital</a></li>
-                    <li><a href="">smart</a></li>
+                    {% for cat in all_category %}
+                    <li><a href="{% url 'user_category' cat.id %}">{{ cat.categories }}</a></li>
+                    {% endfor %}
+                    
                   </ul>
                 </li>
                 <li><a href="{% url 'about' %}">About</a></li>

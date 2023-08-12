@@ -159,6 +159,3 @@ MESSAGE_TAGS={
     messages.ERROR:'danger'
 }
 
-
-RAZOR_PAY_KEY_ID = 'rzp_test_LX4eJN9JRPlhxG'
-KEY_SECRET = '8KEd4VJn3Q2WT2wGtEUNlAv3'

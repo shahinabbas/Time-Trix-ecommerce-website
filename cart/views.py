@@ -256,9 +256,9 @@ def delete_cart_item(request, product_id):
     
 
 def order_details(request,id):
-    order=Order.objects.filter(order_id=id)
-    print(order)
-    return render(request,"order_details.html")
+    order = get_object_or_404(Order, order_id=id)
+    product = OrderItem.objects.filter(order_no=order)
+    return render(request,"order_details.html",{'product':product})
 
 
 # def delete_cart_item(request, product_id):

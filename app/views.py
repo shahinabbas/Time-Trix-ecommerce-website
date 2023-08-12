@@ -240,12 +240,14 @@ def product_details(request, product_id):
     product = Product.objects.get(id=product_id)
     all_categories = Category.objects.all()
     strap = Strap.objects.all()
-    # wishlist=Wishlist.objects.filter(user=request.user)
+    wishlist=Wishlist.objects.filter(user=request.user)
+    print(wishlist[0].product)
+    print(wishlist[1].product)
     context = {
         'product': product,
         "category": all_categories,
         'strap': strap,
-        #   'wishlist':wishlist,
+        'wishlist':wishlist,
 
     }
 

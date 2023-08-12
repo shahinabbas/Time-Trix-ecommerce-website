@@ -96,18 +96,20 @@
                       >Add to wishlist <i class="flaticon-heart"></i
                     ></a>
                     {% endif %} {% endcomment %} 
-                    {% if product in user.wishlist_set.all %}
+                    {% if product in wishlist %}
+                    {{product}}6
                     <a
                       href="{% url 'add_to_wishlist' product.id %}"
-                      class="btn hero-btn"
+                     class="btn hero-btn"
                     >
-                      Remove from wishlist <i class="flaticon-heart"></i
+                     Add to wishlist <i class="flaticon-heart"></i
                     ></a>
                     {% else %}
+                    {{product}}22
                     <a
                       href="{% url 'add_to_wishlist' product.id %}"
                       class="btn hero-btn"
-                      >Add to wishlist <i class="flaticon-heart"></i
+                      > Remove from wishlist <i class="flaticon-heart"></i
                     ></a>
                     {% endif %}
                   </div>

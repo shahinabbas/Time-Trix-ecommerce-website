@@ -14,7 +14,7 @@ class Cart(models.Model):
     cart_id = models.CharField(max_length=250, blank=True)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    coupon_applied=models.ForeignKey(Coupon,on_delete=models.CASCADE,null=True)
+    coupon_applied=models.ForeignKey(Coupon,on_delete=models.DO_NOTHING,null=True)
 
 
     def __str__(self):
@@ -136,7 +136,7 @@ class Order(models.Model):
     order_status = models.CharField(max_length=50, choices=ORDER_STATUS,default="pending")
     payment_status = models.CharField(max_length=50, choices=PAYMENT_STATUS,default="pending")
     payment_method = models.CharField(max_length=50)
-    address = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
+    address = models.ForeignKey(User_Profile, on_delete=models.DO_NOTHING)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     offer_price = models.DecimalField(max_digits=10, decimal_places=2)
     # coupon_discount = models.DecimalField(max_digits=10, decimal_places=2)

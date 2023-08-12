@@ -1,112 +1,207 @@
-{% extends 'layouts/main.html' %}
-{% load static %} 
- {% block body %}
-
-<!-- Header Start -->
-{% include 'inc/navbar.html' %}
-<!-- Header End -->
+{% extends 'layouts/main.html' %} {% load static %} {% block body %}
 
 <div class="container mt-5 mb-5">
   <div class="row">
-        {% include 'inc/sidebar.html' %}
-        
-<!-- User Profile Card -->
+    {% include 'inc/sidebar.html' %}
+
+    <!-- User Profile Card -->
     <div class="col-md-9">
       <div class="card">
         <div class="card-body">
           {% for message in messages %}
-        <div
-          class="alert alert-{{message.tags}} alert-dismissible fade show"
-          role="alert"
-        >
-          {{message}}
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
+          <div
+            class="alert alert-{{message.tags}} alert-dismissible fade show"
+            role="alert"
+          >
+            {{message}}
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+          {% endfor %}
         </div>
-        {% endfor %}
-      </div>
-          <div class="p-3 py-5">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h4 class="text-right">Profile Settings</h4>
-              </div>
-              <form action="{% url 'add_address' %}" method="post">
-                {% csrf_token %}
+        <div class="p-3 py-5">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="text-right">Profile Settings</h4>
+          </div>
+          <form action="{% url 'add_address' %}" method="post">
+            {% csrf_token %}
             <div class="row mt-2">
-                  <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" value="" name="name" required></div>
-                  <div class="col-md-6"><label class="labels">Email</label><input type="email" class="form-control" placeholder="email" value="" name="email" ></div>
+              <div class="col-md-6">
+                <label class="labels">Name</label
+                ><input
+                  type="text"
+                  class="form-control"
+                  placeholder="first name"
+                  value=""
+                  name="name"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="labels">Email</label
+                ><input
+                  type="email"
+                  class="form-control"
+                  placeholder="email"
+                  value=""
+                  name="email"
+                />
+              </div>
             </div>
             <div class="row mt-3">
-                <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" class="form-control" placeholder="enter phone number" value="" name="phone_number" required></div>
-                <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control" placeholder="address" value="" name="address" required></div>
+              <div class="col-md-12">
+                <label class="labels">Mobile Number</label
+                ><input
+                  type="text"
+                  class="form-control"
+                  placeholder="enter phone number"
+                  value=""
+                  name="phone_number"
+                  required
+                />
+              </div>
+              <div class="col-md-12">
+                <label class="labels">Address</label
+                ><input
+                  type="text"
+                  class="form-control"
+                  placeholder="address"
+                  value=""
+                  name="address"
+                  required
+                />
+              </div>
             </div>
             <div class="row mt-2">
-                <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value="" name="country" required></div>
-                <div class="col-md-6"><label class="labels">State</label><input type="text" class="form-control" placeholder="State" value="" name="state" required></div>
-                <div class="col-md-6"><label class="labels">City</label><input type="text" class="form-control" placeholder="City" value="" name="city" required></div>
-                <div class="col-md-6"><label class="labels">Street</label><input type="text" class="form-control" placeholder="Street" value="" name="street" required></div>
-                <div class="col-md-6"><label class="labels">House Number</label><input type="text" class="form-control" placeholder="House Number" value="" name="house_no" required></div>
-                <div class="col-md-6"><label class="labels">Pin code</label><input type="text" class="form-control" placeholder="Pin Code" value="" name="pin_code" required></div>
+              <div class="col-md-6">
+                <label class="labels">Country</label
+                ><input
+                  type="text"
+                  class="form-control"
+                  placeholder="country"
+                  value=""
+                  name="country"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="labels">State</label
+                ><input
+                  type="text"
+                  class="form-control"
+                  placeholder="State"
+                  value=""
+                  name="state"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="labels">City</label
+                ><input
+                  type="text"
+                  class="form-control"
+                  placeholder="City"
+                  value=""
+                  name="city"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="labels">Street</label
+                ><input
+                  type="text"
+                  class="form-control"
+                  placeholder="Street"
+                  value=""
+                  name="street"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="labels">House Number</label
+                ><input
+                  type="text"
+                  class="form-control"
+                  placeholder="House Number"
+                  value=""
+                  name="house_no"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="labels">Pin code</label
+                ><input
+                  type="text"
+                  class="form-control"
+                  placeholder="Pin Code"
+                  value=""
+                  name="pin_code"
+                  required
+                />
+              </div>
             </div>
 
-              <div class="mt-5 text-center">
-                <button class="btn btn-primary profile-button" >Save Profile</button>
+            <div class="mt-5 text-center">
+              <button class="btn btn-primary profile-button">
+                Save Profile
+              </button>
             </div>
-        </form>
-          </div>
+          </form>
+        </div>
       </div>
-     
+    </div>
   </div>
 </div>
-</div>
-</div>
 
-<style>body {
-  {% comment %} background: rgb(99, 39, 120) {% endcomment %}
-}
+<style>
+  body {
+    {% comment %} background: rgb(99, 39, 120) {% endcomment %}
+  }
 
-.form-control:focus {
-  box-shadow: none;
-  border-color: #BA68C8
-}
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #BA68C8
+  }
 
-.profile-button {
-  background: rgb(99, 39, 120);
-  box-shadow: none;
-  border: none
-}
+  .profile-button {
+    background: rgb(99, 39, 120);
+    box-shadow: none;
+    border: none
+  }
 
-.profile-button:hover {
-  background: #682773
-}
+  .profile-button:hover {
+    background: #682773
+  }
 
-.profile-button:focus {
-  background: #682773;
-  box-shadow: none
-}
+  .profile-button:focus {
+    background: #682773;
+    box-shadow: none
+  }
 
-.profile-button:active {
-  background: #682773;
-  box-shadow: none
-}
+  .profile-button:active {
+    background: #682773;
+    box-shadow: none
+  }
 
-.back:hover {
-  color: #682773;
-  cursor: pointer
-}
+  .back:hover {
+    color: #682773;
+    cursor: pointer
+  }
 
-.labels {
-  font-size: 11px
-}
+  .labels {
+    font-size: 11px
+  }
 
-.add-experience:hover {
-  background: #BA68C8;
-  color: #fff;
-  cursor: pointer;
-  border: solid 1px #BA68C8
-}</style>
+  .add-experience:hover {
+    background: #BA68C8;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #BA68C8
+  }
+</style>
 
 {% endblock body%}

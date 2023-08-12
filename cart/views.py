@@ -255,6 +255,11 @@ def delete_cart_item(request, product_id):
     return redirect('cart')
     
 
+def order_details(request,id):
+    order=Order.objects.filter(order_id=id)
+    print(order)
+    return render(request,"order_details.html")
+
 
 # def delete_cart_item(request, product_id):
     # cart = Cart.objects.get(cart_id=_cart_id(request))

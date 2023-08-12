@@ -13,12 +13,15 @@
       <div class="card-body" style="width: 800px;">
         <div class="row">
             <div class="col-md-2">
+              <a href="{% url "order_details" id=order_item.order_no.order_id %}">
+
                 <img
                     src="{{ order_item.product.product_Image.url }}"
                     alt="Phone"
                     width="90" 
                     height="90" 
                 />
+              </a>
             </div>
             
           <div

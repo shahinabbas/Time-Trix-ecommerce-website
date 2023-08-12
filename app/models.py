@@ -94,8 +94,7 @@ class User_Profile(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(_('name'), max_length=100)
     address=models.CharField(_('address'),max_length=180)
-    phone_number = models.BigIntegerField(
-        _('phone_number'))
+    phone_number = models.BigIntegerField(_('phone_number'))
     house_no = models.CharField(_('house number'), max_length=10)
     street = models.CharField(_('street'), max_length=100)
     city = models.CharField(_('city'), max_length=100)

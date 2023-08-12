@@ -238,29 +238,7 @@
     }	
     </style>
     
-    <script>
-
-
-        {% comment %} $(document).ready(function() {
-            $('#deletesubcategoryModal').on('show.bs.modal', function(e) {
-                var id = $(e.relatedTarget).data('p-id');
-                var form = $(this).find('form'); // Get the form within the modal
-                form.attr('action', "{% url 'delete_coupon' %}" + id + "/"); // Update form action
-                $(this).find('.modal-body p').html("Are you sure you want to delete the Product with ID " + id + "?");
-            });
-        }); {% endcomment %}
-{% comment %}         
-        $(document).ready(function() {
-            $('#deletesubcategoryModal').on('show.bs.modal', function(e) {
-                var id = $(e.relatedTarget).data('p-id');
-                $(this).find('.modal-body p').html("Are you sure you want to delete the Product with ID " + id + "?");
-                $(this).find('.modal-footer input[type="submit"]').attr('formaction', "/deleteproduct/" + id + "/");
-            }); {% endcomment %}
-            $('.edit').on('click', function() {
-                var couponId = $(this).data('p-id');
-                $('#coupon-id-input').val(couponId);
-            });
-    </script>
+    
 <div class="table-responsive" style="padding-top: 100px;">
     <div class="table-wrapper">
         <div class="table-title">
@@ -301,12 +279,9 @@
                     <td>{{c.discount}}</td>     
                     <td>{{c.valid_from}}</td>
                     <td>{{c.valid_to}}</td>
-                    <td><a href="#editModal" class="edit" data-toggle="modal" data-p-id="{{ c.id }}"><i
-                        class="material-icons"
-                        data-toggle="tooltip"
-                        title="Edit"
-                        >&#xE254;</i
-                      ></a>
+                    <td> <a href="#editModal" class="edit" data-toggle="modal" data-p-id="{{ c.id }}">
+                        <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+                    </a>
                       <a href="#deleteModal" class="delete" data-toggle="modal" data-p-id="{{ c.id }}">
                         <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
                     </a>
@@ -324,12 +299,10 @@
 <div id="editModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            
-            <form method="post" action="">
-                {% comment %} {% url 'edit_coupon' id %} {% endcomment %}
+            <form id="editForm" method="post" action="">
                 {% csrf_token %}
-                <div class="modal-header">						
-                    <h4 class="modal-title">Add coupon</h4>
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Coupon</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -454,18 +427,30 @@
     $(document).ready(function() {
         $('#deleteModal').on('show.bs.modal', function(e) {
             var id = $(e.relatedTarget).data('p-id');
-            $(this).find('.modal-footer input[type="submit"]').attr('formaction', "/delete_coupon/" + id + "/");
+            $(this).find('.modal-body p').html("Are you sure you want to delete the Coupon with ID " + id + "?");
+            $(this).find('.modal-footer input[type="submit"]').attr('formaction', "/adminside/delete_coupon/" + id + "/");
         });
     });
 </script>
-
+<script>
+    $(document).ready(function() {
+        $('.edit').on('click', function() {
+            var couponId = $(this).data('p-id');
+            $('#couponId').val(couponId); // Set coupon ID in the hidden input field
+            var editForm = $('#editForm');
+            var editFormAction = editForm.attr('action');
+            editForm.attr('action', editFormAction.replace('id', couponId));
+        });
+    });
+</script>
+{% comment %} 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <!-- Include Bootstrap JavaScript -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> {% endcomment %}
+    {% comment %} <script>
         $(document).ready(function () {
             $('#datepicker-input').datepicker();
             $('#datepicker-expiry').datepicker();
         });
-    </script> 
+    </script>  {% endcomment %}
     {% endblock body %}

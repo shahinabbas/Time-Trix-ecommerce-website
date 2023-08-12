@@ -142,12 +142,12 @@
   }
 </style>
 
-<script>
+{% comment %} <script>
   $(function () {
     $("#form1").autocomplete({
       source: "{% url 'autocomplete' %}",
     });
   });
-</script>
+</script> {% endcomment %}
 
 

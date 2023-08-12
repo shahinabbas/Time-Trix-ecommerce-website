@@ -1,134 +1,177 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="zxx">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>TIME TRIX | eCommers</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% comment %} <link rel="manifest" href="{% static 'site.webmanifest' %}"> {% endcomment %}
-    {% comment %} <link rel="shortcut icon" type="image/x-icon" href= "{% static 'assets/img/favicon.ico' %}"> {% endcomment %}
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {% comment %}
+    <link rel="manifest" href="{% static 'site.webmanifest' %}" />
+    {% endcomment %} {% comment %}
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="{% static 'assets/img/favicon.ico' %}"
+    />
+    {% endcomment %}
 
     <!-- CSS here -->
-    <link rel= "stylesheet" href= "{% static 'assets/css/bootstrap.min.css' %}">
-    <link rel= "stylesheet" href= "{% static 'assets/css/owl.carousel.min.css' %}">
-    <link rel= "stylesheet" href= "{% static 'assets/css/flaticon.css' %}">
-    <link rel= "stylesheet" href= "{% static 'assets/css/slicknav.css' %}">
-    <link rel= "stylesheet" href= "{% static 'assets/css/animate.min.css' %}">
-    <link rel= "stylesheet" href= "{% static 'assets/css/magnific-popup.css' %}">
-    <link rel= "stylesheet" href= "{% static 'assets/css/fontawesome-all.min.css' %}">
-    <link rel= "stylesheet" href= "{% static 'assets/css/themify-icons.css' %}">
-    <link rel= "stylesheet" href= "{% static 'assets/css/slick.css' %}">
-    <link rel= "stylesheet" href= "{% static 'assets/css/nice-select.css' %}">
-    <link rel= "stylesheet" href= "{% static 'assets/css/style.css' %}">
-    <link rel= "stylesheet" href= "{% static 'assets/css/product_view.css' %}">
-    <link rel= "stylesheet" href= "{% static  '//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css' %}">
-    
-    
-</head>
-<body>
-{% include 'inc/navbar.html' %}
-
-{% block body %}
-
-{% endblock body %}
-
-
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/css/owl.carousel.min.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'assets/css/flaticon.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/slicknav.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/css/magnific-popup.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/css/fontawesome-all.min.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'assets/css/themify-icons.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/slick.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/product_view.css' %}" />
+    {% comment %}
+    <link
+      rel="stylesheet"
+      href="{% static  '//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css' %}"
+    />
+    {% endcomment %}
+  </head>
+  <body>
+    {% include 'inc/navbar.html' %} {% block body %} {% endblock body %}
 
     <footer>
-        <!-- Footer Start-->
-        <div class="footer-area footer-padding">
-            <div class="container">
-                <div class="row d-flex justify-content-between">
-                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-6">
-                        <div class="single-footer-caption mb-50">
-                            <div class="single-footer-caption mb-30">
-                                <!-- logo -->
-                                <div class="footer-logo">
-                                    <a href="{% url 'index' %}">
-                                        <h2><img src="{% static 'assets/img/logo/time.png' %}" alt="" width="45" height="45">TIME TRIX</h2></a>                                </div>
-                                <div class="footer-tittle">
-                                    <div class="footer-pera">
-                                        <p>Asorem ipsum adipolor sdit amet, consectetur adipisicing elitcf sed do eiusmod tem.</p>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
+      <!-- Footer Start-->
+      <div class="footer-area footer-padding">
+        <div class="container">
+          <div class="row d-flex justify-content-between">
+            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-6">
+              <div class="single-footer-caption mb-50">
+                <div class="single-footer-caption mb-30">
+                  <!-- logo -->
+                  <div class="footer-logo">
+                    <a href="{% url 'index' %}">
+                      <h2>
+                        <img
+                          src="{% static 'assets/img/logo/time.png' %}"
+                          alt=""
+                          width="45"
+                          height="45"
+                        />TIME TRIX
+                      </h2></a
+                    >
+                  </div>
+                  <div class="footer-tittle">
+                    <div class="footer-pera">
+                      <p>
+                        Asorem ipsum adipolor sdit amet, consectetur adipisicing
+                        elitcf sed do eiusmod tem.
+                      </p>
                     </div>
-                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-5">
-                        <div class="single-footer-caption mb-50">
-                            <div class="footer-tittle">
-                                <h4>Quick Links</h4>
-                                <ul>
-                                    <li><a href="{% url 'about' %}">About</a></li>
-                                    <li><a href="{% url 'user_profile' %}"> Offers & Discounts</a></li>
-                                    <li><a href="#"> Get Coupon</a></li>
-                                    <li><a href="{% url 'contact' %}"> Contact Us</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-7">
-                        <div class="single-footer-caption mb-50">
-                            <div class="footer-tittle">
-                                <h4>New Products</h4>
-                                <ul>
-                                    <li><a href="#">Woman Cloth</a></li>
-                                    <li><a href="#">Fashion Accessories</a></li>
-                                    <li><a href="#"> Man Accessories</a></li>
-                                    <li><a href="#"> Rubber made Toys</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-7">
-                        <div class="single-footer-caption mb-50">
-                            <div class="footer-tittle">
-                                <h4>Support</h4>
-                                <ul>
-                                    <li><a href="#">Frequently Asked Questions</a></li>
-                                    <li><a href="#">Terms & Conditions</a></li>
-                                    <li><a href="#">Privacy Policy</a></li>
-                                    <li><a href="#">Report a Payment Issue</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                  </div>
                 </div>
-                {% comment %} <!-- Footer bottom -->
-                <div class="row align-items-center">
-                    <div class="col-xl-7 col-lg-8 col-md-7">
-                        <div class="footer-copy-right">
-                            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>                  
-                        </div>
-                    </div>
-                    <div class="col-xl-5 col-lg-4 col-md-5">
-                        <div class="footer-copy-right f-right">
-                            <!-- social -->
-                            <div class="footer-social">
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="https://www.facebook.com/sai4ull"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-behance"></i></a>
-                                <a href="#"><i class="fas fa-globe"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
-        </div> {% endcomment %}
-        <!-- Footer End-->
+            <div class="col-xl-2 col-lg-3 col-md-3 col-sm-5">
+              <div class="single-footer-caption mb-50">
+                <div class="footer-tittle">
+                  <h4>Quick Links</h4>
+                  <ul>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li>
+                      <a href="{% url 'user_profile' %}"> Offers & Discounts</a>
+                    </li>
+                    <li><a href="#"> Get Coupon</a></li>
+                    <li><a href="{% url 'contact' %}"> Contact Us</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-7">
+              <div class="single-footer-caption mb-50">
+                <div class="footer-tittle">
+                  <h4>New Products</h4>
+                  <ul>
+                    <li><a href="#">Woman Cloth</a></li>
+                    <li><a href="#">Fashion Accessories</a></li>
+                    <li><a href="#"> Man Accessories</a></li>
+                    <li><a href="#"> Rubber made Toys</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-7">
+              <div class="single-footer-caption mb-50">
+                <div class="footer-tittle">
+                  <h4>Support</h4>
+                  <ul>
+                    <li><a href="#">Frequently Asked Questions</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Report a Payment Issue</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% comment %}
+          <!-- Footer bottom -->
+          <div class="row align-items-center">
+            <div class="col-xl-7 col-lg-8 col-md-7">
+              <div class="footer-copy-right">
+                <p>
+                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                  Copyright &copy;
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  All rights reserved | This template is made with
+                  <i class="fa fa-heart" aria-hidden="true"></i> by
+                  <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </p>
+              </div>
+            </div>
+            <div class="col-xl-5 col-lg-4 col-md-5">
+              <div class="footer-copy-right f-right">
+                <!-- social -->
+                <div class="footer-social">
+                  <a href="#"><i class="fab fa-twitter"></i></a>
+                  <a href="https://www.facebook.com/sai4ull"
+                    ><i class="fab fa-facebook-f"></i
+                  ></a>
+                  <a href="#"><i class="fab fa-behance"></i></a>
+                  <a href="#"><i class="fas fa-globe"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endcomment %}
+      <!-- Footer End-->
     </footer>
     <!--? Search model Begin -->
     <div class="search-model-box">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-btn">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Searching key.....">
-            </form>
-        </div>
+      <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-btn">+</div>
+        <form class="search-model-form">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Searching key....."
+          />
+        </form>
+      </div>
     </div>
     <!-- Search model end -->
 
@@ -136,50 +179,60 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
-    <script src="https://kit.fontawesome.com/d7d13f537c.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/d7d13f537c.js"
+      crossorigin="anonymous"
+    ></script>
 
-    <script src= "{% static './assets/js/vendor/modernizr-3.5.0.min.js' %}"></script>
+    <script src="{% static './assets/js/vendor/modernizr-3.5.0.min.js' %}"></script>
     <!-- Jquery, Popper, Bootstrap -->
-    <script src= "{% static './assets/js/popper.min.js' %}"></script>
-    <script src= "{% static './assets/js/bootstrap.min.js' %}"></script>
+    <script src="{% static './assets/js/popper.min.js' %}"></script>
+    <script src="{% static './assets/js/bootstrap.min.js' %}"></script>
     <!-- Jquery Mobile Menu -->
-    <script src= "{% static './assets/js/vendor/jquery-1.12.4.min.js' %}"></script>
-    <script src= "{% static './assets/js/jquery.slicknav.min.js' %}"></script>
+    <script src="{% static './assets/js/vendor/jquery-1.12.4.min.js' %}"></script>
+    <script src="{% static './assets/js/jquery.slicknav.min.js' %}"></script>
 
     <!-- Jquery Slick , Owl-Carousel Plugins -->
-    <script src= "{% static './assets/js/owl.carousel.min.js' %}"></script>
-    <script src= "{% static './assets/js/slick.min.js' %}"></script>
+    <script src="{% static './assets/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static './assets/js/slick.min.js' %}"></script>
 
     <!-- One Page, Animated-HeadLin -->
-    <script src= "{% static './assets/js/wow.min.js' %}"></script>
-    <script src= "{% static './assets/js/animated.headline.js' %}"></script>
-    <script src= "{% static './assets/js/jquery.magnific-popup.js' %}"></script>
+    <script src="{% static './assets/js/wow.min.js' %}"></script>
+    <script src="{% static './assets/js/animated.headline.js' %}"></script>
+    <script src="{% static './assets/js/jquery.magnific-popup.js' %}"></script>
 
     <!-- Scrollup, nice-select, sticky -->
-    <script src= "{% static './assets/js/jquery.scrollUp.min.js' %}"></script>
-    <script src= "{% static './assets/js/jquery.nice-select.min.js' %}"></script>
-    <script src= "{% static './assets/js/jquery.sticky.js' %}"></script>
-    
-    <!-- contact js -->
-    <script src= "{% static './assets/js/contact.js' %}"></script>
-    <script src= "{% static './assets/js/jquery.form.js' %}"></script>
-    <script src= "{% static './assets/js/jquery.validate.min.js' %}"></script>
-    <script src= "{% static './assets/js/mail-script.js' %}"></script>
-    <script src= "{% static './assets/js/jquery.ajaxchimp.min.js' %}"></script>
-    
-    <!-- Jquery Plugins, main Jquery -->	
-    <script src= "{% static './assets/js/plugins.js' %}"></script>
-    <script src= "{% static './assets/js/main.js' %}"></script>
+    <script src="{% static './assets/js/jquery.scrollUp.min.js' %}"></script>
+    <script src="{% static './assets/js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static './assets/js/jquery.sticky.js' %}"></script>
 
-    <!-- Ajax -->	
+    <!-- contact js -->
+    <script src="{% static './assets/js/contact.js' %}"></script>
+    <script src="{% static './assets/js/jquery.form.js' %}"></script>
+    <script src="{% static './assets/js/jquery.validate.min.js' %}"></script>
+    <script src="{% static './assets/js/mail-script.js' %}"></script>
+    <script src="{% static './assets/js/jquery.ajaxchimp.min.js' %}"></script>
+
+    <!-- Jquery Plugins, main Jquery -->
+    <script src="{% static './assets/js/plugins.js' %}"></script>
+    <script src="{% static './assets/js/main.js' %}"></script>
+
+    <!-- Ajax -->
+    {% comment %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> 
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    {% endcomment %}
 
-    <script src= "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
-    {% comment %} <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script> {% endcomment %}
+    {% comment %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    {% endcomment %}
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-</body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
 </html>

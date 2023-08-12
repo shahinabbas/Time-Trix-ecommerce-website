@@ -15,14 +15,14 @@ from django.db.models import Q
 # from cart.views import _cart_id
 
 def index(request):
-    return render(request, 'index.html')
+    all_category=Category.objects.all()
+    return render(request, 'index.html', {'all_category':all_category})
 
 from django.shortcuts import render
 from .models import Product, Category
 
 def user_category(request,id):
     all_category=Category.objects.all()
-    print(all_category,'12312312312312312312323121231232112')
     category=Category.objects.get(pk=id)
     product=Product.objects.filter(category=category,is_deleted=False)
     context={
@@ -267,35 +267,42 @@ def product_details(request, product_id):
 
 
 def shoppage(request):
+    all_category=Category.objects.all()    
     product = Product.objects.all().filter(is_deleted=False)
-    return render(request, 'shop.html', {'product': product})
+    return render(request, 'shop.html', {'product': product,'all_category':all_category})
 
 
 
 
 
 def aboutpage(request):
-    return render(request, 'about.html')
+    all_category=Category.objects.all()
+    return render(request, 'about.html',{'all_category':all_category})
 
 
 def blogpage(request):
-    return render(request, 'blog.html')
+    all_category=Category.objects.all()
+    return render(request, 'blog.html',{'all_category':all_category})
 
 
 def blogdetailspage(request):
-    return render(request, 'blog-details.html')
+    all_category=Category.objects.all()
+    return render(request, 'blog-details.html',{'all_category':all_category})
 
 
 def contactpage(request):
-    return render(request, 'contact.html')
+    all_category=Category.objects.all()
+    return render(request, 'contact.html',{'all_category':all_category})
 
 
 def confirmpage(request):
-    return render(request, 'confirmation.html')
+    all_category=Category.objects.all()
+    return render(request, 'confirmation.html',{'all_category':all_category})
 
 
 def elementspage(request):
-    return render(request, 'elements.html')
+    all_category=Category.objects.all()
+    return render(request, 'elements.html',{'all_category':all_category})
 
 
 def signuppage(request):
@@ -396,4 +403,5 @@ def enter_otppage(request):
 
 
 def confirmationpage(request):
-    return render(request, 'confirmation.html')
+    all_category=Category.objects.all()
+    return render(request, 'confirmation.html',{'all_category':all_category})

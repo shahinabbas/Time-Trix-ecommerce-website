@@ -2,11 +2,11 @@
   <aside class="col-md-3">
     <!--   SIDEBAR   -->
     <ul class="list-group">
-      <a class="list-group-item {% if '/profile/' == request.path %}active{% endif %}" href="{% url 'user_profile' %}"> Account </a>
-      <a class="list-group-item {% if '/myorders/' in request.path %}active{% endif %}" href="{% url 'myorders' %}"> My Orders </a>
-      <a class="list-group-item {% if '/add_address/' in request.path %}active{% endif %}" href="{% url 'add_address' %}"> Add Address </a>
-      <a class="list-group-item {% if '/address/' in request.path %}active{% endif %}" href="{% url 'address' %}"> Manage Address </a>
-      <a class="list-group-item {% if '/reset/' in request.path %}active{% endif %}" href="{% url 'reset' %}"> Reset Password </a>  
+      <a class="list-group-item" href="{% url 'user_profile' %}"> Account </a>
+      <a class="list-group-item" href="{% url 'myorders' %}"> My Orders </a>
+      <a class="list-group-item" href="{% url 'add_address' %}"> Add Address </a>
+      <a class="list-group-item" href="{% url 'address' %}"> Manage Address </a>
+      <a class="list-group-item" href="{% url 'reset' %}"> Reset Password </a>  
     </ul>
     <br>
     <a class="btn btn-light btn-block" href="{% url 'logout' %}" id="userlogoutbtn"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a>
@@ -18,12 +18,14 @@
     .list-group-item {
         color: black;
         font-weight: bold;
+
     }
 
     /* Style for sidebar buttons */
     .btn-light {
         color: black;
         font-weight: bold;
+
     }
     .list-group-item:hover,
     .btn-light:hover {

@@ -216,7 +216,7 @@
     $('#deletecategoryModal').on('show.bs.modal', function(e) {
         var id = $(e.relatedTarget).data('c-id');
         $(this).find('.modal-body p').html("Are you sure you want to delete the Category with ID " + id + "?");
-        $(this).find('.modal-footer input[type="submit"]').attr('formaction', "/delete_category/" + id + "/");
+        $(this).find('.modal-footer input[type="submit"]').attr('formaction', "/adminside/delete_category/" + id + "/");
     });
   });
 </script>

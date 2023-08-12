@@ -15,12 +15,14 @@ def delete_coupon(request,id):
     print('11111111111111111111111111111111111111111111111111111111111111111')
     coupon=get_object_or_404(Coupon,pk=id)
     print(coupon,'22222222222222222222222222222222222222222222222222      ')
-    if request.method=='POST':
-        coupon.delete()
-        return redirect('coupon_list')
+    # if request.method=='POST':
+    coupon.delete()
+    return redirect('coupon_list')
 
 def edit_coupon(request,id):
     coupon=get_object_or_404(Coupon,pk=id)
+
+    print(coupon,'111111111111111111111111111')
     if request.method=='POST':
         coupon_code=request.POST.get('coupon_code')
         description=request.POST.get('description')
@@ -275,10 +277,11 @@ def edit_category(request,id):
 @never_cache
 @login_required(login_url='admin_signin')
 def delete_category(request, id):
-    if request.method == 'POST':
-        co = get_object_or_404(Category,pk=id)
-        co.delete()
-        return redirect('category_list')
+    # if request.method == 'POST':
+    co = get_object_or_404(Category,id=id)
+    print('11111111111111111111111111111111111111111111111111111111111111111')
+    co.delete()
+    return redirect('category_list')
 
 @never_cache
 @login_required(login_url='admin_signin')

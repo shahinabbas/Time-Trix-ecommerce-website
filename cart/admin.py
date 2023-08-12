@@ -6,7 +6,7 @@ class StrapAdmin(admin.ModelAdmin):
 class CartItemAdmin(admin.ModelAdmin):
     list_display = ['product','cart','quantity','is_active']
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['user','order_date','order_status','payment_method']
+    list_display = ['user','order_date','order_status','payment_method','order_id']
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ['order_no','product','strap','quantity']
 # Register your models here.

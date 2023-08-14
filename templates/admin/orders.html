@@ -21,11 +21,12 @@
         {% for order_item in order_item %}
         
         <tr>
-          <td>{{order_item.order_no.order_id}}</td>
-          
-      
-
           <td>
+            <a href="{% url 'admin_order_details' order_item.order_no.order_id %}">
+              {{ order_item.order_no.order_id }}
+            </a>
+          </td>
+                    <td>
             <p class="fw-bold mb-1">{{order_item.product}}</p>
           </td>
          
@@ -40,7 +41,7 @@
             <p class="fw-bold mb-1">{{order_item.quantity}}</p>
           </td>
           <td>
-            <p class="fw-bold mb-1">{{order.payment_method}}</p>
+            <p class="fw-bold mb-1">{{order_item.order_no.payment_method}}</p>
           </td>
             {% if order_item.order_status == 'Confirmed' %}
             <td><span class="badge badge-danger" style="background-color: green; color: black">{{order_item.order_status}}</span></td>
@@ -68,7 +69,7 @@
        
 
           <td>
-            <form method="post" action="{% url 'update_order_status' id=order_item.id %}">
+              <form method="post" action="{% url 'update_order_status' id=order_item.id %}">
               {% csrf_token %}
               <select name="order_status">
                 {% for choice in order_item.ORDER_STATUS %}

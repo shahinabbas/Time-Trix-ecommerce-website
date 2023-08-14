@@ -83,8 +83,6 @@ def create_order(request):
     address=get_object_or_404(User_Profile,id=address_id)
     price1=cart.total_price()
     payment_amount1=cart.offer_total_price()
- 
-
     order=Order.objects.create(
         user=request.user,
         address=address,
@@ -95,7 +93,6 @@ def create_order(request):
         )
     if payment_method == "razorpay":
         order.payment_status = 'Completed'
-        print('11111111111111111111111111111111111111111111111')
         order.save()
     for cart_item in CartItem.objects.all():
         OrderItem.objects.create(
@@ -106,10 +103,14 @@ def create_order(request):
             amount=payment_amount1,
             )
     strap=Strap.objects.get(id=cart_item.quantity)
-    strap.quantity -=cart_item.quantity
+    print(strap)
+    print(strap.quantity)
+    strap.quantity -= cart_item.quantity
+    print(strap.quantity)
     strap.save()
     cart.delete()
-    return render(request,'confirmation.html',{"address":address})
+    return render(request,'confirmation.html',{"address":address,'payment_method':payment_method,
+})
 
 # @login_required(login_url='login')
 # def create_order(request):
@@ -258,7 +259,7 @@ def delete_cart_item(request, product_id):
 def order_details(request,id):
     order = get_object_or_404(Order, order_id=id)
     product = OrderItem.objects.filter(order_no=order)
-    return render(request,"order_details.html",{'product':product})
+    return render(request,"order_details.html",{'product':product,'order':order})
 
 
 # def delete_cart_item(request, product_id):

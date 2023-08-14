@@ -1,86 +1,162 @@
-{% extends 'layouts/main.html' %} {% block body %}
-<div class="mt-5 mb-5" style="padding-left: 100px;">
+{% extends 'layouts/main.html' %} {% block body %} {% load static %}
+<div class="mt-5 mb-5" style="padding-left: 100px">
   <div class="row">
     <!-- Sidebar Card -->
-
-    {% include 'inc/sidebar.html' %}
-
-<section class="h-100 gradientc-ustom">
     
-  {% for order_item in product %}
-  <div class="container py-25 h-90">
-    <div class="card shadow-0 border mb-2">
-      <div class="card-body" style="width: 800px;">
-        <div class="row">
-            <div class="col-md-2">
-              <a href="{% url "order_details" id=order_item.order_no.order_id %}">
-
-                <img
-                    src="{{ order_item.product.product_Image.url }}"
+    {% include 'inc/sidebar.html' %}
+   
+    <section class="h-100 gradientc-ustom">
+      {% for product in product %}
+      <div class="container py-25 h-90">
+        <div class="card shadow-0 border mb-2">
+          <div class="card-body" style="width: 1000px">
+            <div class="row">
+              <div class="col-md-2">
+                <a href="">
+                  <img
+                    src="{{ product.product.product_Image.url }}"
                     alt="Phone"
-                    width="90" 
-                    height="90" 
-                />
-              </a>
+                    width="240"
+                    height="280"
+                  />
+                </a>
+              </div>
+
+              <div
+                class="col-md-8 d-flex flex-column justify-content-start align-items-start"
+                style="padding-left: 200px"
+              >
+                <h6>Order id:#{{order.order_id}}</h6>
+
+                <p class="lead">Name: &nbsp{{ product.product.product_name}}</p>
+                <p class="lead">Shape: &nbsp{{ product.product.shape}}</p>
+                <p class="lead">
+                  Category: &nbsp{{ product.product.category.categories}}
+                </p>
+                <p class="lead">
+                  Description: &nbsp{{ product.product.description }}
+                </p>
+                <p class="lead">Qty: &nbsp{{ product.quantity }}</p>
+                <p class="lead">Price: &nbsp{{ product.amount }}</p>
+              </div>
+
+              <div
+                class="col-md-2 text-center d-flex flex-column justify-content-center align-items-center"
+              >
+                {% if product.order_status == 'Delivered' %}
+                <form
+                  method="post"
+                  action="{% url 'cancel_order' product.id %}"
+                >
+                  {% csrf_token %}
+                  <input
+                    type="hidden"
+                    name="order_id"
+                    value="{{ product.id }}"
+                  />
+                  <p class="text-muted mb-0 small">
+                    Payment status: {{ product.order_status }}
+                  </p>
+                  <button type="submit" class="btn-info">Return</button>
+                </form>
+
+                {% elif product.order_status == 'Cancelled' %}
+
+                <p class="text-muted mb-0 small">
+                  Payment status: {{ product.order_status }}
+                </p>
+
+                {% else %}
+                <form
+                  method="post"
+                  action="{% url 'cancel_order' product.id %}"
+                >
+                  {% csrf_token %}
+                  <input
+                    type="hidden"
+                    name="order_id"
+                    value="{{ product.id }}"
+                  />
+                  <p class="text-muted mb-0 small">
+                    Payment status: {{ product.order_status }}
+                  </p>
+                  <button type="submit" class="btn-danger">Cancel</button>
+                </form>
+                {% endif %}
+              </div>
             </div>
-            
-          <div
-            class="col-md-2 text-center d-flex justify-content-center align-items-center"
-          >
-            <p class="text-muted mb-0">{{order_item.product}}</p>
+            <div class="row d-flex align-items-center">
+              <div class="col-md-2"></div>
+              <div class="col-md-10"></div>
+            </div>
           </div>
-          <div
-            class="col-md-2 text-center d-flex justify-content-center align-items-center"
-          >
-            <p class="text-muted mb-0 small">{{order_item.strap.strap}}</p>
-          </div>
-          
-          <div
-            class="col-md-2 text-center d-flex justify-content-center align-items-center"
-          >
-            <p class="text-muted mb-0 small">Qty: {{order_item.quantity}}</p>
-          </div>
-          <div
-            class="col-md-2 text-center d-flex justify-content-center align-items-center"
-          >
-            <p class="text-muted mb-0 small">{{order_item.amount}}</p>
-          </div>
-
-          <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-            {% if order_item.order_status == 'Delivered' %}
-            <p class="text-muted mb-0 small">{{ order_item.order_status }}</p>&nbsp&nbsp
-            <form method="post" action="{% url 'cancel_order' order_item.id %}">
-              {% csrf_token %}
-              <input type="hidden" name="order_id" value="{{ order_item.id }}">
-              <button type="submit" class="btn-info">Return</button>
-            </form>
-            {% elif order_item.order_status == 'Cancelled' %}
-            <p class="text-muted mb-0 small">{{ order_item.order_status }}</p>&nbsp&nbsp
-            {% else %}
-              <p class="text-muted mb-0 small">{{ order_item.order_status }}</p>&nbsp&nbsp
-              <form method="post" action="{% url 'cancel_order' order_item.id %}">
-                {% csrf_token %}
-                <input type="hidden" name="order_id" value="{{ order_item.id }}">
-                <button type="submit" class="btn-danger">Cancel</button>
-              </form>
-            {% endif %}
-          </div>
-          
-
         </div>
-        <div class="row d-flex align-items-center">
-          <div class="col-md-2">
-            <p class="text-muted mb-0 small">Track Order</p>
+      </div>
+      {% endfor %}
+    </section>
+
+    <div class="mt-2 mb-20 ml-5">
+      <div class="row">
+        <div class="card d-flex ml-auto pb-19 align-self-start" style="padding-right: 0px; width:350px;">
+        &nbsp&nbsp<h4> &nbsp&nbspShipping Address:</h4>
+          <div style="text-align: center;">
+
+          <img
+            src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp"
+            alt="Avatar"
+            style="width: 80px"
+            height="100px"
+          />
           </div>
-          <div class="col-md-10">
-           
-          
+          <div class="container pt-5" style="padding-left:40px">
+            <ul>
+              <li><strong>Name:</strong> {{order.address.name}}</li>
+              <li><strong>Address:</strong> {{order.address.address}}</li>
+              <li><strong>Phone:</strong> {{order.address.phone_number}}</li>
+              <li><strong>House no:</strong> {{order.address.house_no}}</li>
+              <li><strong>Street:</strong> {{order.address.street}}</li>
+              <li><strong>City:</strong> {{order.address.city}}</li>
+              <li><strong>State:</strong> {{order.address.state}}</li>
+              <li><strong>Country:</strong> {{order.address.country}}</li>
+              <li><strong>Pin code:</strong> {{order.address.pin_code}}</li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
   </div>
-  {% endfor %}
-</section>
+</div>
+
+
+
+
+<style>
+  .card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+  }
+
+  /* On mouse-over, add a deeper shadow */
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  /* Add some padding inside the card container */
+  .container {
+    padding: 2px 16px;
+  }
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-radius: 5px; /* 5px rounded corners */
+  }
+
+  /* Add rounded corners to the top left and the top right corner of the image */
+  img {
+    border-radius: 5px 5px 0 0;
+  }
+</style>
+
 
 {% endblock body %}

@@ -1,21 +1,20 @@
 {% extends 'layouts/main.html' %} {% load static %} {% block body %} 
-{% comment%} {% extends 'layouts/main.html' %} {% load static %} {% block body %}
 
-<!-- Header Start -->
-{% include 'inc/navbar.html' %}
-<!-- Header End -->
+
 <!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-conten padding-y bg" style="padding-top: 20px">
-  <div class="container">
+  <div class="mt-5 mb-5" style="padding-left: 100px;">
     <div class="row">
+      <!-- Sidebar Card -->
+  
       {% include 'inc/sidebar.html' %}
       <main class="col-md-9">
         <article class="card">
           <header class="card-header">
-            <strong class="d-inline-block mr-3">Hello</strong>
             {% for user_profile in user_profile %}
-
-            <span>{{user_profile.name}}</span>
+            {% if forloop.first %}
+            <strong class="d-inline-block mr-3">Hello</strong>
+            <span>{{user_profile.user.name}} .</span>
           </header>
           <div class="card-body">
             <div class="row">
@@ -23,28 +22,28 @@
                 <div class="card" style="text-align: center">
                   <div class="card-body">
                     <img
-                      src="{{user_profile.profile_pic.url}}"
-                      alt="User Profile Picture"
-                      width="50"
-                      height="50"
-                      style="border-radius: 50%"
-                    />
+                    src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp"
+                    class="rounded-circle shadow-4"
+                    style="width: 30px"
+                    alt="Avatar"
+                  />  
                     <p class="mb-0" style="color: black">
-                      {{user_profile.name}}
+                      {{user_profile.user.name}}
                     </p>
                     <p class="mb-0" style="color: black">
-                      {{user_profile.email}}
+                      {{user_profile.user.email}}
                     </p>
-                    <p style="color: black">{{user_profile.phone_number}}</p>
+                    <p style="color: black">{{user_profile.user.phone_number}}</p>
                   </div>
                 </div>
-                {% endfor %}
               </div>
+              {% endif %}
+              {% endfor %}
               <div class="col-md-6">
                 <div class="card" style="text-align: center">
                   <div class="card-body">
                     <h5 class="card-title">Total Orders</h5>
-                    <h4>5</h4>
+                    <h4>544</h4>
                     <a href="">View Orders</a>
                   </div>
                 </div>
@@ -61,8 +60,7 @@
   </div>
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
-{% endblock body %} {% endcomment %}
-
+{% comment %} 
 <div class="mt-5 mb-5" style="padding-left: 100px;">
   <div class="row">
     <!-- Sidebar Card -->
@@ -96,7 +94,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> {% endcomment %}
 
 <style>
   body {
@@ -145,4 +143,33 @@
   }
 </style>
 
+<div class="shop-method-area" style="padding-top: 40px">
+  <div class="container">
+    <div class="method-wrapper">
+      <div class="row d-flex justify-content-between">
+        <div class="col-xl-4 col-lg-4 col-md-6">
+          <div class="single-method mb-40">
+            <i class="ti-package"></i>
+            <h6>Free Shipping Method</h6>
+            <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+          </div>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-6">
+          <div class="single-method mb-40">
+            <i class="ti-unlock"></i>
+            <h6>Secure Payment System</h6>
+            <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+          </div>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-6">
+          <div class="single-method mb-40">
+            <i class="ti-reload"></i>
+            <h6>Secure Payment System</h6>
+            <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock body%}

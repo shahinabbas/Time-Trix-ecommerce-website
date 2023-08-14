@@ -10,6 +10,8 @@ urlpatterns = [
     path('login/',views.loginpage,name='login'),
     path('new/',views.new,name='new'),
     path('wishlist/',views.wishlist,name='wishlist'),
+    path('remove_wishlist//<int:product_id>/',views.remove_wishlist,name='remove_wishlist'),
+
     path('add_to_wishlist/<int:product_id>/',views.add_to_wishlist,name='add_to_wishlist'),
 
     path("autocomplete/",views.autocomplete,name='autocomplete'),
@@ -22,6 +24,8 @@ urlpatterns = [
     path('signup/',views.signuppage,name='signup'),
     path('send_otp/',views.send_otppage,name='send_otp'),
     path('reset/',views.reset,name='reset'),
+    path('forgot/',views.forgot,name='forgot'),
+
 
 
     path('list/<int:id>/',views.listpage,name="list"),

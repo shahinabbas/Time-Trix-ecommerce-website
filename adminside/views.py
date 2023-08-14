@@ -8,14 +8,27 @@ from django.contrib.auth.models import auth
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
-
 from coupon.models import Coupon
+
+
 # Create your views here.
+def admin_order_details(request,id):
+    order = get_object_or_404(Order, order_id=id)
+    product = OrderItem.objects.filter(order_no=order)
+    order_item=OrderItem.objects.all()
+    order_status_choices=OrderItem.ORDER_STATUS
+    context={
+        'product':product,
+        'order':order,
+        'order_item':order_item,
+        'order_status_choices':order_status_choices,
+        }
+    return render(request,'admin/admin_order_details.html',context)
+
+
+
 def delete_coupon(request,id):
-    print('11111111111111111111111111111111111111111111111111111111111111111')
     coupon=get_object_or_404(Coupon,pk=id)
-    print(coupon,'22222222222222222222222222222222222222222222222222      ')
-    # if request.method=='POST':
     coupon.delete()
     return redirect('coupon_list')
 

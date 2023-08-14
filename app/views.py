@@ -69,7 +69,13 @@ def autocomplete(request):
 
 
 
-
+def remove_wishlist(request, product_id):
+    user = request.user
+    pro = get_object_or_404(Product, id=product_id)
+    wishlist_item = Wishlist.objects.get(user=user, product=pro)
+    wishlist_item.delete()
+    messages.info(request,'Removed product from wishlist')
+    return redirect('wishlist')
 
 @login_required(login_url='login')
 def add_to_wishlist(request, product_id):
@@ -127,22 +133,42 @@ def delete_address(request, id):
     profile.delete()
     return redirect('address')
 
-
-@login_required(login_url='login')
+@login_required(login_url='login')  # Only logged-in users can access this view
 def reset(request):
-    user = request.user
+    user = request.user  # Get the logged-in user
+    
+    if request.method == 'POST':
+        current_password = request.POST.get('current_password')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        
+        if user.check_password(current_password):
+            if password == confirm_password:
+                user.set_password(password)  # Set the new password
+                user.save()  # Save the user object
+                messages.success(request, 'Password changed successfully')
+                return redirect('reset')  # Redirect to the same view after successful password change
+            else:
+                messages.error(request, 'Entered passwords do not match')
+                return redirect('reset')
+    return render(request, 'reset.html')  # Render the template for password reset
+
+def forgot(request):
+    user = request.user  # Get the logged-in user
     if request.method == 'POST':
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
         if password == confirm_password:
-            user.set_password(password)
-            user.save()
-            messages.success(request, 'Password changed succsessfully')
-            return redirect('reset')
+            user.set_password(password)  # Set the new password
+            user.save()  # Save the user object
+            messages.success(request, 'Password changed successfully')
+            return redirect('login')  # Redirect to the same view after successful password change
         else:
-            messages.error(request, 'Entered passwords are not same')
-        return redirect('reset')
-    return render(request, 'reset.html')
+            messages.error(request, 'Entered passwords do not match')
+            return redirect('reset')
+    return render(request, 'login.html')  # Render the template for password reset
+
+
 
 
 def add_address(request):
@@ -176,7 +202,6 @@ def add_address(request):
 def user_profile(request):
     user = request.user
     user_profile = User_Profile.objects.filter(user=user)
-    print(user)
     if user_profile.exists():
         user_profile = user_profile.all()
     else:
@@ -241,8 +266,7 @@ def product_details(request, product_id):
     all_categories = Category.objects.all()
     strap = Strap.objects.all()
     wishlist=Wishlist.objects.filter(user=request.user)
-    print(wishlist[0].product)
-    print(wishlist[1].product)
+ 
     context = {
         'product': product,
         "category": all_categories,

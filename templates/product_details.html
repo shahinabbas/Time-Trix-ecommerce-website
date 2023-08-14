@@ -97,19 +97,17 @@
                     ></a>
                     {% endif %} {% endcomment %} 
                     {% if product in wishlist %}
-                    {{product}}6
                     <a
                       href="{% url 'add_to_wishlist' product.id %}"
                      class="btn hero-btn"
                     >
                      Add to wishlist <i class="flaticon-heart"></i
-                    ></a>
+                    >Remove from wishlist</a>
                     {% else %}
-                    {{product}}22
                     <a
                       href="{% url 'add_to_wishlist' product.id %}"
                       class="btn hero-btn"
-                      > Remove from wishlist <i class="flaticon-heart"></i
+                      >Add to wishlist<i class="flaticon-heart"></i
                     ></a>
                     {% endif %}
                   </div>

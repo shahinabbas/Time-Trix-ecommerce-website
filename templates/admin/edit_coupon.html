@@ -1,0 +1,143 @@
+{% extends 'admin/navbar.html' %} {% block body %}
+
+<div class="container rounded bg-white mt-5 mb-5">
+  <div class="row justify-content-center">
+    <!-- Center-align the content -->
+
+    <div class="col-md-5 border-right">
+      <div class="p-3 py-5">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="text-right">Profile Settings</h4>
+        </div>
+        <form action="{% url 'edit_coupon' coupon.id %}" method="post">
+            {% csrf_token %}
+
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <label class="labels"> Copon Code </label
+              ><input
+                type="text"
+                class="form-control"
+                placeholder=""
+                value="{{coupon.coupon_code}}"
+                name="coupon_code"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="labels"> Description </label
+              ><input
+                type="text"
+                class="form-control"
+                value="{{coupon.description}}"
+                placeholder=""
+                name="description"
+              />
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12">
+              <label class="labels"> Discount_type </label
+              ><input
+                type="text"
+                class="form-control"
+                placeholder=""
+                value="{{coupon.discount_type}}"
+                name="discount_type"
+              />
+            </div>
+            <div class="col-md-12">
+              <label class="labels"> Minimum_amount </label
+              ><input
+                type="text"
+                class="form-control"
+                placeholder=""
+                value="{{coupon.minimum_amount}}"
+                name="minimum_amount"
+              />
+            </div>
+            <div class="col-md-12">
+              <label class="labels"> Discount </label
+              ><input
+                type="text"
+                class="form-control"
+                placeholder=""
+                value="{{coupon.discount}}"
+                name="discount"
+              />
+            </div>
+            <div class="col-md-12">
+              <label class="labels"> Valid From </label
+              ><input
+                type="text"
+                class="form-control"
+                placeholder=""
+                value="{{coupon.valid_from}}"
+                name="valid_from"
+              />
+            </div>
+            <div class="col-md-12">
+              <label class="labels"> valid to </label
+              ><input
+                type="text"
+                class="form-control"
+                placeholder=""
+                value="{{coupon.valid_to}}"
+                name="valid_to"
+              />
+            </div>
+          </div>
+          <div class="mt-5 text-center">
+            <button  type="submit" class="btn btn-primary profile-button">
+              Save Profile
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #ba68c8;
+  }
+
+  .profile-button {
+    background: rgb(99, 39, 120);
+    box-shadow: none;
+    border: none;
+  }
+
+  .profile-button:hover {
+    background: #682773;
+  }
+
+  .profile-button:focus {
+    background: #682773;
+    box-shadow: none;
+  }
+
+  .profile-button:active {
+    background: #682773;
+    box-shadow: none;
+  }
+
+  .back:hover {
+    color: #682773;
+    cursor: pointer;
+  }
+
+  .labels {
+    font-size: 11px;
+  }
+
+  .add-experience:hover {
+    background: #ba68c8;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #ba68c8;
+  }
+</style>
+
+{% endblock body%}

@@ -2,7 +2,7 @@ from django.contrib import admin
 from cart.models import Cart,CartItem,Strap,Order,OrderItem
 
 class StrapAdmin(admin.ModelAdmin):
-    list_display = ['id','product_id','strap','quantity']
+    list_display = ['id','product_id','strap','quantity','is_active']
 class CartItemAdmin(admin.ModelAdmin):
     list_display = ['product','cart','quantity','is_active']
 class OrderAdmin(admin.ModelAdmin):

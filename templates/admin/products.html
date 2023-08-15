@@ -104,7 +104,7 @@
           </td>
         </td>
         <td>
-          {% if strap.product_id.is_deleted %}
+          {% if strap.is_active %}
           <span class="badge badge-danger rounded-pill d-inline" style="color: white; background-color: red"
             >Un Available</span
           >
@@ -123,7 +123,7 @@
               </button>
             </form>
 
-            {% if strap.product_id.is_deleted %}
+            {% if strap.is_active %}
             <form
               action="{% url 'undo_product' strap.id %}"
               method="post"

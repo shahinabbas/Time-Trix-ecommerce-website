@@ -32,9 +32,8 @@
               <p class="lead">Payment_status: {{ order.payment_status }}</p>
 
             </div>
-
             <div class="col-12 col-md-12 col-lg-2 text-center">
-                <form method="post" action="{% url 'update_order_status' id=order_item.id %}">
+                <form method="post" action="">
                     {% csrf_token %}
                     <select name="order_status">
                       {% for choice in order_item.ORDER_STATUS %}
@@ -43,8 +42,9 @@
                     </select>
                     <button type="submit">Update Status</button>
                   </form>
-            </div>
+                  
 
+            </div>
           </div>
         </div>
       </div>

@@ -77,14 +77,7 @@ class Product(models.Model):
     is_deleted = models.BooleanField(default=False)
 
 
-    def soft_delete(self):
-        self.is_deleted = True
-        self.save()
-
-    
-    def undo(self):
-        self.is_deleted = False
-        self.save()
+   
 
     def __str__(self):
         return self.product_name

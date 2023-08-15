@@ -30,7 +30,6 @@ urlpatterns = [
 
     path('list/<int:id>/',views.listpage,name="list"),
     path('product_details/<int:product_id>/',views.product_details,name='product_details'),
-    path('confirmation',views.confirmationpage,name="confirmation"),
 
 
     path('user_profile',views.user_profile,name='user_profile'),
@@ -48,7 +47,6 @@ urlpatterns = [
     path('contact/',views.contactpage,name='contact'),
     path('shop/',views.shoppage,name='shop'),
     path('blog-details/',views.blogdetailspage,name='blog-details'),
-    path('confirm/',views.confirmpage,name='confirm'),
     path('elements/',views.elementspage,name='elements'),
     
 

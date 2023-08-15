@@ -321,9 +321,7 @@ def contactpage(request):
     return render(request, 'contact.html',{'all_category':all_category})
 
 
-def confirmpage(request):
-    all_category=Category.objects.all()
-    return render(request, 'confirmation.html',{'all_category':all_category})
+
 
 
 def elementspage(request):

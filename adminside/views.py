@@ -33,9 +33,8 @@ def delete_coupon(request,id):
     return redirect('coupon_list')
 
 def edit_coupon(request,id):
-    coupon=get_object_or_404(Coupon,pk=id)
-
-    print(coupon,'111111111111111111111111111')
+    coupon=Coupon.objects.get(pk=id)
+    print(coupon,'111111111111111111111111111111111111111111111111')
     if request.method=='POST':
         coupon_code=request.POST.get('coupon_code')
         description=request.POST.get('description')
@@ -44,19 +43,22 @@ def edit_coupon(request,id):
         discount=request.POST.get('discount')
         valid_from=request.POST.get('valid_from')
         valid_to=request.POST.get('valid_to')
+        print(minimum_amount,'111111111111111111111111111111111111111111111111')
 
         
-        coupon.coupon_code=coupon_code,
-        coupon.description=description,
-        coupon.minimum_amount=minimum_amount,
-        coupon.discount_type=discount_type,
-        coupon.discount=discount,
-        coupon.valid_from=valid_from,
-        coupon.valid_to=valid_to,
+        coupon.coupon_code=coupon_code
+        coupon.description=description
+        coupon.minimum_amount=minimum_amount
+        coupon.discount_type=discount_type
+        coupon.discount=discount
+        coupon.valid_from=valid_from
+        coupon.valid_to=valid_to
         
         coupon.save()
+        messages.success(request,'coupon edit success')
+        print(coupon,'111111111111111111111111111111111111111111111111')
         return redirect('coupon_list')
-    return render(request,'admin/coupon_list.html',{'coupon':coupon})
+    return render(request,'admin/edit_coupon.html',{'coupon':coupon})
 
 def update_order_status(request,id):
     if request.method=='POST':
@@ -105,9 +107,10 @@ def add_coupon(request):
 
 def coupon_list(request):
     coupon = Coupon.objects.all()
-    context ={
-        'coupon':coupon,
-    }
+    context = {
+        'coupon': coupon, 
+        }
+
     return render(request,"admin/coupon_list.html",context)
 
 
@@ -313,16 +316,16 @@ def productspage(request):
 @login_required(login_url='admin_signin')
 def delete_product(request, id):
     if request.method == 'POST':
-        product = get_object_or_404(Product, pk=id)
-        product.soft_delete()
+        strap = get_object_or_404(Strap, pk=id)
+        strap.soft_delete()
         return redirect('products')
 
 
 @login_required(login_url='admin_signin')
 def undo_productpage(request, id):
     if request.method == 'POST':
-        product = get_object_or_404(Product, pk=id)
-        product.undo()
+        strap = get_object_or_404(Strap, pk=id)
+        strap.undo()
         return redirect('products')
         
 

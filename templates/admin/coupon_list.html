@@ -269,6 +269,7 @@
             </thead>
             <tbody>
                 {% for c in coupon %}
+
                 <tr>
                    
                     <td>{{c.id}}</td>
@@ -279,14 +280,14 @@
                     <td>{{c.discount}}</td>     
                     <td>{{c.valid_from}}</td>
                     <td>{{c.valid_to}}</td>
-                    <td> <a href="#editModal" class="edit" data-toggle="modal" data-p-id="{{ c.id }}">
+                    <td> <a href="{% url 'edit_coupon' c.id %}" class="edit">
                         <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
                     </a>
+                    
                       <a href="#deleteModal" class="delete" data-toggle="modal" data-p-id="{{ c.id }}">
                         <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
                     </a>
                     
-                    {% comment %} <a href="#deletesubcategoryModal" class="delete" data-toggle="modal" data-p-id="{{ c.id }}"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td> {% endcomment %}
                 </tr>{% endfor %}
                 
             </tbody>
@@ -295,60 +296,6 @@
     </div>
 </div>        
 </div>
-<!-- Edit Modal HTML -->
-<div id="editModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="editForm" method="post" action="">
-                {% csrf_token %}
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Coupon</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    
-                    <div class="form-group">
-                        <label>Copon Code</label>
-                        <input type="text" value="{{coupon.coupon_code}}" class="form-control" required name="coupon_code">
-                    </div>	
-                    <div class="form-group">
-                        <label>description</label>
-                        <input type="text" class="form-control" required name="description">
-                    </div>	
-                    <div class="form-group">
-                        <label>minimum_amount</label>
-                        <input type="text" class="form-control" required name="minimum_amount">
-                    </div>	
-                    <div class="form-group">
-                        <label>discount_type</label>
-                        <input type="text" class="form-control" required name="discount_type">
-                    </div>	
-                    <div class="form-group">
-                      <label>discount</label>
-                      <input type="text" class="form-control" required name="discount">
-                  </div>	
-                    <div class="form-group">
-                        <label>Valid From</label>
-                        <input type="text" id="datepicker-input" name="valid_from" class="form-control" placeholder="Select a date">
-            
-                    </div>	
-                    <div class="form-group">
-                        <label>valid to</label>
-                        <input type="text" id="datepicker-expiry" name="valid_to" class="form-control" placeholder="Select a date">
-            
-                    </div>	
-                   
-                       
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-success" value="Add">
-                </div>
-            </form>
-        </div>
-    </div>
-    </div>
-<!-- Edit Modal HTML End -->
-
 
 <div id="addEmployeeModal" class="modal fade">
 <div class="modal-dialog">
@@ -423,6 +370,8 @@
         </form>
     </div>
 </div></div>
+
+
 <script>
     $(document).ready(function() {
         $('#deleteModal').on('show.bs.modal', function(e) {
@@ -432,25 +381,6 @@
         });
     });
 </script>
-<script>
-    $(document).ready(function() {
-        $('.edit').on('click', function() {
-            var couponId = $(this).data('p-id');
-            $('#couponId').val(couponId); // Set coupon ID in the hidden input field
-            var editForm = $('#editForm');
-            var editFormAction = editForm.attr('action');
-            editForm.attr('action', editFormAction.replace('id', couponId));
-        });
-    });
-</script>
-{% comment %} 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <!-- Include Bootstrap JavaScript -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> {% endcomment %}
-    {% comment %} <script>
-        $(document).ready(function () {
-            $('#datepicker-input').datepicker();
-            $('#datepicker-expiry').datepicker();
-        });
-    </script>  {% endcomment %}
+
+
     {% endblock body %}

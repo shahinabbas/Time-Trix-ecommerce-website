@@ -109,6 +109,16 @@ class Strap(models.Model):
     quantity=models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
+
+    def soft_delete(self):
+        self.is_active = True
+        self.save()
+
+    
+    def undo(self):
+        self.is_active = False
+        self.save()
+
     def __unicode__(self):
         return self.product
     
@@ -139,8 +149,8 @@ class Order(models.Model):
     address = models.ForeignKey(User_Profile, on_delete=models.DO_NOTHING)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     offer_price = models.DecimalField(max_digits=10, decimal_places=2)
-    # coupon_discount = models.DecimalField(max_digits=10, decimal_places=2)
-    # delivery_charge = models.DecimalField(max_digits=10, decimal_places=2)
+    coupon_discount = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    shipping_charge = models.DecimalField(max_digits=10, decimal_places=2)
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
     razor_pay_order_id=models.CharField(max_length=100,null=True,blank=True)
     razor_pay_payment_id=models.CharField(max_length=100,null=True,blank=True)

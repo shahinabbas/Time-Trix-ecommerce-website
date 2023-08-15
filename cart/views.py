@@ -12,19 +12,19 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 import razorpay
 from django.conf import settings
+from django.http import Http404
+import uuid
 
 # Create your views here.
-def invoice(request):
-    order_id=request.POSt.get('order_id')
-    payment_id=request.POSt.get('razor_pay_payment_id')
+def invoice(request,id):
     try:
-        order=Order.objects.get(order_id=order_id)
-        product=OrderItem.objects.filter(order_no=order_id)
+        order=Order.objects.get(order_id=id)
+        order_item=OrderItem.objects.filter(order_no=order)
         context={
             'order':order,
-            'product':product,
+            'order_item':order_item,
         }
-        return render(request,'invoice.html')
+        return render(request,'invoice.html',context)
     except Order.DoesNotExist:
         return redirect('shop')
 
@@ -379,7 +379,7 @@ def create_order(request):
     cart=get_object_or_404(Cart,user=request.user)
     address=get_object_or_404(User_Profile,id=address_id)
     price1=cart.total_price()
-    payment_amount1=cart.offer_total_price()
+    payment_amount1=cart.total()
     shipping_charge=cart.shipping_charge()
     order=Order.objects.create(
         user=request.user,
@@ -418,7 +418,7 @@ def create_order(request):
 def payment(request):
     return render(request,'payment.html')
 
-def confirmationpage(request,order_id):
-    order_id=Order.objects.get(id=order_id)
+def confirmationpage(request):
+    # order_id=Order.objects.get(id=order_id)
     all_category=Category.objects.all()
-    return render(request, 'confirmation.html',{'all_category':all_category,'order_id':order_id})
+    return render(request, 'confirmation.html',{'all_category':all_category})

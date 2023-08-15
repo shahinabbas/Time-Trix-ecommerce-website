@@ -15,9 +15,9 @@ urlpatterns = [
     path("myorders",views.myorders,name="myorders"),
 
     path("order_details/<str:id>/",views.order_details,name="order_details"),
-    path("invoice/",views.invoice,name="invoice"),
+    path("invoice/<str:id>/",views.invoice,name="invoice"),
     path("success/", views.success, name="success"),
     path('payment',views.payment,name='payment'),
-    path('confirmation/<str:order_id>/',views.confirmationpage,name="confirmation"),
+    path('confirmation/',views.confirmationpage,name="confirmation"),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

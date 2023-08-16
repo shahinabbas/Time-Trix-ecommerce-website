@@ -243,8 +243,8 @@ def loginpage(request):
         email = request.POST.get("email")
         password = request.POST.get("password")
         user = authenticate(request, email=email, password=password)
-        print(email)
         if user is not None:
+        
             if user.is_active:
                 auth.login(request, user)
                 return redirect("/")

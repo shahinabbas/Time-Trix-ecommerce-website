@@ -519,9 +519,11 @@ def myorders(request):
 
 @login_required(login_url='login')
 def create_order(request):
+    print('11111111111111111111111111111111111111111111111111111111111111111111111111')
     if request.method == 'POST':
         address_id=request.POST.get('address')
         payment_method=request.POST.get('pay-method')
+        print(payment_method)
     cart=get_object_or_404(Cart,user=request.user)
     address=get_object_or_404(User_Profile,id=address_id)
     price1=cart.total_price()
@@ -537,6 +539,7 @@ def create_order(request):
         shipping_charge=shipping_charge,
         )
     if payment_method == "razorpay":
+        print('raz111111111111111111111111111111111111111111111111111111111111111111111111111111111')
         order.payment_status = 'Completed'
         order.save()
     for cart_item in CartItem.objects.all():
@@ -547,12 +550,12 @@ def create_order(request):
             quantity=cart_item.quantity,
             amount=payment_amount1,
             )
-    strap=Strap.objects.get(id=cart_item.quantity)
-    print(strap)
-    print(strap.quantity)
-    strap.quantity -= cart_item.quantity
-    print(strap.quantity)
-    strap.save()
+    # strap=Strap.objects.get(id=cart_item.quantity)
+    # print(strap)
+    # print(strap.quantity)
+    # strap.quantity -= cart_item.quantity
+    # print(strap.quantity)
+    # strap.save()
     cart.delete()
     context={
         "address":address,

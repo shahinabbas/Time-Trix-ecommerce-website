@@ -83,7 +83,7 @@ class Cart(models.Model):
 
 class CartItem(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cart_items')
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cart_items',null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     strap = models.ForeignKey('Strap', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)

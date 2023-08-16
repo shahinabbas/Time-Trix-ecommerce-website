@@ -66,25 +66,26 @@
               />
             </div>
             <div class="col-md-12">
-              <label class="labels"> Valid From </label
-              ><input
+              <label class="labels">Valid From</label>
+              <input
                 type="text"
                 class="form-control"
                 placeholder=""
-                value="{{coupon.valid_from}}"
+                value="{{ coupon.valid_from|date:'Y-m-d' }}"
                 name="valid_from"
               />
             </div>
             <div class="col-md-12">
-              <label class="labels"> valid to </label
-              ><input
+              <label class="labels">Valid To</label>
+              <input
                 type="text"
                 class="form-control"
                 placeholder=""
-                value="{{coupon.valid_to}}"
+                value="{{ coupon.valid_to|date:'Y-m-d' }}"
                 name="valid_to"
               />
             </div>
+            
           </div>
           <div class="mt-5 text-center">
             <button  type="submit" class="btn btn-primary profile-button">

@@ -12,6 +12,16 @@ from coupon.models import Coupon
 
 
 # Create your views here.
+# def varient(request):
+#     strap=Strap.objects.all()
+#     return render(request,'admin/varient.html',{'strap':strap})
+
+# def add_varient(request):
+#     return render(request,'admin/add_varient.html')
+
+# def edit_varient(request):
+#     return render(request,'admin/edit_varient.html')
+
 def admin_order_details(request,id):
     order = get_object_or_404(Order, order_id=id)
     product = OrderItem.objects.filter(order_no=order)

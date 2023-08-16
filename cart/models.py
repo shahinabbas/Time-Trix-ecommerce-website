@@ -9,8 +9,6 @@ from coupon.models import Coupon
 
 class Cart(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
-    # product = models.ManyToManyField('app.product', through='CartItem')
-    # product=models.ForeignKey(Product, on_delete=models.CASCADE)
     cart_id = models.CharField(max_length=250, blank=True)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -85,8 +83,7 @@ class Cart(models.Model):
 
 class CartItem(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
-    cart = models.ForeignKey(
-        Cart, on_delete=models.CASCADE, related_name='cart_items')
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cart_items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     strap = models.ForeignKey('Strap', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
@@ -111,12 +108,12 @@ class Strap(models.Model):
 
 
     def soft_delete(self):
-        self.is_active = True
+        self.is_active = False
         self.save()
 
     
     def undo(self):
-        self.is_active = False
+        self.is_active = True
         self.save()
 
     def __unicode__(self):

@@ -105,12 +105,12 @@
         </td>
         <td>
           {% if strap.is_active %}
-          <span class="badge badge-danger rounded-pill d-inline" style="color: white; background-color: red"
-            >Un Available</span
+          <span class="badge badge-danger rounded-pill d-inline" style="color: white; background-color: green"
+            >Available</span
           >
           {% else %}
-          <span class="badge badge-success rounded-pill d-inline" style="color: black; background-color: green"
-            >Available</span
+          <span class="badge badge-success rounded-pill d-inline" style="color: black; background-color: red"
+            >Un Available</span
           >
           {% endif %}
         </td>
@@ -125,24 +125,24 @@
 
             {% if strap.is_active %}
             <form
-              action="{% url 'undo_product' strap.id %}"
-              method="post"
-              class="d-inline"
-            >
-              {% csrf_token %}
-              <button type="submit" class="btn btn-info">
-                <i class="fa fa-undo" aria-hidden="true"></i>Undo
-              </button>
-            </form>
-            {% else %}
-            <form
               action="{% url 'delete_product' strap.id %}"
               method="post"
               class="d-inline"
             >
               {% csrf_token %}
               <button type="submit" class="btn btn-danger">
-                <i class="fa fa-ban" aria-hidden="true"></i>Delete
+                <i class="fa fa-undo" aria-hidden="true"></i>Delete
+              </button>
+            </form>
+            {% else %}
+            <form
+              action="{% url 'undo_product' strap.id %}"
+              method="post"
+              class="d-inline"
+            >
+              {% csrf_token %}
+              <button type="submit" class="btn btn-info">
+                <i class="fa fa-ban" aria-hidden="true"></i>Undo
               </button>
             </form>
             {% endif %}

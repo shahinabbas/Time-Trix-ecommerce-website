@@ -16,70 +16,197 @@ from django.http import Http404
 import uuid
 
 # Create your views here.
-def invoice(request,id):
-    try:
-        order=Order.objects.get(order_id=id)
-        order_item=OrderItem.objects.filter(order_no=order)
-        context={
-            'order':order,
-            'order_item':order_item,
-        }
-        return render(request,'invoice.html',context)
-    except Order.DoesNotExist:
-        return redirect('shop')
+
+def _cart_id(request):
+    cart = request.session.session_key
+    if not cart:
+        cart = request.session.create()
+    return cart
 
 
 
-@login_required(login_url='login')
 def add_cart(request, product_id):
-    product=get_object_or_404(Product,id=product_id)
-    if request.method=='POST':
-        user=request.user if request.user.is_authenticated else None
-        try:
-            cart=Cart.objects.get(user=user)
-        except Cart.DoesNotExist:
-            cart = Cart.objects.create(user=user)
-        strap_id=request.POST.get('strap_id')
-        quantity = int(request.POST.get('quantity', 1)) 
-        cart_item,created=cart.cart_items.get_or_create(product=product,strap_id=strap_id)
-                 
-        if not created:
-            cart_item.quantity += 1
-            if cart_item.quantity > cart_item.strap.quantity:
-                cart_item.quantity = cart_item.strap.quantity  
-        else:
-            cart_item.quantity = quantity   
-        cart_item.save()      
+    user=request.user
+    if user.is_authenticated:
+        product=get_object_or_404(Product,id=product_id)
+        if request.method=='POST':
+            try:
+                cart=Cart.objects.get(user=user)
+            except Cart.DoesNotExist:
+                cart = Cart.objects.create(user=user)            
+            strap_id=request.POST.get('strap_id')
+            quantity = int(request.POST.get('quantity', 1)) 
+            cart_item,created=cart.cart_items.get_or_create(product=product,strap_id=strap_id)
+                    
+            if not created:
+                cart_item.quantity += 1
+                if cart_item.quantity > cart_item.strap.quantity:
+                    cart_item.quantity = cart_item.strap.quantity  
+            else:
+                cart_item.quantity = quantity   
+            cart_item.save()
+    else:
+        product=get_object_or_404(Product,id=product_id)
+        if request.method=='POST':
+            try:
+                cart=Cart.objects.get(cart_id=_cart_id(request))
+            except Cart.DoesNotExist:
+                cart = Cart.objects.create(cart_id=_cart_id(request))            
+            strap_id=request.POST.get('strap_id')
+            quantity = int(request.POST.get('quantity', 1)) 
+            cart_item,created=cart.cart_items.get_or_create(product=product,strap_id=strap_id)
+                    
+            if not created:
+                cart_item.quantity += 1
+                if cart_item.quantity > cart_item.strap.quantity:
+                    cart_item.quantity = cart_item.strap.quantity  
+            else:
+                cart_item.quantity = quantity   
+            cart_item.save()
     return redirect('cart')
+
+
 
 def cart_plus(request, strap_id):
-    user = request.user
     strap = get_object_or_404(Strap, id=strap_id)
-    cart_item = CartItem.objects.get(strap=strap)
 
-    if cart_item.quantity >= 1:
-        cart_item.quantity += 1
-        if cart_item.quantity > cart_item.strap.quantity:
-            cart_item.quantity = cart_item.strap.quantity
-            messages.info(request, 'Out of stock')
-        cart_item.save()
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user)
+    else:
+        cart, created = Cart.objects.get_or_create(cart_id=_cart_id(request))
+
+    try:
+        cart_item = CartItem.objects.get(strap=strap, cart=cart)
+        if cart_item.quantity >= 1:
+            cart_item.quantity += 1
+            cart_item.save()
+    except CartItem.DoesNotExist:
+        pass
+
     return redirect('cart')
+
+
+
+def cart_minus(request, strap_id):
+    strap = get_object_or_404(Strap, id=strap_id)
+
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user)
+    else:
+        cart, created = Cart.objects.get_or_create(cart_id=_cart_id(request))
+
+    try:
+        cart_item = CartItem.objects.get(strap=strap, cart=cart)
+        if cart_item.quantity >= 1:
+            cart_item.quantity -= 1
+            cart_item.save()
+    except CartItem.DoesNotExist:
+        pass
+
+    return redirect('cart')
+
+
+# def cart_plus(request,strap_id):
+#     strap=get_object_or_404(Strap,id=strap_id)
+#     try :
+#         if request.user.is_authenticated:
+#             cart_item = CartItem.objects.get(strap = strap,user = request.user)
+#             if cart_item.cart_quantity >= 1:
+#                 cart_item.cart_quantity += 1
+#                 cart_item.save()
+#     except:
+#         cart = Cart.objects.get(cart_id = _cart_id(request))
+#         cart_item = CartItem.objects.get(strap = strap,cart=cart)
+#         if cart_item.cart_quantity >= 1:
+#             cart_item.cart_quantity += 1
+#             cart_item.save()
+#     return redirect('cart')
+
+# def cart_plus(request, strap_id):
+#     strap = get_object_or_404(Strap, id=strap_id)
+#     print(strap,'111111111111111111111111111111111111111111')
+#     try:
+#         if request.user.is_authenticated:
+#             cart_item = CartItem.objects.get(strap=strap,user=request.user)
+#             if cart_item.quantity >= 1:
+#                 cart_item.quantity += 1
+#                 # if cart_item.quantity > cart_item.strap.quantity:
+#                 #     cart_item.quantity = cart_item.strap.quantity
+#                 #     messages.info(request, 'Out of stock')
+#                 cart_item.save()
+#     except:
+#         print('88888888888888888888888888888888888888888888888')
+#         cart=Cart.objects.get(card_id=_cart_id(request))
+#         print(cart,'111111111111111111111111111111111111111111')
+#         cart_item = CartItem.objects.get(strap=strap,cart=cart)
+#         if cart_item.quantity >= 1:
+#             cart_item.quantity += 1
+#             # if cart_item.quantity > cart_item.strap.quantity:
+#             #     cart_item.quantity = cart_item.strap.quantity
+#             #     messages.info(request, 'Out of stock')
+#             print("Before saving:", cart_item.quantity,'11111111111111111111111111111111111111111111111')
+#             cart_item.save()
+#             print("After saving:", cart_item.quantity,'1111111111111111111111111111111111111')
+
+#     return redirect('cart')
 
     # updated_html = render_to_string('cart.html', {'cart_item': cart_item})
     # return JsonResponse({'html': updated_html})
 
 
-def cart_minus(request, strap_id):
-    user = request.user
-    strap = get_object_or_404(Strap, id=strap_id)
-    cart_item = CartItem.objects.get(strap=strap)
+# def cart_minus(request, strap_id):
+#     if request.user.is_authenticated:
+#         try:
+#             strap = get_object_or_404(Strap, id=strap_id)
+#             cart_item = CartItem.objects.get(strap=strap, user=request.user)
+            
+#             if cart_item.quantity > 1:
+#                 cart_item.quantity -= 1
+#                 cart_item.save()
+#             else:
+#                 cart_item.delete()
+#         except CartItem.DoesNotExist:
+#             pass  # Handle the case when the cart item does not exist
+#     else:
+#         cart = Cart.objects.get(cart_id=_cart_id(request))
+#         strap = get_object_or_404(Strap, id=strap_id)
+        
+#         try:
+#             cart_item = CartItem.objects.get(strap=strap, cart=cart)
+            
+#             if cart_item.quantity > 1:
+#                 cart_item.quantity -= 1
+#                 cart_item.save()
+#             else:
+#                 cart_item.delete()
+#         except CartItem.DoesNotExist:
+#             pass  # Handle the case when the cart item does not exist
+    
+#     return redirect('cart')
 
-    if cart_item.quantity > 1:
-        cart_item.quantity -= 1
-        cart_item.save()
-    else:
-        cart_item.delete()
-    return redirect('cart')
+
+# def cart_minus(request, strap_id):
+#     if request.user.is_authenticated:
+#         strap = get_object_or_404(Strap, id=strap_id)
+#         cart_item = CartItem.objects.get(strap=strap,user=request.user)
+
+#         if cart_item.quantity > 1:
+#             cart_item.quantity -= 1
+#             cart_item.save()
+#         else:
+#             cart_item.delete()
+#     else:
+#         cart = Cart.objects.get(cart_id = _cart_id(request))
+#         strap = get_object_or_404(Strap, id=strap_id)
+#         cart_item = CartItem.objects.get(strap=strap,cart=cart)
+
+#         if cart_item.quantity > 1:
+#             cart_item.quantity -= 1
+#             cart_item.save()
+#         else:
+#             cart_item.delete()
+
+#     return redirect('cart')
     # updated_html = render_to_string('cart.html', {'cart_item': cart_item})
     # return JsonResponse({'html': updated_html})
 
@@ -91,29 +218,40 @@ def cartpage(request, total=0, quantity=0, cart_items=None):
     grand_total = 0
     org_tot = 0
     user=request.user
-    try:
-        cart = Cart.objects.get(user=user)
-        cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+    if user.is_authenticated:
+        try:
+            cart = Cart.objects.get(user=user)
+            cart_items = CartItem.objects.filter(cart=cart, is_active=True)
 
-        for cart_item in cart_items:
-            total += (cart_item.product.offer_price * cart_item.quantity)
-            quantity += cart_item.quantity
-       
-       
-
-    except ObjectDoesNotExist:
-        pass
-    context = {
+            for cart_item in cart_items:
+                total += (cart_item.product.offer_price * cart_item.quantity)
+                quantity += cart_item.quantity
+        except ObjectDoesNotExist:
+            pass
+        context = {
         'total': total,
         'quantity': quantity,
         'cart_items': cart_items,
-       
-        'org_tot': org_tot,
         'cart': cart,
-    }
-    return render(request, 'cart.html', context)
+        }
+        return render(request, 'cart.html', context)
+    else:
+        try:
+            cart = Cart.objects.get(cart_id=_cart_id(request))
+            cart_items = CartItem.objects.filter(cart=cart, is_active=True)
 
-
+            for cart_item in cart_items:
+                total += (cart_item.product.offer_price * cart_item.quantity)
+                quantity += cart_item.quantity
+        except ObjectDoesNotExist:
+            pass
+        context = {
+        'total': total,
+        'quantity': quantity,
+        'cart_items': cart_items,
+        'cart':cart,
+        }
+        return render(request, 'cart.html', context)
 
 
 
@@ -190,11 +328,7 @@ def order_details(request,id):
 
 
 
-# def _cart_id(request):
-#     cart = request.session.session_key
-#     if not cart:
-#         cart = request.session.create()
-#     return cart
+
 
 # def cart_plus(request,strap_id):
 #     print('sadffffagr215212154125421525215412221111')
@@ -310,6 +444,18 @@ def order_details(request,id):
 
 
     
+def invoice(request,id):
+    try:
+        order=Order.objects.get(order_id=id)
+        order_item=OrderItem.objects.filter(order_no=order)
+        context={
+            'order':order,
+            'order_item':order_item,
+        }
+        return render(request,'invoice.html',context)
+    except Order.DoesNotExist:
+        return redirect('shop')
+
 
 @login_required(login_url='login')
 def checkout(request, total=0, quantity=0, cart_items=None):

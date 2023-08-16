@@ -262,20 +262,33 @@ def listpage(request, id):
 
 
 def product_details(request, product_id):
-    product = Product.objects.get(id=product_id)
-    all_categories = Category.objects.all()
-    strap = Strap.objects.all()
-    wishlist=Wishlist.objects.filter(user=request.user)
+    if request.user.is_authenticated:
+        wishlist=Wishlist.objects.filter(user=request.user)
+        product = Product.objects.get(id=product_id)
+        all_categories = Category.objects.all()
+        strap = Strap.objects.all()
  
-    context = {
-        'product': product,
-        "category": all_categories,
-        'strap': strap,
-        'wishlist':wishlist,
+        context = {
+            'product': product,
+            "category": all_categories,
+            'strap': strap,
+            'wishlist':wishlist,
+        }
+        return render(request, "product_details.html", context)
 
-    }
+    else:
+        product = Product.objects.get(id=product_id)
+        all_categories = Category.objects.all()
+        strap = Strap.objects.all()
+ 
+        context = {
+            'product': product,
+            "category": all_categories,
+            'strap': strap,
+        }
 
-    return render(request, "product_details.html", context)
+        return render(request, "product_details.html", context)
+    return redirect('shop')
     # try:
     #     product = Product.objects.get(pk=product_id)
     #     in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request),product=product).exists()

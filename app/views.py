@@ -7,6 +7,7 @@ from cart.views import _cart_id
 import random
 from twilio.rest import Client
 import os
+from django.core.paginator import Paginator
 from django.contrib.auth.models import auth
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseNotFound, JsonResponse
@@ -273,11 +274,11 @@ def listpage(request, id):
 
 def product_details(request, product_id):
     if request.user.is_authenticated:
-        wishlist=Wishlist.objects.filter(user=request.user)
         product = Product.objects.get(id=product_id)
+        wishlist=Wishlist.objects.filter(user=request.user,product=product).exists()
         all_categories = Category.objects.all()
         strap = Strap.objects.all()
- 
+       
         context = {
             'product': product,
             "category": all_categories,
@@ -318,7 +319,16 @@ def product_details(request, product_id):
 def shoppage(request):
     all_category=Category.objects.all()    
     product = Product.objects.all().filter(is_deleted=False)
-    return render(request, 'shop.html', {'product': product,'all_category':all_category})
+    items_per_page = 10
+    paginator = Paginator(product, items_per_page)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context= {
+        'product': product,
+        'all_category':all_category,
+        'product': page_obj,
+        }
+    return render(request, 'shop.html',context)
 
 
 

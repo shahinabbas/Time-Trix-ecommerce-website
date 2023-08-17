@@ -8,6 +8,9 @@
 
   <main>
     <!-- Hero Area Start-->
+ 
+
+
 <style>
   .video-area {
     position: relative;
@@ -184,6 +187,39 @@
       </div>
     </section>
     <!-- Latest Products End -->
+
+    {% comment %} <div class="pagination">
+      <span class="step-links">
+        {% if product.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ product.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current-page">{{ product.number }}</span>
+
+    {% if product.has_next %}
+      <a href="?page={{ product.next_page_number }}">next</a>
+      <a href="?page={{ product.paginator.num_pages }}">last &raquo;</a>
+    {% endif %}
+  </span>
+</div> {% endcomment %}
+
+{% comment %} <nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav> {% endcomment %}
     <!--? Shop Method Start-->
     <div class="shop-method-area">
       <div class="container">

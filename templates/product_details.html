@@ -96,7 +96,10 @@
                       >Add to wishlist <i class="flaticon-heart"></i
                     ></a>
                     {% endif %} {% endcomment %} 
-                    {% if product in wishlist %}
+                 
+                    {% comment %} {{wishlist}}
+                    {{product}} {% endcomment %}
+                    {% if wishlist %}
                     <a
                       href="{% url 'add_to_wishlist' product.id %}"
                      class="btn hero-btn"

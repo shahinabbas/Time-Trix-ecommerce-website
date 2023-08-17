@@ -23,49 +23,56 @@ def _cart_id(request):
         cart = request.session.create()
     return cart
 
-def add_cart(request,product_id):
-    product=get_object_or_404(Product,id=product_id)
-    if request.user.is_authenticated:   
-        try:
-            cart=Cart.objects.get(user=request.user)
-            print("----")
-            print("old cart",type(cart) )  
-            print(cart)
-            if cart:
-                print("insdie")
-            else:
-                print("no")  
-        except:
-            print("okkk")
-            print(request.user)
-            try:
-                cart=Cart.objects.create(user=request.user)
-            except Exception as e:
-                print(e)
-                print("cartttttt")
-
-            print("new cart",cart)   
-    else:
-        try:
-            cart=Cart.objects.get(cart_id=_cart_id(request))
-        except:
-            cart=Cart.objects.create(cart_id=_cart_id(request))
+# def add_cart(request,product_id):
+#     product=get_object_or_404(Product,id=product_id)
+#     if request.user.is_authenticated:   
+#         try:
+#             cart=Cart.objects.get(user=request.user)   
+#         except:
+#             cart=Cart.objects.create(user=request.user)
+#     else:
+#         try:
+#             cart=Cart.objects.get(cart_id=_cart_id(request))
+#         except:
+#             cart=Cart.objects.create(cart_id=_cart_id(request))
         
-    if request.method=='POST':
-        strap_id=request.POST.get('strap_id')
-        quantity = int(request.POST.get('quantity', 1)) 
-        print("post method",cart)   
-        cart_item,created=CartItem.objects.get_or_create(product=product,strap_id=strap_id,cart=cart)
-        print(cart_item)
-        if not created:
-            cart_item.quantity += 1
-            if cart_item.quantity > cart_item.strap.quantity:
-                cart_item.quantity = cart_item.strap.quantity  
-        else:
-            cart_item.quantity = quantity   
-        cart_item.save()
-    return redirect('cart')
+#     if request.method=='POST':
+#         strap_id=request.POST.get('strap_id')
+#         quantity = int(request.POST.get('quantity', 1)) 
+       
+#         cart_item,created=CartItem.objects.get_or_create(product=product,strap_id=strap_id,cart=cart)
+#         if not created:
+#             cart_item.quantity += 1
+#             if cart_item.quantity > cart_item.strap.quantity:
+#                 cart_item.quantity = cart_item.strap.quantity  
+#         else:
+#             cart_item.quantity = quantity   
+#         cart_item.save()
+#     return redirect('cart')
 
+
+def add_cart(request, product_id):
+    product = Product.objects.get(id=product_id)
+    strap_id=request.POST.get('strap_id')
+
+    try:
+        cart = Cart.objects.get(cart_id=_cart_id(request))
+    except Cart.DoesNotExist:
+        cart = Cart.objects.create(cart_id=_cart_id(request))
+    
+    try:
+        cart_item = CartItem.objects.get(product=product, cart=cart,strap_id=strap_id)
+        # strap_id=request.POST.get('strap_id')
+
+        cart_item.quantity += 1
+        cart_item.save()
+    except CartItem.DoesNotExist:
+        if request.user.is_authenticated:
+            cart_item = CartItem.objects.create(product=product, quantity=1, strap_id=strap_id, cart=cart, user=request.user)
+        else:
+            cart_item = CartItem.objects.create(product=product, quantity=1,strap_id=strap_id, cart=cart)
+    
+    return redirect('cart')
 # def add_cart(request, product_id):
 #     user=request.user
 #     print(user)
@@ -261,6 +268,8 @@ def cartpage(request, total=0, quantity=0, cart_items=None):
     try:
         if request.user.is_authenticated:
             cart_items = CartItem.objects.filter(user=request.user, is_active=True)
+            print(cart_items)
+
         else:
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_items = CartItem.objects.filter(cart=cart, is_active=True)

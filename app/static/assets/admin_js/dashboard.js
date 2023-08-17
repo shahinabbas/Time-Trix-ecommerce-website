@@ -6,8 +6,9 @@ $(function () {
   // =====================================
   var chart = {
     series: [
-      { name: "Earnings this month:", data: [355, 390, 300, 350, 390, 180, 355, 390] },
-      { name: "Expense this month:", data: [280, 250, 325, 215, 250, 310, 280, 250] },
+      { name: "Product:", data: [380, 390, 300, 350, 390, 180, 355, 390] },
+      { name: "count:", data: [270, 250, 325, 215, 250, 310, 280, 250] },
+      // { name: "Expense this month:", data: [280, 250, 325, 215, 250, 310, 280, 250] },
     ],
 
     chart: {

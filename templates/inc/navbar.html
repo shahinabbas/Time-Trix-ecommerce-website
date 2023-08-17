@@ -81,32 +81,91 @@
                       method="GET"
                       onsubmit="handleSearchForm(event)"
                     >
-                      <input
+                      
+                  </div>
+                  <div class="search-box">
+                    <button class="btn-search"><i class="fas fa-search"></i></button>
+                    <input
                         type="text"
                         name="query"
                         value=""
                         id="form1"
-                        class="form-control"
-                        placeholder="Search..."
+                        class="input-search" placeholder="Type to Search..."
                       />
-                    </form>
                   </div>
-                  <button type="submit" class="btns btn-secondary">
-                    <i class="fas fa-search"></i>
-                  </button>
+                </form>
+
                 </div>
               </li>
-              <li>
+              <style>
+              
+              .search-box{
+                width: fit-content;
+                height: fit-content;
+                position: relative;
+              }
+              .input-search{
+                height: 40px;
+                width: 40px;
+                border-style: none;
+                padding: 10px;
+                font-size: 18px;
+                letter-spacing: 2px;
+                outline: none;
+                border-radius: 20px;
+                transition: all .5s ease-in-out;
+                background-color: #22a6b3;
+                padding-right: 40px;
+                color:black;
+              }
+              .input-search::placeholder{
+                color:rgba(0,0,0,.5);
+                font-size: 18px;
+                letter-spacing: 2px;
+                font-weight: 100;
+              }
+              .btn-search{
+                width: 40px;
+                height: 40px;
+                border-style: none;
+                font-size: 20px;
+                font-weight: bold;
+                outline: none;
+                cursor: pointer;
+                border-radius: 50%;
+                position: absolute;
+                right: 0px;
+                color:black;
+                background-color:#ffffff;
+                pointer-events: painted;  
+              }
+              .btn-search:focus ~ .input-search{
+                width: 300px;
+                border-radius: 0px;
+                background-color: black;
+                border-bottom:1px solid rgba(0,0,0,.5);
+                transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+              }
+              .input-search:focus{
+                width: 300px;
+                border-radius: 0px;
+                background-color: #ffffff;
+                border-bottom:1px solid rgba(0,0,0,.5);
+                transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+              }
+              
+              </style>
+              <li class="mt-2">
                 <a href="{% url 'user_profile' %}"
                   ><span class="flaticon-user"></span
                 ></a>
               </li>
-              <li>
+              <li class="mt-2">
                 <a href="{% url 'cart' %}"
                   ><span class="flaticon-shopping-cart"></span
                 ></a>
               </li>
-              <li>
+              <li class="mt-2">
                 <a href="{% url 'wishlist' %}"
                   ><span class="flaticon-heart"></span
                 ></a>
@@ -125,6 +184,7 @@
 </header>
 
 <style>
+  
   /* Reduce the button height */
   .btn-secondary {
     height: 37px;

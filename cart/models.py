@@ -9,7 +9,7 @@ from coupon.models import Coupon
 
 class Cart(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
-    cart_id = models.CharField(max_length=250, blank=True)
+    cart_id = models.CharField(max_length=250, blank=True,null=True)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     coupon_applied=models.ForeignKey(Coupon,on_delete=models.DO_NOTHING,null=True)

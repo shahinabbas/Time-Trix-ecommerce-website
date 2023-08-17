@@ -23,47 +23,91 @@ def _cart_id(request):
         cart = request.session.create()
     return cart
 
-
-
-def add_cart(request, product_id):
-    user=request.user
-    if user.is_authenticated:
-        product=get_object_or_404(Product,id=product_id)
-        if request.method=='POST':
-            try:
-                cart=Cart.objects.get(user=user)
-            except Cart.DoesNotExist:
-                cart = Cart.objects.create(user=user)            
-            strap_id=request.POST.get('strap_id')
-            quantity = int(request.POST.get('quantity', 1)) 
-            cart_item,created=cart.cart_items.get_or_create(product=product,strap_id=strap_id)
-                    
-            if not created:
-                cart_item.quantity += 1
-                if cart_item.quantity > cart_item.strap.quantity:
-                    cart_item.quantity = cart_item.strap.quantity  
+def add_cart(request,product_id):
+    product=get_object_or_404(Product,id=product_id)
+    if request.user.is_authenticated:   
+        try:
+            cart=Cart.objects.get(user=request.user)
+            print("----")
+            print("old cart",type(cart) )  
+            print(cart)
+            if cart:
+                print("insdie")
             else:
-                cart_item.quantity = quantity   
-            cart_item.save()
+                print("no")  
+        except:
+            print("okkk")
+            print(request.user)
+            try:
+                cart=Cart.objects.create(user=request.user)
+            except Exception as e:
+                print(e)
+                print("cartttttt")
+
+            print("new cart",cart)   
     else:
-        product=get_object_or_404(Product,id=product_id)
-        if request.method=='POST':
-            try:
-                cart=Cart.objects.get(cart_id=_cart_id(request))
-            except Cart.DoesNotExist:
-                cart = Cart.objects.create(cart_id=_cart_id(request))            
-            strap_id=request.POST.get('strap_id')
-            quantity = int(request.POST.get('quantity', 1)) 
-            cart_item,created=cart.cart_items.get_or_create(product=product,strap_id=strap_id)
-                    
-            if not created:
-                cart_item.quantity += 1
-                if cart_item.quantity > cart_item.strap.quantity:
-                    cart_item.quantity = cart_item.strap.quantity  
-            else:
-                cart_item.quantity = quantity   
-            cart_item.save()
+        try:
+            cart=Cart.objects.get(cart_id=_cart_id(request))
+        except:
+            cart=Cart.objects.create(cart_id=_cart_id(request))
+        
+    if request.method=='POST':
+        strap_id=request.POST.get('strap_id')
+        quantity = int(request.POST.get('quantity', 1)) 
+        print("post method",cart)   
+        cart_item,created=CartItem.objects.get_or_create(product=product,strap_id=strap_id,cart=cart)
+        print(cart_item)
+        if not created:
+            cart_item.quantity += 1
+            if cart_item.quantity > cart_item.strap.quantity:
+                cart_item.quantity = cart_item.strap.quantity  
+        else:
+            cart_item.quantity = quantity   
+        cart_item.save()
     return redirect('cart')
+
+# def add_cart(request, product_id):
+#     user=request.user
+#     print(user)
+#     if user.is_authenticated:
+#         print(user)
+#         product=get_object_or_404(Product,id=product_id)
+#         if request.method=='POST':
+#             try:
+#                 print(user)
+#                 cart = Cart.objects.filter(user=user)
+#             except Cart.DoesNotExist:
+#                 cart,_ = Cart.objects.create(user=user) 
+#             strap_id=request.POST.get('strap_id')
+#             quantity = int(request.POST.get('quantity', 1)) 
+#             cart_item,created=Cart.get_or_create(product=product,strap_id=strap_id,user=user)
+#             if not created:
+#                 cart_item.quantity += 1
+#                 if cart_item.quantity > cart_item.strap.quantity:
+#                     cart_item.quantity = cart_item.strap.quantity  
+#             else:
+#                 cart_item.quantity = quantity   
+#             cart_item.save()
+#     else:
+#         product=get_object_or_404(Product,id=product_id)
+#         if request.method=='POST':
+#             try:
+#                 cart=Cart.objects.get(cart_id=_cart_id(request))
+
+#             except Cart.DoesNotExist:
+#                 cart = Cart.objects.create(cart_id=_cart_id(request))  
+#             strap_id=request.POST.get('strap_id')
+#             quantity = int(request.POST.get('quantity', 1)) 
+#             cart_item,created=cart.cart_items.get_or_create(product=product,strap_id=strap_id)
+                    
+#             if not created:
+#                 cart_item.quantity += 1
+#                 if cart_item.quantity > cart_item.strap.quantity:
+#                     cart_item.quantity = cart_item.strap.quantity  
+#             else:
+#                 cart_item.quantity = quantity   
+#             cart_item.save()
+#     return redirect('cart')
 
 
 
@@ -214,44 +258,25 @@ def cart_minus(request, strap_id):
 
 
 def cartpage(request, total=0, quantity=0, cart_items=None):
-    tax = 0
-    grand_total = 0
-    org_tot = 0
-    user=request.user
-    if user.is_authenticated:
-        try:
-            cart = Cart.objects.get(user=user)
-            cart_items = CartItem.objects.filter(cart=cart, is_active=True)
-
-            for cart_item in cart_items:
-                total += (cart_item.product.offer_price * cart_item.quantity)
-                quantity += cart_item.quantity
-        except ObjectDoesNotExist:
-            pass
-        context = {
-        'total': total,
-        'quantity': quantity,
-        'cart_items': cart_items,
-        'cart': cart,
-        }
-        return render(request, 'cart.html', context)
-    else:
-        try:
+    try:
+        if request.user.is_authenticated:
+            cart_items = CartItem.objects.filter(user=request.user, is_active=True)
+        else:
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+            print(cart_items)
 
-            for cart_item in cart_items:
-                total += (cart_item.product.offer_price * cart_item.quantity)
-                quantity += cart_item.quantity
-        except ObjectDoesNotExist:
+        for cart_item in cart_items:
+            total += (cart_item.product.offer_price * cart_item.quantity)
+            quantity += cart_item.quantity
+    except ObjectDoesNotExist:
             pass
-        context = {
+    context = {
         'total': total,
         'quantity': quantity,
         'cart_items': cart_items,
-        'cart':cart,
         }
-        return render(request, 'cart.html', context)
+    return render(request, 'cart.html', context)
 
 
 

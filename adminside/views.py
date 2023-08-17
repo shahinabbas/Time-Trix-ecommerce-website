@@ -144,12 +144,14 @@ def add_product(request):
 
     if request.method == 'POST':
         product_name = request.POST.get('name')
+        print("Shape:", product_name)
         category_name = request.POST.get('category')
         category1 = Category.objects.get(categories=category_name)
         product_Image = request.FILES.get('image')
         description = request.POST.get('description')
         price = request.POST.get('price')
         shape=request.POST.get('shape')
+        print("Shape:", shape)
         offer_price = request.POST.get('offer_price')
 
         if Product.objects.filter(product_name=product_name).exists():
@@ -167,6 +169,7 @@ def add_product(request):
             product.save()
         quantity = request.POST.get('quantity')
         sele_strap=request.POST.get('strap')
+        print("Shape:", sele_strap)
         strap1=Strap(product_id=product,strap=sele_strap,quantity=quantity)
         print(sele_strap)
         strap1.save()
@@ -195,7 +198,7 @@ def edit_productpage(request, id):
         description = request.POST.get('description')
         category_id = request.POST.get('category')
         print(category_id,'11111111111111111111111111')
-        category = get_object_or_404(Category, pk=category_id) 
+        category = get_object_or_404(Category, categories=category_id) 
         print(category,'22222222222222222222222222222222222')
         shape = request.POST.get('shape')
         price = request.POST.get('price')

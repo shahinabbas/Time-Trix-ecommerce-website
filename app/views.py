@@ -2,7 +2,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib import messages
 from app.models import CustomUser, Category, Product, User_Profile, Wishlist
-from cart.models import Strap
+from cart.models import Strap,Cart,CartItem
+from cart.views import _cart_id
 import random
 from twilio.rest import Client
 import os
@@ -89,7 +90,7 @@ def add_to_wishlist(request, product_id):
         wishlist_item = Wishlist.objects.get(user=user, product=pro)
         wishlist_item.delete()
         messages.info(request,'Removed product from wishlist')
-
+    
     return redirect('product_details', product_id=product_id)
 
 
@@ -244,7 +245,16 @@ def loginpage(request):
         password = request.POST.get("password")
         user = authenticate(request, email=email, password=password)
         if user is not None:
-        
+            try:
+                cart=Cart.objects.get(cart_id=_cart_id(request))
+                is_cart_item_exists=CartItem.objects.filter(cart=cart).exists()
+                if is_cart_item_exists:
+                    cart_item=CartItem.objects.filter(cart=cart)
+                    for item in cart_item:
+                        item.user=user
+                        item.save()
+            except:
+                pass
             if user.is_active:
                 auth.login(request, user)
                 return redirect("/")

@@ -278,12 +278,15 @@ def product_details(request, product_id):
         wishlist=Wishlist.objects.filter(user=request.user,product=product).exists()
         all_categories = Category.objects.all()
         strap = Strap.objects.all()
+        cart=CartItem.objects.filter(user=request.user)
+        
        
         context = {
             'product': product,
             "category": all_categories,
             'strap': strap,
             'wishlist':wishlist,
+            'cart':cart,
         }
         return render(request, "product_details.html", context)
 

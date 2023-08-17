@@ -73,7 +73,8 @@
                   >
                     {% if strap.quantity <= 0 %}
                     <h5 class="text-danger">Out of Stock</h5>
-                    {% else %} {% if in_cart %}
+                    {% else %} 
+                    {% if cart %}
                     <a href="{% url 'cart' %}" class="btn hero-btn"
                       >Added to Cart <i class="fas fa-check"></i
                     ></a>
@@ -81,7 +82,8 @@
                     <button type="submit" class="btn hero-btn">
                       Add to Cart<i class="flaticon-shopping-cart"></i>
                     </button>
-                    {% endif %} {% endif %} {% comment %} {% if
+                    {% endif %}
+                    {% endif %} {% comment %} {% if
                     product.in_Wishlist %}
                     <a
                       href="{% url 'add_to_wishlist' product.id%}"

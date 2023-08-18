@@ -74,7 +74,7 @@
                     {% if strap.quantity <= 0 %}
                     <h5 class="text-danger">Out of Stock</h5>
                     {% else %} 
-                    {% if cart %}
+                    {% if product.in_cart %}
                     <a href="{% url 'cart' %}" class="btn hero-btn"
                       >Added to Cart <i class="fas fa-check"></i
                     ></a>

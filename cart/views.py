@@ -72,48 +72,40 @@ def add_cart(request, product_id):
 
 
 
-
-
-
-
-def cart_plus(request, strap_id):
-    strap = get_object_or_404(Strap, id=strap_id)
-
-    if request.user.is_authenticated:
-        try:
-            cart = CartItem.objects.get(user=request.user)
-        except:
-            cart = Cart.objects.create(user=request.user)
-    else:
-        cart = Cart.objects.get_or_create(cart_id=_cart_id(request))
-    try:
-        cart_item = CartItem.objects.get(strap=strap, cart=cart)
+def cart_plus(request,strap_id):
+    strap=get_object_or_404(Strap,id=strap_id)
+    try :
+        if request.user.is_authenticated:
+            cart_item = CartItem.objects.get(strap = strap,user = request.user)
+            if cart_item.quantity >= 1:
+                cart_item.quantity += 1
+                cart_item.save()
+    except:
+        cart = Cart.objects.get(cart_id = _cart_id(request))
+        cart_item = CartItem.objects.get(strap = strap,cart= cart)
         if cart_item.quantity >= 1:
             cart_item.quantity += 1
             cart_item.save()
-    except CartItem.DoesNotExist:
-        pass
-
     return redirect('cart')
 
-
-
-def cart_minus(request, strap_id):
-    strap = get_object_or_404(Strap, id=strap_id)
-
-    if request.user.is_authenticated:
-        cart, created = Cart.objects.get_or_create(user=request.user)
-    else:
-        cart, created = Cart.objects.get_or_create(cart_id=_cart_id(request))
-
-    try:
-        cart_item = CartItem.objects.get(strap=strap, cart=cart)
-        if cart_item.quantity >= 1:
+def cart_minus(request,strap_id):
+    strap=get_object_or_404(Strap,id=strap_id)
+    try :
+        if request.user.is_authenticated:
+            cart_item = CartItem.objects.get(strap = strap,user = request.user)
+            if cart_item.quantity > 1:
+                cart_item.quantity -= 1
+                cart_item.save()
+            else:
+                cart_item.delete()
+    except:
+        cart = Cart.objects.get(cart_id = _cart_id(request))
+        cart_item = CartItem.objects.get(strap = strap,cart= cart)
+        if cart_item.quantity > 1:
             cart_item.quantity -= 1
             cart_item.save()
-    except CartItem.DoesNotExist:
-        pass
-
+        else:
+            cart_item.delete()
     return redirect('cart')
 
 
@@ -121,23 +113,31 @@ def cart_minus(request, strap_id):
 def cartpage(request, total=0, quantity=0, cart_items=None):
     try:
         if request.user.is_authenticated:
-            cart_items = CartItem.objects.filter(user=request.user, is_active=True)
-            print(cart_items)
-
+            cart_items = CartItem.objects.filter(user=request.user,is_active=True)
         else:
             cart = Cart.objects.get(cart_id=_cart_id(request))
-            cart_items = CartItem.objects.filter(cart=cart, is_active=True)
-            print(cart_items)
-
+            cart_items = CartItem.objects.filter(cart=cart,is_active=True)
+            
         for cart_item in cart_items:
             total += (cart_item.product.offer_price * cart_item.quantity)
             quantity += cart_item.quantity
+            shp=cart_item.shipping_charge()
+            qwe=cart_item.qwe()
+            tax=cart_item.tax()
+            coup=cart_item.coupon_discount()
+            amount=cart_item.total()
     except ObjectDoesNotExist:
             pass
+
     context = {
         'total': total,
         'quantity': quantity,
         'cart_items': cart_items,
+        'shp':shp,
+        'qwe':qwe,
+        'tax':tax,
+        'coup':coup,
+        'amount':amount,
         }
     return render(request, 'cart.html', context)
 
@@ -182,40 +182,52 @@ def checkout(request, total=0, quantity=0, cart_items=None):
     grand_total = 0
     org_tot = 0
     tot = 0
-    user = request.user
     try:
-        cart = Cart.objects.get(user=user)if user else None
-        cart_items = CartItem.objects.filter(cart=cart)
-        user_profile=User_Profile.objects.filter(user=user)
-
+        if request.user.is_authenticated:
+            cart_items = CartItem.objects.filter(user=request.user,is_active=True)
+        else:
+            cart = Cart.objects.get(cart_id=_cart_id(request))
+            cart_items = CartItem.objects.filter(cart=cart,is_active=True)
       
         for cart_item in cart_items:
             total += (cart_item.product.offer_price * cart_item.quantity)
             quantity += cart_item.quantity
+            amount=cart_item.total() * 10
+            shp=cart_item.shipping_charge()
+            qwe=cart_item.qwe()
+            tax=cart_item.tax()
+            coup=cart_item.coupon_discount()
+            amount=cart_item.total()
+            off=cart_item.offer_sub_total()
+            price=cart_item.sub_total()
         tax = (3 * total)//100
         grand_total = total + tax
         tot = (cart_item.product.price * cart_item.quantity)
         org_tot = grand_total - tot
+        user_profile=User_Profile.objects.filter(user=request.user)
 
     except ObjectDoesNotExist:
         pass
-
-    amount=cart.total() * 10
-    client = razorpay.Client(auth=(settings.RAZOR_PAY_KEY_ID,settings.KEY_SECRET))
-    payment=client.order.create({"amount":float(amount),"currency": "INR","payment_capture" : 1})
-    cart.razor_pay_order_id=payment['id']
-    cart.save()
+    # amount=100000
+    # client = razorpay.Client(auth=(settings.RAZOR_PAY_KEY_ID,settings.KEY_SECRET))
+    # payment=client.order.create({"amount":float(amount),"currency": "INR","payment_capture" : 1})
+    # cart_items.razor_pay_order_id=payment['id']
+    # cart_items.save()
     context = {
-        'total': total,
-        'cart': cart,
         'quantity': quantity,
         'cart_items': cart_items,
         'tax': tax,
         'grand_total': grand_total,
         'org_tot': org_tot,
         'user_profile':user_profile,
-        "payment":payment,
-
+        # "payment":payment,
+        'shp':shp,
+        'qwe':qwe,
+        'tax':tax,
+        'coup':coup,
+        'amount':amount,
+        'off':off,
+        'price':price,
     }
     return render(request, 'checkout.html', context)
 

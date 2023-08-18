@@ -126,11 +126,11 @@
             <span class="hide-menu">EXTRA</span>
           </li>
           <li class="sidebar-item">
-            <a class="sidebar-link" href="./icon-tabler.html" aria-expanded="false">
+            <a class="sidebar-link" href="{% url 'sales_report' %}" aria-expanded="false">
               <span>
                 <i class="ti ti-mood-happy"></i>
               </span>
-              <span class="hide-menu">Icons</span>
+              <span class="hide-menu">Sales Report</span>
             </a>
           </li>
           <li class="sidebar-item">
@@ -250,17 +250,16 @@
 {% block body %}
 
 {% endblock body %}
-<script src="{% static 'assets/admin_libs/jquery/dist/jquery.min.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% comment %} <script src="{% static 'assets/admin_libs/jquery/dist/jquery.min.js' %}"></script> {% endcomment %}
 <script src="{% static 'assets/admin_libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'assets/admin_js/sidebarmenu.js' %}"></script>
 <script src="{% static 'assets/admin_js/app.min.js' %}"></script>
-<script src="{% static 'assets/admin_libs/apexcharts/dist/apexcharts.min.js' %}"></script>
-<script src="{% static 'assets/admin_libs/simplebar/dist/simplebar.js' %}"></script>
+{% comment %} <script src="{% static 'assets/admin_libs/apexcharts/dist/apexcharts.min.js' %}"></script> {% endcomment %}
+{% comment %} <script src="{% static 'assets/admin_libs/simplebar/dist/simplebar.js' %}"></script> {% endcomment %}
 <script src="{% static 'assets/admin_js/dashboard.js' %}"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>   
+{% comment %} <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>    {% endcomment %}
 
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>     
 

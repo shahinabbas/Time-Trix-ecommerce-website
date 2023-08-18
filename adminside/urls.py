@@ -2,6 +2,7 @@ from django.urls import path
 from adminside import views
 from django.conf import settings
 from django.conf.urls.static import static
+from adminside.views import GeneratePdf
 
 urlpatterns = [
 
@@ -9,10 +10,14 @@ urlpatterns = [
     path('admin_index',views.admin_index,name='admin_index'),
     path('admin_signin',views.admin_signin,name='admin_signin'),
     path('admin_logout/',views.admin_logout,name='admin_logout'),
-
+    
+    path('pdf/', GeneratePdf.as_view(),name='pdf'), 
+    
+    path('sales_report/',views.sales_report,name='sales_report'),
 
     path('users/',views.userspage,name='users'),
     path('user_block/<int:id>',views.user_blockpage,name="user_block"),
+
     path('user_unblock/<int:id>',views.user_unblockpage,name="user_unblock"),
 
     path('edit_category/<int:id>',views.edit_category,name='edit_category'),

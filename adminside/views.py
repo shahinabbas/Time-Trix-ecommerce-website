@@ -9,9 +9,72 @@ from django.views.decorators.cache import never_cache
 from django.http import HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from coupon.models import Coupon
-
-
+from django.db.models import Sum
+from django.utils import timezone
+from datetime import timedelta,datetime
+from django.db.models import Q
+from django.db.models.functions import TruncMonth
+from django.db.models import Count
+from django.db.models.functions import TruncDate
+from .utils import render_to_pdf 
+from django.views import View
+from django.http import JsonResponse
+from django.core.serializers import serialize
+import json
 # Create your views here.
+
+
+
+@never_cache
+@login_required(login_url='admin_signin')
+def admin_index(request):
+    prod = Product.objects.all()
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=30)
+    orders_within_range = Order.objects.filter(order_date__range=(start_date, end_date))
+    total_payment_amount = orders_within_range.aggregate(total_payment=Sum('payment_amount'))['total_payment']
+    order_item = OrderItem.objects.all()
+    total_order_items = OrderItem.objects.count()
+    
+    monthly_sales = Order.objects.filter(order_date__range=(start_date, end_date)) \
+        .annotate(month=TruncMonth('order_date')) \
+        .values('month') \
+        .annotate(total_sales=Sum('payment_amount')) \
+        .order_by('month')
+
+    sales = Order.objects.exclude(order_status='Cancelled')
+    monthly_sales_list = list(monthly_sales)
+    monthly_sales_json = json.dumps(monthly_sales_list, default=str)
+
+
+    
+    print(monthly_sales_json)
+    context = {
+        'monthly_sales':monthly_sales_json,
+        'sales':sales,
+        'order_item':order_item,
+        'total_order_items':total_order_items,
+        'prod':prod,
+        'total_payment_amount': total_payment_amount
+    }
+    return render(request, 'admin/admin_index.html', context)
+
+
+
+def sales_report(request):
+    order=OrderItem.objects.all()
+    context={
+        'order':order,
+    }
+    return render(request,'admin/sales_report.html',context)
+
+
+
+class GeneratePdf(View):
+    def get(self, request, *args, **kwargs):
+        pdf = render_to_pdf('admin/sales_report.html')
+        return HttpResponse(pdf, content_type='application/pdf')
+    
 # def varient(request):
 #     strap=Strap.objects.all()
 #     return render(request,'admin/varient.html',{'strap':strap})
@@ -259,12 +322,6 @@ def user_unblockpage(request, id):
         user.is_active = True
         user.save()
     return redirect('users')
-
-
-@never_cache
-@login_required(login_url='admin_signin')
-def admin_index(request):
-    return render(request, "admin/admin_index.html")
 
 @never_cache
 @login_required(login_url='admin_signin')

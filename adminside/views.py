@@ -107,7 +107,6 @@ def delete_coupon(request,id):
 
 def edit_coupon(request,id):
     coupon=Coupon.objects.get(pk=id)
-    print(coupon,'111111111111111111111111111111111111111111111111')
     if request.method=='POST':
         coupon_code=request.POST.get('coupon_code')
         description=request.POST.get('description')
@@ -116,8 +115,6 @@ def edit_coupon(request,id):
         discount=request.POST.get('discount')
         valid_from=request.POST.get('valid_from')
         valid_to=request.POST.get('valid_to')
-        print(minimum_amount,'111111111111111111111111111111111111111111111111')
-
         
         coupon.coupon_code=coupon_code
         coupon.description=description
@@ -129,7 +126,6 @@ def edit_coupon(request,id):
         
         coupon.save()
         messages.success(request,'coupon edit success')
-        print(coupon,'111111111111111111111111111111111111111111111111')
         return redirect('coupon_list')
     return render(request,'admin/edit_coupon.html',{'coupon':coupon})
 
@@ -249,6 +245,9 @@ def edit_productpage(request, id):
         product = Product.objects.get(pk=id)
         strap=Strap.objects.filter(product_id=product)
         categories = Category.objects.all()
+        print(product)
+        print(strap)
+        print(categories,'111111111111111111111111111111111111')
         context = {
             'product': product,
             'categories': categories,

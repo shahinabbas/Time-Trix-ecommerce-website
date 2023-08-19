@@ -1,4 +1,5 @@
 
+import json
 from app.models import CustomUser, Product,User_Profile,Category
 from .models import Cart, CartItem,Strap,Order,OrderItem
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
@@ -89,23 +90,33 @@ def cart_plus(request,strap_id):
     return redirect('cart')
 
 def cart_minus(request,strap_id):
-    strap=get_object_or_404(Strap,id=strap_id)
-    try :
-        if request.user.is_authenticated:
-            cart_item = CartItem.objects.get(strap = strap,user = request.user)
+    print('524465656533333333')
+    print(strap_id,'111111111111111111111111111111111111111111')
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        print(data.cartid,'gfgdfg')
+        print(data.quantity,'dfgfdgfd')
+        print(data,'dfgdfgdg')
+
+
+
+        strap=get_object_or_404(Strap,id=strap_id)
+        try :
+            if request.user.is_authenticated:
+                cart_item = CartItem.objects.get(strap = strap,user = request.user)
+                if cart_item.quantity > 1:
+                    cart_item.quantity -= 1
+                    cart_item.save()
+                else:
+                    cart_item.delete()
+        except:
+            cart = Cart.objects.get(cart_id = _cart_id(request))
+            cart_item = CartItem.objects.get(strap = strap,cart= cart)
             if cart_item.quantity > 1:
                 cart_item.quantity -= 1
                 cart_item.save()
             else:
                 cart_item.delete()
-    except:
-        cart = Cart.objects.get(cart_id = _cart_id(request))
-        cart_item = CartItem.objects.get(strap = strap,cart= cart)
-        if cart_item.quantity > 1:
-            cart_item.quantity -= 1
-            cart_item.save()
-        else:
-            cart_item.delete()
     return redirect('cart')
 
 
@@ -208,9 +219,9 @@ def checkout(request, total=0, quantity=0, cart_items=None):
 
     except ObjectDoesNotExist:
         pass
-    # amount=100000
-    # client = razorpay.Client(auth=(settings.RAZOR_PAY_KEY_ID,settings.KEY_SECRET))
-    # payment=client.order.create({"amount":float(amount),"currency": "INR","payment_capture" : 1})
+    amount=500*100
+    client = razorpay.Client(auth=(settings.RAZOR_PAY_KEY_ID,settings.KEY_SECRET))
+    payment=client.order.create({"amount":float(amount),"currency": "INR","payment_capture" : 1})
     # cart_items.razor_pay_order_id=payment['id']
     # cart_items.save()
     context = {
@@ -254,7 +265,7 @@ def create_order(request):
         address_id=request.POST.get('address')
         payment_method=request.POST.get('pay-method')
         print(payment_method)
-    cart=get_object_or_404(Cart,user=request.user)
+    cart=get_object_or_404(CartItem,user=request.user)
     address=get_object_or_404(User_Profile,id=address_id)
     price1=cart.total_price()
     payment_amount1=cart.total()

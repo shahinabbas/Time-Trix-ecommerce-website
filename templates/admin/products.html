@@ -116,7 +116,7 @@
         </td>
 
           <td>
-            <form action="{% url 'edit_product' strap.id %}" class="d-inline">
+            <form action="{% url 'edit_product' strap.product_id.id %}" class="d-inline">
               {% csrf_token %}
               <button type="submit" class="btn btn-success">
                 <i class="fas fa-edit"></i>Edit

@@ -132,7 +132,7 @@
       color: #333;
     }
   </style>
-  {% comment %} {% for message in messages %}
+ {% for message in messages %}
   <div
     class="alert alert-{{message.tags}} alert-dismissible fade show"
     role="alert"
@@ -145,7 +145,7 @@
       aria-label="Close"
     ></button>
   </div>
-  {% endfor %} {% endcomment %}
+  {% endfor %}
   <section class="h-100 gradient-custom">
     <div class="container py-5">
       <div class="row d-flex justify-content-center my-4">
@@ -215,13 +215,14 @@
                     class="product_count"
                     id="product_count_{{ cart_item.strap.id }}"
                   >
-                    <a href="{% url 'cart_minus' cart_item.strap.id%}"
-                      ><span class="input-number-decrement">
-                        <i class="ti-minus" style="color: black"></i></span
-                    ></a>
+                  <a href="">
+                      <span class="input-number-decrement">
+                        <i onclick="decrementquantity('cart_item.strap.id')" class="ti-minus"  style="color: black"></i></span>
+                      </a>
                     <input
                       class="input-number"
                       type="text"
+                      id="quantity_"
                       value="{{cart_item.quantity}}"
                       min="1"
                       max="10"
@@ -251,55 +252,80 @@
 
             
 
-              {% comment %} <script>
-                $(document).ready(function () {
-                  $(".input-number-increment").on("click", function (e) {
-                    e.preventDefault(); // Prevent the default link behavior
 
-                    var productId = $(this)
-                      .closest(".product_count")
-                      .attr("id")
-                      .split("_")[2];
-                    console.log(productId);
-                    $.ajax({
-                      type: "GET",
-                      url: "{% url 'cart_plus' strap_id=0 %}".replace(
-                        "0",
-                        productId
-                      ),
-                      success: function (data) {
-                        // Update the quantity element using the data returned from the server
-                        if (data.html) {
-                          $("#product_count_" + productId).html(data.html);
-                        }
-                      },
-                    }); 
-                  });
+              <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-                  $(".input-number-decrement").on("click", function (e) {
-                    e.preventDefault(); // Prevent the default link behavior
+              <script>
+                function decrementquantity(cartid){
+                  console.log(cartid)
+                  const quantityinput = document.getElementById('quantity_')
+                  const quantity = parseInt(quantityinput.value)
+                  $.ajax({
+                    url:'cart_minus',
+                    method:"post",
+                    data:{cartid:cartid,quantity:quantity},
+                    success:((response)=>{
+                      if(response.status){
+                        console.log("hi");
+                      }
 
-                    var productId = $(this)
-                      .closest(".product_count")
-                      .attr("id")
-                      .split("_")[2];
+                    })
+                  })
+                }
+              </script>
 
-                    $.ajax({
-                      type: "GET",
-                      url: "{% url 'cart_minus' strap_id=0 %}".replace(
-                        "0",
-                        productId
-                      ),
-                      success: function (data) {
-                        // Update the quantity element using the data returned from the server
-                        if (data.html) {
-                          $("#product_count_" + productId).html(data.html);
-                        }
-                      },
-                    });
-                  });
-                });
-              </script> {% endcomment %}
+
+
+
+            <script>
+              //   $(document).ready(function () {
+              //     $(".input-number-increment").on("click", function (e) {
+              //       e.preventDefault(); // Prevent the default link behavior
+
+              //       var productId = $(this)
+              //         .closest(".product_count")
+              //         .attr("id")
+              //         .split("_")[2];
+              //       console.log(productId);
+              //       $.ajax({
+              //         type: "GET",
+              //         url: "{% url 'cart_plus' strap_id=0 %}".replace(
+              //           "0",
+              //           productId
+              //         ),
+              //         success: function (data) {
+              //           // Update the quantity element using the data returned from the server
+              //           if (data.html) {
+              //             $("#product_count_" + productId).html(data.html);
+              //           }
+              //         },
+              //       }); 
+              //     });
+
+              //     $(".input-number-decrement").on("click", function (e) {
+              //       e.preventDefault(); // Prevent the default link behavior
+
+              //       var productId = $(this)
+              //         .closest(".product_count")
+              //         .attr("id")
+              //         .split("_")[2];
+
+              //       $.ajax({
+              //         type: "GET",
+              //         url: "{% url 'cart_minus' strap_id=0 %}".replace(
+              //           "0",
+              //           productId
+              //         ),
+              //         success: function (data) {
+              //           // Update the quantity element using the data returned from the server
+              //           if (data.html) {
+              //             $("#product_count_" + productId).html(data.html);
+              //           }
+              //         },
+              //       });
+              //     });
+              //   });
+              // </script> 
 
 
 

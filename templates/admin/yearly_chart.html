@@ -1,0 +1,39 @@
+{% extends 'admin/navbar.html' %}
+
+{% block body %}
+
+<div style=" align-items: center; justify-content: center; height: 180vh; padding-top: 250px;">
+    <div>
+        <a href="{% url 'admin_index' %}" class="btn btn-primary">Daily</a>
+        <a href="{% url 'monthly' %}" class="btn btn-primary">Monthly</a>
+      </div>
+    <canvas id="myChart2" style="margin: auto; width: 50%;"></canvas>
+  </div>
+  
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('myChart2');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: {{ labels|safe }}, // Pass the labels from the context
+      datasets: [{
+        label: 'Yearly Order Count',
+        data: {{ data|safe }}, // Pass the data from the context
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+ 
+{% endblock body %}

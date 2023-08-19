@@ -8,6 +8,10 @@
   <title>Modernize Free</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
   <link rel="stylesheet" href="{% static 'assets/admin_css/styles.min.css' %}" />
+  <link
+  rel="stylesheet"
+  href="{% static 'assets/css/fontawesome-all.min.css' %}"
+/>
 </head>
 <body>
 
@@ -123,7 +127,7 @@
           </li> {% endcomment %}
           <li class="nav-small-cap">
             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-            <span class="hide-menu">EXTRA</span>
+            <span class="hide-menu">Reports</span>
           </li>
           <li class="sidebar-item">
             <a class="sidebar-link" href="{% url 'sales_report' %}" aria-expanded="false">
@@ -134,11 +138,19 @@
             </a>
           </li>
           <li class="sidebar-item">
-            <a class="sidebar-link" href="./sample-page.html" aria-expanded="false">
+            <a class="sidebar-link" href="{% url 'cancel_report' %}" aria-expanded="false">
               <span>
-                <i class="ti ti-aperture"></i>
+                <i class="ti ti-mood-happy"></i>
               </span>
-              <span class="hide-menu">Sample Page</span>
+              <span class="hide-menu">Cancel Report</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="{% url 'stock_report' %}" aria-expanded="false">
+              <span>
+                <i class="ti ti-mood-happy"></i>
+              </span>
+              <span class="hide-menu">Stock Report</span>
             </a>
           </li>
         </ul>
@@ -182,74 +194,14 @@
           </a>
         </li>
       </ul>
-      {% comment %} <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-        <ul
-          class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
-        >
-          <a
-            href="{% static 'https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/' %}"
-            target="_blank"
-            class="btn btn-primary"
-            >Download Free</a
-          >
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link nav-icon-hover"
-              href="javascript:void(0)"
-              id="drop2"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <img
-                src="{% static 'assets/admin_images/profile/user-1.jpg' %}"
-                alt=""
-                width="35"
-                height="35"
-                class="rounded-circle"
-              />
-            </a>
-            <div
-              class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
-              aria-labelledby="drop2"
-            >
-              <div class="message-body">
-                <a
-                  href="javascript:void(0)"
-                  class="d-flex align-items-center gap-2 dropdown-item"
-                >
-                  <i class="ti ti-user fs-6"></i>
-                  <p class="mb-0 fs-3">My Profile</p>
-                </a>
-                <a
-                  href="javascript:void(0)"
-                  class="d-flex align-items-center gap-2 dropdown-item"
-                >
-                  <i class="ti ti-mail fs-6"></i>
-                  <p class="mb-0 fs-3">My Account</p>
-                </a>
-                <a
-                  href="javascript:void(0)"
-                  class="d-flex align-items-center gap-2 dropdown-item"
-                >
-                  <i class="ti ti-list-check fs-6"></i>
-                  <p class="mb-0 fs-3">My Task</p>
-                </a>
-                <a
-                  href="./authentication-login.html"
-                  class="btn btn-outline-primary mx-3 mt-2 d-block"
-                  >Logout</a
-                >
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div> {% endcomment %}
+      
     </nav>
   </header>
   <!--  Header End -->
 {% block body %}
 
 {% endblock body %}
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% comment %} <script src="{% static 'assets/admin_libs/jquery/dist/jquery.min.js' %}"></script> {% endcomment %}
 <script src="{% static 'assets/admin_libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>

@@ -28,7 +28,7 @@
           />
         </div>
       </div>
-     
+
       <div class="col-md-6">
         <form action="{% url 'add_cart' product.id %}" method="post">
           {% csrf_token %}
@@ -73,8 +73,7 @@
                   >
                     {% if strap.quantity <= 0 %}
                     <h5 class="text-danger">Out of Stock</h5>
-                    {% else %} 
-                    {% if product.in_cart %}
+                    {% else %} {% if product.in_cart %}
                     <a href="{% url 'cart' %}" class="btn hero-btn"
                       >Added to Cart <i class="fas fa-check"></i
                     ></a>
@@ -82,31 +81,12 @@
                     <button type="submit" class="btn hero-btn">
                       Add to Cart<i class="flaticon-shopping-cart"></i>
                     </button>
-                    {% endif %}
-                    {% endif %} {% comment %} {% if
-                    product.in_Wishlist %}
-                    <a
-                      href="{% url 'add_to_wishlist' product.id%}"
-                      class="btn hero-btn"
-                    >
-                      Remove from whishlist <i class="flaticon-heart"></i
-                    ></a>
-                    {% else %}
-                    <a
-                      href="{% url 'add_to_wishlist' product.id%}"
-                      class="btn hero-btn"
-                      >Add to wishlist <i class="flaticon-heart"></i
-                    ></a>
-                    {% endif %} {% endcomment %} 
-                 
-                    {% comment %} {{wishlist}}
-                    {{product}} {% endcomment %}
-                    {% if wishlist %}
+                    {% endif %} {% endif %}
+                     {% if wishlist %}
                     <a
                       href="{% url 'add_to_wishlist' product.id %}"
-                     class="btn hero-btn"
-                    >Remove from wishlist
-                    <i class="flaticon-heart"></i
+                      class="btn hero-btn"
+                      >Remove from wishlist <i class="flaticon-heart"></i
                     ></a>
                     {% else %}
                     <a

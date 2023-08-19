@@ -131,7 +131,7 @@ class Order(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     offer_price = models.DecimalField(max_digits=10, decimal_places=2)
     coupon_discount = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True)
+        max_digits=10, decimal_places=2, null=True, blank=True)
     shipping_charge = models.DecimalField(max_digits=10, decimal_places=2)
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
     razor_pay_order_id = models.CharField(

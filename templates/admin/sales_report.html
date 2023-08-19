@@ -10,7 +10,9 @@
           <h5 class="card-title fw-semibold mb-4 mt-5">Sales Report</h5>
           {% comment %} <a href="{% url 'pdf' %}" target="_blank">Click here to open PDF</a> {% endcomment %}
           {% comment %} <a href="{% url 'pdf' %}" target="_blank">Click here to open PDF</a> {% endcomment %}
-          <button class="btn btn-primary" onclick="printFunction()">Sales Report</button>
+
+          <button class="btn btn-primary" onclick="printFunction()">PDF &nbsp<i class="far fa-file text-light"></i></button>
+          <a class="btn btn-primary text-capitalize" data-mdb-ripple-color="dark" >Excel &nbsp<i class="far fa-file-pdf text-light"></i></a>
 
           <div class="table-responsive">
             <table class="table text-nowrap mb-0 align-middle">

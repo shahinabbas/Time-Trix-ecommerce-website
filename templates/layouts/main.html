@@ -7,15 +7,7 @@
     <title>TIME TRIX | eCommers</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    {% comment %}
-    <link rel="manifest" href="{% static 'site.webmanifest' %}" />
-    {% endcomment %} {% comment %}
-    <link
-      rel="shortcut icon"
-      type="image/x-icon"
-      href="{% static 'assets/img/favicon.ico' %}"
-    />
-    {% endcomment %}
+   
 
     <!-- CSS here -->
     <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
@@ -39,22 +31,16 @@
     <link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/product_view.css' %}" />
+
+    <!-- pdf -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <!-- Include jQuery Validation -->
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
+
+    <!-- Your custom scripts -->
     {% comment %}
-    <link
-      rel="stylesheet"
-      href="{% static  '//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css' %}"
-    />
+    <script src="path/to/your/contact.js"></script>
     {% endcomment %}
-            <!-- pdf -->
-{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> {% endcomment %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
-<!-- Include jQuery Validation -->
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
-
-<!-- Your custom scripts -->
-<script src="path/to/your/contact.js"></script>
-
-
   </head>
   <body>
     {% include 'inc/navbar.html' %} {% block body %} {% endblock body %}
@@ -133,41 +119,7 @@
               </div>
             </div>
           </div>
-          {% comment %}
-          <!-- Footer bottom -->
-          <div class="row align-items-center">
-            <div class="col-xl-7 col-lg-8 col-md-7">
-              <div class="footer-copy-right">
-                <p>
-                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                  Copyright &copy;
-                  <script>
-                    document.write(new Date().getFullYear());
-                  </script>
-                  All rights reserved | This template is made with
-                  <i class="fa fa-heart" aria-hidden="true"></i> by
-                  <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                </p>
-              </div>
-            </div>
-            <div class="col-xl-5 col-lg-4 col-md-5">
-              <div class="footer-copy-right f-right">
-                <!-- social -->
-                <div class="footer-social">
-                  <a href="#"><i class="fab fa-twitter"></i></a>
-                  <a href="https://www.facebook.com/sai4ull"
-                    ><i class="fab fa-facebook-f"></i
-                  ></a>
-                  <a href="#"><i class="fab fa-behance"></i></a>
-                  <a href="#"><i class="fas fa-globe"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {% endcomment %}
+          
       <!-- Footer End-->
     </footer>
     <!--? Search model Begin -->
@@ -226,6 +178,8 @@
     <script src="{% static './assets/js/plugins.js' %}"></script>
     <script src="{% static './assets/js/main.js' %}"></script>
 
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -233,7 +187,5 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
   </body>
 </html>

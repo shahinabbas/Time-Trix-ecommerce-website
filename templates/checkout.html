@@ -51,7 +51,7 @@
     .video-area img {
       width: 100%;
       opacity: 0.8;
-      filter: blur(2px);
+      filter: blur(1px);
     }
 
     .video-area h2 {
@@ -174,32 +174,7 @@
                   <p>Selected Strap: {{cart_item.strap.strap}}</p>
                   <p>Quantity: {{cart_item.quantity}}</p>
 
-                  {% comment %}
-                  <a href="{% url 'delete_cart_item' cart_item.product.id %}"
-                    ><button
-                      type="button"
-                      class="btn btn-primary"
-                      data-mdb-toggle="tooltip"
-                      title="Remove item"
-                      style="
-                        padding: 15px 20px;
-                        font-size: 12px;
-                        line-height: 1;
-                      "
-                    >
-                      <i class="fas fa-trash"></i></button
-                  ></a>
-
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    data-mdb-toggle="tooltip"
-                    title="Move to the wish list"
-                    style="padding: 15px 20px; font-size: 12px; line-height: 1"
-                  >
-                    <i class="fas fa-heart"></i>
-                  </button>
-                  {% endcomment %}
+                 
                   <!-- Data -->
                 </div>
 
@@ -207,9 +182,9 @@
                   <!-- Price -->
 
                   <p class="text-start text-md-center">
-                    <strong>₹<s>{{ cart_item.price }}</s> </strong
+                    <strong>₹<s>{{ cart_item.sub_total }}</s> </strong
                     >&nbsp&nbsp&nbsp
-                    <strong>₹ {{ cart_item.sub_total}}</strong>
+                    <strong>₹ {{ cart_item.offer_sub_total}}</strong>
                   </p>
                   <!-- Price -->
                 </div>
@@ -223,17 +198,7 @@
           </div>
           <div class="card mb-4">
             <div class="card-body">
-              {% comment %} {% for user_profile in user_profile %}
-              <div class="card mb-4">
-                <div class="card-body">
-                  {{user_profile.name}} {{user_profile.phone_number}}
-                  <br />
-                  {{user_profile.address}}, {{user_profile.country}},
-                  {{user_profile.state}}, {{user_profile.street}} -
-                  {{user_profile.pin_code}}
-                </div>
-              </div>
-              {% endcomment %}
+             
 
               <li class="checkout-item">
                 <div class="avatar checkout-icon p-1">
@@ -255,18 +220,7 @@
                           <div class="col-lg-4 col-sm-6">
                             <div data-bs-toggle="collapse">
                               <label class="card-radio-label mb-0">
-                                {% comment %} <input
-                                  type="radio"
-                                  name="address"
-                                  id="info-address{{ forloop.counter }}"
-                                  class="card-radio-input"
-                                  {%
-                                  if
-                                  forloop.first
-                                  %}checked{%
-                                  endif
-                                  %}
-                                /> {% endcomment %}
+                                
 
                                 <input
                                   type="radio"
@@ -334,7 +288,7 @@
             </div>
           </div>
 
-          <div class="card mb-4 mb-lg-0">
+          {% comment %} <div class="card mb-4 mb-lg-0">
             <div class="card-body">
               <li class="checkout-item">
                 <div class="avatar checkout-icon p-1">
@@ -345,7 +299,7 @@
                 <div class="feed-item-list">
                     <div>
                         <h5 class="font-size-16 mb-1">Payment Info</h5>
-                        <p class="text-muted text-truncate mb-4">Select the paymwnt method</p>
+                        <p class="text-muted text-truncate mb-4">Select the payment method</p>
                     </div>
                     <div>
                         <h5 class="font-size-14 mb-3">Payment method :</h5>
@@ -361,7 +315,7 @@
                                     </label>
                                 </div>
                             </div> {% endcomment %}
-                            <div class="col-lg-3 col-sm-6">
+                            {%comment%}<div class="col-lg-3 col-sm-6">
                                 <div>
                                     <label class="card-radio-label">
                                         <input type="radio" name="pay-method" id="pay-methodoption3" class="card-radio-input" value="cod" checked="">
@@ -387,23 +341,14 @@
                               </div>
                           </div>
                           
-                            {% comment %} <div class="col-lg-3 col-sm-6">
-                              <div>
-                                  <button id="rzp-button1" class="btn card-button" value="razorpay">
-                                      <i class="bx bxl-paypal d-block h2 mb-3"></i>
-                                      Razorpay
-                                  </button>
-                              </div>
-                          </div> {% endcomment %}
-                          
-                            {% comment %} <button id="rzp-button1" value="razorpay">Pay with Razorpay</button> {% endcomment %}
+                            
                             
                         </div>
                     </div>
                 </div>
             </li>
             </div>
-          </div>
+          </div> {% endcomment %}
           <div class="card mb-4 mb-lg-0">
             <div class="card-body">
               <p><strong>We accept</strong></p>
@@ -450,7 +395,7 @@
                   <div>
                     <strong>Shipping Charge</strong>
                   </div>
-                  <span><strong>₹{{cart.shipping_charge}}</strong></span>
+                  <span><strong>₹{{shp}}</strong></span>
                 </li>
                 <li
                   class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
@@ -466,7 +411,7 @@
                   <div>
                     <strong>Coupon Discount</strong>
                   </div>
-                  <span><strong>₹{{cart.coupon_discount}}</strong></span>
+                  <span><strong>₹{{coup}}</strong></span>
                 </li>
                 <li
                   class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
@@ -477,18 +422,13 @@
                       <p class="mb-0">(incl. taxes)</p>
                     </strong>
                   </div>
-                  <span><strong>₹{{cart.total}}</strong></span>
+                  <span><strong>₹{{amount}}</strong></span>
                 </li>
               </ul>
-              {% if pay_method == 'razorpay' %}
-              <button type="" id="rzp-button1" class="btn btn-primary btn-lg btn-block">
-                  Place Order
-              </button>
-              {% else %}
+              
               <button type="submit" class="btn btn-primary btn-lg btn-block">
-                  Place Order
+                  Payment Options
               </button>
-              {% endif %} 
               <style>
                 .dotted-line {
                   border-bottom: 1px dotted green;
@@ -540,7 +480,7 @@
   </div>
   <!-- Shop Method End-->
 </main>
-
+{% comment %} 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 var options = {
@@ -576,6 +516,16 @@ document.getElementById('rzp-button1').onclick = function(e){
     rzp1.open();
     e.preventDefault();
 }
-</script>
+</script> {% endcomment %}
+{% comment %} <script>
+Swal.fire({
+  document.addEventListener('DOMContentLoaded', function() {
 
+  icon: 'success',
+  title: 'Your work has been saved',
+  showConfirmButton: false,
+  timer: 1500
+  })
+})
+</script> {% endcomment %}
 {% endif %} {% endblock body %}

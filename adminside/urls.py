@@ -2,7 +2,6 @@ from django.urls import path
 from adminside import views
 from django.conf import settings
 from django.conf.urls.static import static
-from adminside.views import GeneratePdf
 
 urlpatterns = [
 
@@ -11,9 +10,11 @@ urlpatterns = [
     path('admin_signin',views.admin_signin,name='admin_signin'),
     path('admin_logout/',views.admin_logout,name='admin_logout'),
     
-    path('pdf/', GeneratePdf.as_view(),name='pdf'), 
     
     path('sales_report/',views.sales_report,name='sales_report'),
+    path('stock_report/',views.stock_report,name='stock_report'),
+    path('cancel_report/',views.cancel_report,name='cancel_report'),
+
 
     path('users/',views.userspage,name='users'),
     path('user_block/<int:id>',views.user_blockpage,name="user_block"),
@@ -45,6 +46,9 @@ urlpatterns = [
     
     path("cancel_order/<int:id>/",views.cancel_order,name="cancel_order"),
     # path("return_order/<int:id>/",views.return_order,name="return_order"),
+    path('chart',views.chart,name='chart'),
+    path('monthly',views.monthly,name='monthly'),
+    path('yearly',views.yearly,name='yearly'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

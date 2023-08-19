@@ -49,6 +49,7 @@ urlpatterns = [
     path('blog-details/',views.blogdetailspage,name='blog-details'),
     path('elements/',views.elementspage,name='elements'),
     
+    path('404',views.error,name='404')
 
    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

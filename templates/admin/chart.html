@@ -1,0 +1,37 @@
+{% extends 'admin/navbar.html' %}
+
+{% block body %}
+<div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+  const ctx = document.getElementById('myChart');
+
+    const monthlySalesData = JSON.parse('{{ monthly_sales|safe }}');
+    const months = monthlySalesData.map(item => item.month);
+    const salesData = monthlySalesData.map(item => item.total_sales); 
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Monthly Sales',
+                data: salesData,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    }); 
+</script> 
+
+{% endblock body %}

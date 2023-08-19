@@ -13,12 +13,8 @@
               <h5 class="card-title fw-semibold">Sales Overview</h5>
             </div>
             <div>
-              <select class="form-select">
-                <option value="1">March 2023</option>
-                <option value="2">April 2023</option>
-                <option value="3">May 2023</option>
-                <option value="4">June 2023</option>
-              </select>
+              <a href="{% url 'monthly' %}" class="btn btn-primary">Monthly</a>
+              <a href="{% url 'yearly' %}" class="btn btn-primary">Yearly</a>
             </div>
           </div>
           {% comment %}
@@ -30,24 +26,17 @@
         </div>
       </div>
     </div>
-    <div>
-      <canvas id="myChart"></canvas>
-    </div>
-    
-    
-     
-    
-     
+
     <div class="col-lg-4">
       <div class="row">
         <div class="col-lg-12">
           <!-- Yearly Breakup -->
           <div class="card overflow-hidden">
             <div class="card-body p-4">
-              <h5 class="card-title mb-9 fw-semibold">Yearly Breakup</h5>
+              <h5 class="card-title mb-9 fw-semibold">Yearly Order Count</h5>
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h4 class="fw-semibold mb-3">$36,358</h4>
+                  <h4 class="fw-semibold mb-3">{{orders_count}}</h4>
                   <div class="d-flex align-items-center mb-3">
                     <span
                       class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center"
@@ -64,12 +53,12 @@
                       ></span>
                       <span class="fs-2">2023</span>
                     </div>
-                    <div>
+                    {% comment %} <div>
                       <span
                         class="round-8 bg-light-primary rounded-circle me-2 d-inline-block"
                       ></span>
                       <span class="fs-2">2023</span>
-                    </div>
+                    </div> {% endcomment %}
                   </div>
                 </div>
                 <div class="col-4">
@@ -116,127 +105,33 @@
       </div>
     </div>
   </div>
+
   <div class="row">
     <div class="col-lg-4 d-flex align-items-stretch">
       <div class="card w-100">
         <div class="card-body p-4">
           <div class="mb-4">
-            <h5 class="card-title fw-semibold">Recent Transactions</h5>
+            <h5 class="card-title fw-semibold">Sales</h5>
           </div>
           <ul class="timeline-widget mb-0 position-relative mb-n5">
+            {% for order in order%}
             <li class="timeline-item d-flex position-relative overflow-hidden">
               <div class="timeline-time text-dark flex-shrink-0 text-end">
-                09:30
+                {{order.order_date}}
               </div>
               <div
                 class="timeline-badge-wrap d-flex flex-column align-items-center"
               >
                 <span
-                  class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"
+                  class="timeline-badge {% if forloop.counter|divisibleby:2 %}border-2 border border-success{% else %}border-2 border border-primary{% endif %} flex-shrink-0 my-8"
                 ></span>
                 <span
                   class="timeline-badge-border d-block flex-shrink-0"
                 ></span>
               </div>
-              <div class="timeline-desc fs-3 text-dark mt-n1">
-                Payment received from John Doe of $385.90
-              </div>
+              <div class="timeline-desc fs-3 text-dark mt-n1">New sale</div>
             </li>
-            <li class="timeline-item d-flex position-relative overflow-hidden">
-              <div class="timeline-time text-dark flex-shrink-0 text-end">
-                10:00 am
-              </div>
-              <div
-                class="timeline-badge-wrap d-flex flex-column align-items-center"
-              >
-                <span
-                  class="timeline-badge border-2 border border-info flex-shrink-0 my-8"
-                ></span>
-                <span
-                  class="timeline-badge-border d-block flex-shrink-0"
-                ></span>
-              </div>
-              <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">
-                New sale recorded
-                <a
-                  href="javascript:void(0)"
-                  class="text-primary d-block fw-normal"
-                  >#ML-3467</a
-                >
-              </div>
-            </li>
-            <li class="timeline-item d-flex position-relative overflow-hidden">
-              <div class="timeline-time text-dark flex-shrink-0 text-end">
-                12:00 am
-              </div>
-              <div
-                class="timeline-badge-wrap d-flex flex-column align-items-center"
-              >
-                <span
-                  class="timeline-badge border-2 border border-success flex-shrink-0 my-8"
-                ></span>
-                <span
-                  class="timeline-badge-border d-block flex-shrink-0"
-                ></span>
-              </div>
-              <div class="timeline-desc fs-3 text-dark mt-n1">
-                Payment was made of $64.95 to Michael
-              </div>
-            </li>
-            <li class="timeline-item d-flex position-relative overflow-hidden">
-              <div class="timeline-time text-dark flex-shrink-0 text-end">
-                09:30 am
-              </div>
-              <div
-                class="timeline-badge-wrap d-flex flex-column align-items-center"
-              >
-                <span
-                  class="timeline-badge border-2 border border-warning flex-shrink-0 my-8"
-                ></span>
-                <span
-                  class="timeline-badge-border d-block flex-shrink-0"
-                ></span>
-              </div>
-              <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">
-                New sale recorded
-                <a
-                  href="javascript:void(0)"
-                  class="text-primary d-block fw-normal"
-                  >#ML-3467</a
-                >
-              </div>
-            </li>
-            <li class="timeline-item d-flex position-relative overflow-hidden">
-              <div class="timeline-time text-dark flex-shrink-0 text-end">
-                09:30 am
-              </div>
-              <div
-                class="timeline-badge-wrap d-flex flex-column align-items-center"
-              >
-                <span
-                  class="timeline-badge border-2 border border-danger flex-shrink-0 my-8"
-                ></span>
-                <span
-                  class="timeline-badge-border d-block flex-shrink-0"
-                ></span>
-              </div>
-              <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">
-                New arrival recorded
-              </div>
-            </li>
-            <li class="timeline-item d-flex position-relative overflow-hidden">
-              <div class="timeline-time text-dark flex-shrink-0 text-end">
-                12:00 am
-              </div>
-              <div
-                class="timeline-badge-wrap d-flex flex-column align-items-center"
-              >
-                <span
-                  class="timeline-badge border-2 border border-success flex-shrink-0 my-8"
-                ></span>
-              </div>
-              <div class="timeline-desc fs-3 text-dark mt-n1">Payment Done</div>
-            </li>
+            {% endfor %}
           </ul>
         </div>
       </div>
@@ -362,6 +257,7 @@
       </div>
     </div>
   </div>
+  {% comment %}
   <div class="row">
     <div class="col-sm-6 col-xl-3">
       <div class="card overflow-hidden rounded-2">
@@ -419,236 +315,37 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-6 col-xl-3">
-      <div class="card overflow-hidden rounded-2">
-        <div class="position-relative">
-          <a href="javascript:void(0)"
-            ><img
-              src="../assets/images/products/s5.jpg"
-              class="card-img-top rounded-0"
-              alt="..."
-          /></a>
-          <a
-            href="javascript:void(0)"
-            class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            data-bs-title="Add To Cart"
-            ><i class="ti ti-basket fs-4"></i
-          ></a>
-        </div>
-        <div class="card-body pt-3 p-4">
-          <h6 class="fw-semibold fs-4">MacBook Air Pro</h6>
-          <div class="d-flex align-items-center justify-content-between">
-            <h6 class="fw-semibold fs-4 mb-0">
-              $650
-              <span class="ms-2 fw-normal text-muted fs-3"
-                ><del>$900</del></span
-              >
-            </h6>
-            <ul class="list-unstyled d-flex align-items-center mb-0">
-              <li>
-                <a class="me-1" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-              <li>
-                <a class="me-1" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-              <li>
-                <a class="me-1" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-              <li>
-                <a class="me-1" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-              <li>
-                <a class="" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-      <div class="card overflow-hidden rounded-2">
-        <div class="position-relative">
-          <a href="javascript:void(0)"
-            ><img
-              src="../assets/images/products/s7.jpg"
-              class="card-img-top rounded-0"
-              alt="..."
-          /></a>
-          <a
-            href="javascript:void(0)"
-            class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            data-bs-title="Add To Cart"
-            ><i class="ti ti-basket fs-4"></i
-          ></a>
-        </div>
-        <div class="card-body pt-3 p-4">
-          <h6 class="fw-semibold fs-4">Red Valvet Dress</h6>
-          <div class="d-flex align-items-center justify-content-between">
-            <h6 class="fw-semibold fs-4 mb-0">
-              $150
-              <span class="ms-2 fw-normal text-muted fs-3"
-                ><del>$200</del></span
-              >
-            </h6>
-            <ul class="list-unstyled d-flex align-items-center mb-0">
-              <li>
-                <a class="me-1" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-              <li>
-                <a class="me-1" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-              <li>
-                <a class="me-1" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-              <li>
-                <a class="me-1" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-              <li>
-                <a class="" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-      <div class="card overflow-hidden rounded-2">
-        <div class="position-relative">
-          <a href="javascript:void(0)"
-            ><img
-              src="../assets/images/products/s11.jpg"
-              class="card-img-top rounded-0"
-              alt="..."
-          /></a>
-          <a
-            href="javascript:void(0)"
-            class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            data-bs-title="Add To Cart"
-            ><i class="ti ti-basket fs-4"></i
-          ></a>
-        </div>
-        <div class="card-body pt-3 p-4">
-          <h6 class="fw-semibold fs-4">Cute Soft Teddybear</h6>
-          <div class="d-flex align-items-center justify-content-between">
-            <h6 class="fw-semibold fs-4 mb-0">
-              $285
-              <span class="ms-2 fw-normal text-muted fs-3"
-                ><del>$345</del></span
-              >
-            </h6>
-            <ul class="list-unstyled d-flex align-items-center mb-0">
-              <li>
-                <a class="me-1" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-              <li>
-                <a class="me-1" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-              <li>
-                <a class="me-1" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-              <li>
-                <a class="me-1" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-              <li>
-                <a class="" href="javascript:void(0)"
-                  ><i class="ti ti-star text-warning"></i
-                ></a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+    {% endcomment %}
   </div>
 </div>
-
+<div>
+  <canvas id="myChart"></canvas>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <script>
-      {% comment %} const ctx = document.getElementById('myChart');
 
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-          datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
+<script>
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: {{ labels|safe }}, // Pass the labels from the context
+      datasets: [{
+        label: 'Daily Order Count',
+        data: {{ data|safe }}, // Pass the data from the context
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
         }
-      }); {% endcomment %}
-
-    const ctx = document.getElementById('myChart');
-
-      // Extract data from Django context
-      const monthlySalesData = JSON.parse('{{ monthly_sales|safe }}');
-      const months = monthlySalesData.map(item => item.month);
-      const salesData = monthlySalesData.map(item => item.total_sales); 
-      console.log(monthlySalesData)
-      console.log(months)
-      console.log(salesData)
-      new Chart(ctx, {
-          type: 'bar',
-          data: {
-              labels: months,
-              datasets: [{
-                  label: 'Monthly Sales',
-                  data: salesData,
-                  borderWidth: 1
-              }]
-          },
-          options: {
-              scales: {
-                  y: {
-                      beginAtZero: true
-                  }
-              }
-          }
-      }); 
-  </script>
+      }
+    }
+  });
+</script>
 
 
 {% endblock body %}

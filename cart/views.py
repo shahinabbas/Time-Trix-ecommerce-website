@@ -138,7 +138,7 @@ def cartpage(request, total=0, quantity=0, cart_items=None):
             coup=cart_item.coupon_discount()
             amount=cart_item.total()
     except ObjectDoesNotExist:
-            pass
+        return render(request,'404.html')
 
     context = {
         'total': total,
@@ -218,7 +218,7 @@ def checkout(request, total=0, quantity=0, cart_items=None):
         user_profile=User_Profile.objects.filter(user=request.user)
 
     except ObjectDoesNotExist:
-        pass
+        return render(request,'404.html')
     amount=500*100
     client = razorpay.Client(auth=(settings.RAZOR_PAY_KEY_ID,settings.KEY_SECRET))
     payment=client.order.create({"amount":float(amount),"currency": "INR","payment_capture" : 1})
@@ -242,14 +242,13 @@ def checkout(request, total=0, quantity=0, cart_items=None):
     }
     return render(request, 'checkout.html', context)
 
-def success(request):
-    messages.success(request,'Payment Successful now you can place order.')
-    return redirect('checkout')
+# def success(request):
+#     messages.success(request,'Payment Successful now you can place order.')
+#     return redirect('checkout')
 
 def myorders(request):
     user=request.user
     order=Order.objects.filter(user=user)
-    # order_item=OrderItem.objects.filter(order_no__in=order)
     order_item = OrderItem.objects.filter(order_no__in=order).order_by('-order_no__order_date')
 
     context={
@@ -262,14 +261,32 @@ def myorders(request):
 @login_required(login_url='login')
 def create_order(request):
     if request.method == 'POST':
-        address_id=request.POST.get('address')
-        payment_method=request.POST.get('pay-method')
-        print(payment_method)
-    cart=get_object_or_404(CartItem,user=request.user)
+        address_id = request.POST.get('address')
+        print(address_id,'7894561236651585296')
+        request.session['address_id'] = address_id
+
+    cart_items = CartItem.objects.filter(user=request.user)
+    address = get_object_or_404(User_Profile, id=address_id)  
+    context = {
+        "address": address,
+    }
+    return render(request, 'payment.html', context)
+
+
+
+
+def confirmation(request):
+    if request.method == 'POST':
+        payment_method = request.POST.get('pay-method')
+    address_id= request.session.get('address_id', None)
+    cart_item=CartItem.objects.filter(user=request.user)
     address=get_object_or_404(User_Profile,id=address_id)
-    price1=cart.total_price()
-    payment_amount1=cart.total()
-    shipping_charge=cart.shipping_charge()
+
+    for cart_item in cart_item:
+        price1=cart_item.sub_total()
+        payment_amount1=cart_item.total()
+        shipping_charge=cart_item.shipping_charge()
+
     order=Order.objects.create(
         user=request.user,
         address=address,
@@ -282,6 +299,7 @@ def create_order(request):
     if payment_method == "razorpay":
         order.payment_status = 'Completed'
         order.save()
+
     for cart_item in CartItem.objects.all():
         OrderItem.objects.create(
             order_no=order,
@@ -289,25 +307,15 @@ def create_order(request):
             strap=cart_item.strap,
             quantity=cart_item.quantity,
             amount=payment_amount1,
-            )
-    # strap=Strap.objects.get(id=cart_item.quantity)
-    # print(strap)
-    # print(strap.quantity)
-    # strap.quantity -= cart_item.quantity
-    # print(strap.quantity)
-    # strap.save()
-    cart.delete()
+        )
+        strap = cart_item.strap
+        strap.quantity -= cart_item.quantity
+        strap.save()
+   
+    cart_item.delete()
     context={
         "address":address,
         'payment_method':payment_method,
         'order_id':order.order_id,
         }
     return render(request,'confirmation.html',context)
-
-def payment(request):
-    return render(request,'payment.html')
-
-def confirmationpage(request):
-    # order_id=Order.objects.get(id=order_id)
-    all_category=Category.objects.all()
-    return render(request, 'confirmation.html',{'all_category':all_category})

@@ -255,7 +255,7 @@ def loginpage(request):
                         item.user=user
                         item.save()
             except:
-                pass
+                return render(request,'404.html')
             if user.is_active:
                 auth.login(request, user)
                 return redirect("/")
@@ -414,7 +414,7 @@ def send_otppage(request):
             request.session['phone_number'] = phone_number
             print(phone_number)
             account_sid = 'AC2052f7894a67013c46526f408871da08'
-            auth_token = 'b14780861a285e84c4e906c676806b79'
+            auth_token = 'df3b7ba9f1bff3337178d446e6167cc1'
 
             try:
                 client = Client(account_sid, auth_token)
@@ -465,3 +465,7 @@ def enter_otppage(request):
 def confirmationpage(request):
     all_category=Category.objects.all()
     return render(request, 'confirmation.html',{'all_category':all_category})
+
+def error(request):
+    return render(request,'404.html')
+     

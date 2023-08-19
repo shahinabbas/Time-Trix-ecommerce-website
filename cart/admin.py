@@ -8,7 +8,7 @@ class CartItemAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['order_date','order_status','payment_method','order_id']
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ['order_no','product','strap','quantity']
+    list_display = ['order_no','product','order_status','strap','quantity']
 # Register your models here.
 admin.site.register(Cart)
 admin.site.register(CartItem,CartItemAdmin)

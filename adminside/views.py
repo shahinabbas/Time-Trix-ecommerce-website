@@ -10,17 +10,15 @@ from django.http import HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from coupon.models import Coupon
 from django.db.models import Sum
-from django.utils import timezone
-from datetime import timedelta,datetime
+from datetime import timedelta,datetime,date
 from django.db.models import Q
 from django.db.models.functions import TruncMonth
 from django.db.models import Count
-from django.db.models.functions import TruncDate
-from .utils import render_to_pdf 
 from django.views import View
 from django.http import JsonResponse
 from django.core.serializers import serialize
 import json
+from django.db.models.functions import TruncDate,TruncYear
 # Create your views here.
 
 
@@ -28,37 +26,75 @@ import json
 @never_cache
 @login_required(login_url='admin_signin')
 def admin_index(request):
-    prod = Product.objects.all()
     end_date = datetime.now()
     start_date = end_date - timedelta(days=30)
+    prod = Product.objects.all()
     orders_within_range = Order.objects.filter(order_date__range=(start_date, end_date))
     total_payment_amount = orders_within_range.aggregate(total_payment=Sum('payment_amount'))['total_payment']
     order_item = OrderItem.objects.all()
     total_order_items = OrderItem.objects.count()
+    order=Order.objects.all().order_by('-order_date')[:5]
+    daily_order_data = Order.objects.annotate(date=TruncDate('order_date')).values('date').annotate(order_count=Count('id')).order_by('date')
+    labels = [item['date'].strftime('%Y-%m-%d') for item in daily_order_data]
+    data = [item['order_count'] for item in daily_order_data]
+
+    current_year = datetime.now().year
+    query_condition = {'order_status': 'Confirmed'}
+    orders_count = Order.objects.filter(order_date__year=current_year, **query_condition).count()
+
     
+  
+    context = {
+        'orders_count':orders_count,
+        'order_item':order_item,
+        'total_order_items':total_order_items,
+        'prod':prod,
+        'total_payment_amount': total_payment_amount,
+        'labels': labels,
+        'data': data,
+        'order':order,
+    }
+    return render(request, 'admin/admin_index.html', context)
+
+def yearly(request):
+    yearly_order_data=Order.objects.annotate(year=TruncYear('order_date')).values('year').annotate(order_count=Count('id')).order_by('year')
+    labels = [item['year'].strftime('%Y') for item in yearly_order_data]
+    data = [item['order_count'] for item in yearly_order_data]
+    context = {
+        'labels': labels,
+        'data': data,
+    }
+    return render(request,'admin/yearly_chart.html',context)
+
+def monthly(request):
+    monthly_order_data = Order.objects.annotate(month=TruncMonth('order_date')).values('month').annotate(order_count=Count('id')).order_by('month')
+    labels = [item['month'].strftime('%Y-%m') for item in monthly_order_data]
+    data = [item['order_count'] for item in monthly_order_data]
+    context = {
+        'labels': labels,
+        'data': data,
+    }
+    return render(request,'admin/monthly_chart.html',context)
+
+def chart(request):
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=30)
     monthly_sales = Order.objects.filter(order_date__range=(start_date, end_date)) \
         .annotate(month=TruncMonth('order_date')) \
         .values('month') \
         .annotate(total_sales=Sum('payment_amount')) \
         .order_by('month')
-
+    
+    
     sales = Order.objects.exclude(order_status='Cancelled')
     monthly_sales_list = list(monthly_sales)
     monthly_sales_json = json.dumps(monthly_sales_list, default=str)
-
-
-    
-    print(monthly_sales_json)
     context = {
         'monthly_sales':monthly_sales_json,
         'sales':sales,
-        'order_item':order_item,
-        'total_order_items':total_order_items,
-        'prod':prod,
-        'total_payment_amount': total_payment_amount
     }
-    return render(request, 'admin/admin_index.html', context)
 
+    return render(request, 'admin/chart.html', context)
 
 
 def sales_report(request):
@@ -70,11 +106,23 @@ def sales_report(request):
 
 
 
-class GeneratePdf(View):
-    def get(self, request, *args, **kwargs):
-        pdf = render_to_pdf('admin/sales_report.html')
-        return HttpResponse(pdf, content_type='application/pdf')
-    
+def cancel_report(request):
+    order=OrderItem.objects.all()
+    context={
+        'order':order,
+    }
+    return render(request,'admin/cancel_report.html',context)
+
+
+
+def stock_report(request):
+    order=OrderItem.objects.all()
+    context={
+        'order':order,
+    }
+    return render(request,'admin/stock_report.html',context)
+
+
 # def varient(request):
 #     strap=Strap.objects.all()
 #     return render(request,'admin/varient.html',{'strap':strap})

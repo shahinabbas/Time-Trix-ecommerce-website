@@ -56,15 +56,13 @@ class CartItem(models.Model):
         else:
             return 140
 
-    # def price(self):
-    #     return self.product.price * self.quantity
 
     def qwe(self):
         return self.sub_total() - self.offer_sub_total()
 
     def tax(self):
-        taxes = self.offer_sub_total()
-        return (3 * taxes)//100
+        taxes = sum(item.offer_sub_total() for item in self.cart.cart_items.all())
+        return (2 * taxes)//100
 
     def coupon_discount(self):
         if self.cart.coupon_applied and self.cart.coupon_applied.is_valid():
@@ -75,13 +73,17 @@ class CartItem(models.Model):
         else:
             return 0
 
+    def tot(self):
+        total_price = sum(item.offer_sub_total() for item in self.cart.cart_items.all())
+        return total_price
+    
     def total(self):
-        offer_price = self.offer_sub_total()
+        total_price = sum(item.offer_sub_total() for item in self.cart.cart_items.all())
         shipping_charge = self.shipping_charge()
         coupon_discount = self.coupon_discount() or Decimal('0.0')
         taxss = self.tax()
-        return offer_price + shipping_charge + taxss - coupon_discount
-
+        amounts=(total_price+shipping_charge+taxss)-coupon_discount
+        return amounts
 
 class Strap(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -123,9 +125,9 @@ class Order(models.Model):
         default=uuid.uuid4, editable=False, unique=True)
     order_date = models.DateTimeField(auto_now_add=True)
     order_status = models.CharField(
-        max_length=50, choices=ORDER_STATUS, default="pending")
+        max_length=50, choices=ORDER_STATUS, default="Pending")
     payment_status = models.CharField(
-        max_length=50, choices=PAYMENT_STATUS, default="pending")
+        max_length=50, choices=PAYMENT_STATUS, default="Pending")
     payment_method = models.CharField(max_length=50)
     address = models.ForeignKey(User_Profile, on_delete=models.DO_NOTHING)
     price = models.DecimalField(max_digits=10, decimal_places=2)

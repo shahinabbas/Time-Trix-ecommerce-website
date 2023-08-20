@@ -1,9 +1,23 @@
 {% extends 'layouts/main.html' %} {% load static %} {% block body %}
-<div class="mt-5 mb-5" style="padding-left: 100px;">
+<div class="mt-5 mb-5" style="padding-left: 100px">
   <div class="row">
     {% include 'inc/sidebar.html' %}
 
     <div class="col-md-9">
+      {% for message in messages %}
+      <div
+        class="alert alert-{{message.tags}} alert-dismissible fade show"
+        role="alert"
+      >
+        {{message}}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endfor %}
       <h4 class="card-title" style=""><b>Manage Addresses</b></h4>
       {% for profile in user_profile %}
 
@@ -19,7 +33,8 @@
                   <br />{{profile.address}}&nbsp&nbsp&nbsp&nbsp&nbsp
                   {{profile.house_no}}&nbsp&nbsp&nbsp&nbsp&nbsp{{profile.street}}
                   &nbsp&nbsp&nbsp&nbsp&nbsp{{profile.city}}&nbsp&nbsp&nbsp&nbsp&nbsp
-                  {{profile.country}}&nbsp&nbsp&nbsp&nbsp&nbsp{{profile.state}}&nbsp&nbsp-&nbsp&nbsp{{profile.pin_code }}
+                  {{profile.country}}&nbsp&nbsp&nbsp&nbsp&nbsp{{profile.state}}&nbsp&nbsp-&nbsp&nbsp{{profile.pin_code
+                  }}
                 </b>
               </p>
             </h6>

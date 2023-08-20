@@ -43,7 +43,7 @@ def admin_index(request):
     orders_count = Order.objects.filter(order_date__year=current_year, **query_condition).count()
 
     
-  
+
     context = {
         'orders_count':orders_count,
         'order_item':order_item,
@@ -53,6 +53,7 @@ def admin_index(request):
         'labels': labels,
         'data': data,
         'order':order,
+
     }
     return render(request, 'admin/admin_index.html', context)
 
@@ -107,18 +108,18 @@ def sales_report(request):
 
 
 def cancel_report(request):
-    order=OrderItem.objects.all()
+    cancelled_orders = OrderItem.objects.filter(order_status='Cancelled')
     context={
-        'order':order,
+        'order':cancelled_orders,
     }
     return render(request,'admin/cancel_report.html',context)
 
 
 
 def stock_report(request):
-    order=OrderItem.objects.all()
+    strap=Strap.objects.all()
     context={
-        'order':order,
+        'strap': strap,
     }
     return render(request,'admin/stock_report.html',context)
 
@@ -293,9 +294,6 @@ def edit_productpage(request, id):
         product = Product.objects.get(pk=id)
         strap=Strap.objects.filter(product_id=product)
         categories = Category.objects.all()
-        print(product)
-        print(strap)
-        print(categories,'111111111111111111111111111111111111')
         context = {
             'product': product,
             'categories': categories,
@@ -306,33 +304,35 @@ def edit_productpage(request, id):
     if request.method == 'POST':
         product_name = request.POST.get('name')
         description = request.POST.get('description')
-        category_id = request.POST.get('category')
-        print(category_id,'11111111111111111111111111')
-        category = get_object_or_404(Category, categories=category_id) 
-        print(category,'22222222222222222222222222222222222')
+        selected_category_name = request.POST.get('selected_category')
         shape = request.POST.get('shape')
         price = request.POST.get('price')
         offer_price = request.POST.get('offer_price')
         product_image = request.FILES.get('image')
-        product=Product(
-            product_name = product_name,
-            category = category,
-            description = description,
-            price=price,
-            offer_price=offer_price,
-            shape=shape,
-            product_Image=product_image,
-        )
-        product.save()
-        for strap in strap:
-            strap=request.POST.get('strap')
+        print('22222222222222222222222222222222222222222')
+        selected_category = get_object_or_404(Category, categories=selected_category_name)
+        print('22222222222222222222222222222222222222222')
+
+        product.product_name = product_name
+        product.category = selected_category
+        product.description = description
+        product.price = price
+        product.offer_price = offer_price
+        product.shape = shape
+        print('22222222222222222222222222222222222222222')
+
+        if product_image:
+            product.product_Image = product_image
+        product.save()  
+        print('22222222222222222222222222222222222222222')
+
+        for strap_s in strap:
+            strap=strap_s.strap
             quantity=request.POST.get('quantity')
-            straps=Strap(
-                strap=strap,
-                quantity=quantity,
-            )
-            strap.save()
-        return redirect('admin/products')
+            strap_s.quantity = quantity
+            strap_s.save()
+            print('llllllllllllllllllllllllllllllllllllllllllllllllllll')
+            return redirect('products')
     return render(request, "admin/edit_product.html", context)
 
 

@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processor.counter',
             ],
         },
     },
@@ -159,3 +160,6 @@ MESSAGE_TAGS={
     messages.ERROR:'danger'
 }
 
+
+RAZOR_PAY_KEY_ID = 'rzp_test_7GTB3BFF432GgI'
+KEY_SECRET = 'vjVpPD8hsPwTOaLBzc4btkil'

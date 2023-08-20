@@ -23,8 +23,15 @@
     <!-- Sidebar scroll-->
     <div>
       <div class="brand-logo d-flex align-items-center justify-content-between">
-        <a href="./index.html" class="text-nowrap logo-img">
-          <img src="{% static 'assets/admin_images/logos/dark-logo.svg' %}" width="180" alt="" />
+        <a href="{% url 'admin_index' %}">
+          <h2>
+            <img
+              src="{% static 'assets/img/logo/time.png' %}"
+              alt=""
+              width="45"
+              height="45"
+            />TIME TRIX
+          </h2>
         </a>
         <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
           <i class="ti ti-x fs-8"></i>
@@ -196,21 +203,18 @@
       </ul>
       
     </nav>
-  </header>
-  <!--  Header End -->
+  </header>  <!--  Header End -->
 {% block body %}
 
 {% endblock body %}
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-{% comment %} <script src="{% static 'assets/admin_libs/jquery/dist/jquery.min.js' %}"></script> {% endcomment %}
 <script src="{% static 'assets/admin_libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'assets/admin_js/sidebarmenu.js' %}"></script>
 <script src="{% static 'assets/admin_js/app.min.js' %}"></script>
 {% comment %} <script src="{% static 'assets/admin_libs/apexcharts/dist/apexcharts.min.js' %}"></script> {% endcomment %}
 {% comment %} <script src="{% static 'assets/admin_libs/simplebar/dist/simplebar.js' %}"></script> {% endcomment %}
 <script src="{% static 'assets/admin_js/dashboard.js' %}"></script>
-{% comment %} <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>    {% endcomment %}
 
     
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>     

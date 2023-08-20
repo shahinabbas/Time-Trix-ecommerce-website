@@ -4,6 +4,42 @@
     print()
   }
 </script>
+<script>
+  function exportToExcel() {
+    var data = [
+      ['Sales Report'],
+      ['Id', 'Product', 'Payment', 'Quantity', 'Price']
+      {% for order in order %}
+      , [{{ forloop.counter }}, '{{ order.product }}', '{{ order.payment_status }}', '{{ order.quantity }}', '{{ order.amount }}']
+      {% endfor %}
+    ];
+
+    // Create a CSV string
+    var csvContent = data.map(function(row) {
+      return row.join(',');
+    }).join('\n');
+
+    // Create a Blob containing the CSV data
+    var blob = new Blob([csvContent], { type: 'text/csv' });
+
+    // Create a link to download the Blob as a file
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'data.csv'; // You can change the filename here
+    link.style.display = 'none';
+    
+    // Append the link to the document
+    document.body.appendChild(link);
+
+    // Click the link to trigger the download
+    link.click();
+
+    // Clean up the link
+    document.body.removeChild(link);
+  }
+</script>
+
+
     <div class="col-lg-10 d-flex align-items-stretch">
       <div class="card w-100">
         <div class="card-body p-4">
@@ -12,7 +48,7 @@
           {% comment %} <a href="{% url 'pdf' %}" target="_blank">Click here to open PDF</a> {% endcomment %}
 
           <button class="btn btn-primary" onclick="printFunction()">PDF &nbsp<i class="far fa-file text-light"></i></button>
-          <a class="btn btn-primary text-capitalize" data-mdb-ripple-color="dark" >Excel &nbsp<i class="far fa-file-pdf text-light"></i></a>
+          <button class="btn btn-primary" onclick="exportToExcel()">Excel &nbsp<i class="far fa-file-pdf text-light"></i></button>
 
           <div class="table-responsive">
             <table class="table text-nowrap mb-0 align-middle">
@@ -37,7 +73,7 @@
                 </tr>
               </thead>
               <tbody>
-                {% for order in order %}
+                {% for order_item in order %}
                 <tr>
                   <td class="border-bottom-0">
                     <h6 class="fw-semibold mb-0">{{ forloop.counter }}</h6>
@@ -47,21 +83,27 @@
                     <span class="fw-normal">Web Designer</span>
                   </td> {% endcomment %}
                   <td class="border-bottom-0">
-                    <h6 class="fw-semibold mb-1">{{order.product}}</h6>
-                    <span class="fw-normal">{{order.strap.strap}}</span>
+                    <h6 class="fw-semibold mb-1">{{order_item.product}}</h6>
+                    <span class="fw-normal">{{order_item.strap.strap}}</span>
                   </td>
                   <td class="border-bottom-0">
                     <div class="d-flex align-items-center gap-2">
-                      <span class="badge bg-primary rounded-3 fw-semibold"
-                        >{{order.order_no.payment_status}}</span
+                      {% if order_item.order_no.payment_status == 'Pending'%}
+                      <span class="badge bg-danger rounded-3 fw-semibold">
+                        {{order_item.order_no.payment_status}}</span
+                        >
+{%else%}
+                      <span class="badge bg-primary rounded-3 fw-semibold">
+                        {{order_item.order_no.payment_status}}</span
                       >
+                      {%endif%}
                     </div>
                   </td>
                   <td class="border-bottom-0">
-                    <h6 class="fw-semibold mb-0 fs-4">{{order.quantity}}</h6>
+                    <h6 class="fw-semibold mb-0 fs-4">{{order_item.quantity}}</h6>
                   </td>
                   <td class="border-bottom-0">
-                    <h6 class="fw-semibold mb-0 fs-4">{{order.amount}}</h6>
+                    <h6 class="fw-semibold mb-0 fs-4">{{order_item.amount}}</h6>
                   </td>
                 </tr>
                 {%endfor%}

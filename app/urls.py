@@ -14,7 +14,7 @@ urlpatterns = [
 
     path('add_to_wishlist/<int:product_id>/',views.add_to_wishlist,name='add_to_wishlist'),
 
-    path("autocomplete/",views.autocomplete,name='autocomplete'),
+    # path("autocomplete/",views.autocomplete,name='autocomplete'),
     path("search/",views.search,name='search'),
     
     path('user_category/<int:id>/', views.user_category, name='user_category'),
@@ -34,7 +34,7 @@ urlpatterns = [
 
     path('user_profile',views.user_profile,name='user_profile'),
     path('edit_profile',views.edit_profile,name='edit_profile'),
-    path('address',views.address,name='address'),
+    path('address/',views.address,name='address'),
     path('add_address',views.add_address,name='add_address'),
     path('edit_address<int:id>',views.edit_address,name='edit_address'),
     path('delete_address/<int:id>',views.delete_address,name='delete_address'),

@@ -1,0 +1,72 @@
+{% comment %}
+              <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+              <script>
+                function decrementquantity(cartid) {
+                  console.log(cartid);
+                  const quantityinput = document.getElementById("quantity_");
+                  const quantity = parseInt(quantityinput.value);
+                  $.ajax({
+                    url: "cart_minus",
+                    method: "post",
+                    data: { cartid: cartid, quantity: quantity },
+                    success: (response) => {
+                      if (response.status) {
+                        console.log("hi");
+                      }
+                    },
+                  });
+                }
+              </script>
+
+              <script>
+                //   $(document).ready(function () {
+                //     $(".input-number-increment").on("click", function (e) {
+                //       e.preventDefault(); // Prevent the default link behavior
+
+                //       var productId = $(this)
+                //         .closest(".product_count")
+                //         .attr("id")
+                //         .split("_")[2];
+                //       console.log(productId);
+                //       $.ajax({
+                //         type: "GET",
+                //         url: "{% url 'cart_plus' strap_id=0 %}".replace(
+                //           "0",
+                //           productId
+                //         ),
+                //         success: function (data) {
+                //           // Update the quantity element using the data returned from the server
+                //           if (data.html) {
+                //             $("#product_count_" + productId).html(data.html);
+                //           }
+                //         },
+                //       });
+                //     });
+
+                //     $(".input-number-decrement").on("click", function (e) {
+                //       e.preventDefault(); // Prevent the default link behavior
+
+                //       var productId = $(this)
+                //         .closest(".product_count")
+                //         .attr("id")
+                //         .split("_")[2];
+
+                //       $.ajax({
+                //         type: "GET",
+                //         url: "{% url 'cart_minus' strap_id=0 %}".replace(
+                //           "0",
+                //           productId
+                //         ),
+                //         success: function (data) {
+                //           // Update the quantity element using the data returned from the server
+                //           if (data.html) {
+                //             $("#product_count_" + productId).html(data.html);
+                //           }
+                //         },
+                //       });
+                //     });
+                //   });
+                //
+              </script>
+              {% endcomment %}

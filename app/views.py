@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib import messages
 from app.models import CustomUser, Category, Product, User_Profile, Wishlist
-from cart.models import Strap,Cart,CartItem
+from cart.models import Strap,Cart,CartItem,OrderItem
 from cart.views import _cart_id
 import random
 from twilio.rest import Client
@@ -10,10 +10,12 @@ import os
 from django.core.paginator import Paginator
 from django.contrib.auth.models import auth
 from django.views.decorators.cache import never_cache
-from django.http import HttpResponseNotFound, JsonResponse
+from django.http import HttpResponseNotFound, JsonResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
+
 # from cart.views import _cart_id
 
 def index(request):
@@ -47,12 +49,12 @@ def search(request):
             print("No information to show")
             return render(request,'search.html')
         
-def autocomplete(request):
-    if 'query' in request.GET:
-        products = Product.objects.filter(product_name__icontains=request.GET.get('query'))
-        terms = [product.product_name for product in products]
-        return JsonResponse(terms, safe=False)
-    return render(request, 'index.html')
+# def autocomplete(request):
+#     if 'query' in request.GET:
+#         products = Product.objects.filter(product_name__icontains=request.GET.get('query'))
+#         terms = [product.product_name for product in products]
+#         return JsonResponse(terms, safe=False)
+#     return render(request, 'index.html')
 
 
 
@@ -79,21 +81,40 @@ def remove_wishlist(request, product_id):
     messages.info(request,'Removed product from wishlist')
     return redirect('wishlist')
 
-@login_required(login_url='login')
-def add_to_wishlist(request, product_id):
-    user = request.user
-    pro = get_object_or_404(Product, id=product_id)
-    wishlist = Wishlist.objects.filter(user=user)
-    if not wishlist.filter(product=pro).exists():
-        Wishlist.objects.create(user=user, product=pro)
-        messages.success(request,'Added product to wishlist')
-    else:
-        wishlist_item = Wishlist.objects.get(user=user, product=pro)
-        wishlist_item.delete()
-        messages.info(request,'Removed product from wishlist')
+# @login_required(login_url='login')
+# def add_to_wishlist(request, product_id):
+#     user = request.user
+#     pro = get_object_or_404(Product, id=product_id)
+#     wishlist = Wishlist.objects.filter(user=user)
+#     if not wishlist.filter(product=pro).exists():
+#         Wishlist.objects.create(user=user, product=pro)
+#         messages.success(request,'Added product to wishlist')
+#     else:
+#         wishlist_item = Wishlist.objects.get(user=user, product=pro)
+#         wishlist_item.delete()
+#         messages.info(request,'Removed product from wishlist')
     
-    return redirect('product_details', product_id=product_id)
+#     return redirect('product_details', product_id=product_id)
 
+
+
+@login_required(login_url='login')
+@csrf_exempt  # Add this decorator to exempt CSRF protection for this view
+def add_to_wishlist(request, product_id):
+    if request.method == "POST" and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        user = request.user
+        pro = get_object_or_404(Product, id=product_id)
+        wishlist = Wishlist.objects.filter(user=user)
+        
+        if not wishlist.filter(product=pro).exists():
+            Wishlist.objects.create(user=user, product=pro)
+            response_data = {'success': True, 'message': 'Added product to wishlist'}
+        else:
+            wishlist_item = Wishlist.objects.get(user=user, product=pro)
+            wishlist_item.delete()
+            response_data = {'success': True, 'message': 'Removed product from wishlist'}
+        return JsonResponse(response_data)
+    return redirect('product_details', product_id=product_id)
 
 @login_required(login_url='login')
 def wishlist(request):
@@ -104,10 +125,10 @@ def wishlist(request):
 def edit_address(request, id):
     user = request.user
     profile_address = get_object_or_404(User_Profile, pk=id)
-
     if request.method == 'POST':
         name = request.POST.get('name')
         phone_number = request.POST.get('phone_number')
+        address=request.POST.get('address')
         house_no = request.POST.get('house_no')
         street = request.POST.get('street')
         city = request.POST.get('city')
@@ -116,6 +137,7 @@ def edit_address(request, id):
         pin_code = request.POST.get('pin_code')
 
         profile_address.name = name
+        profile_address.address = address
         profile_address.phone_number = phone_number
         profile_address.house_no = house_no
         profile_address.street = street
@@ -124,7 +146,7 @@ def edit_address(request, id):
         profile_address.country = country
         profile_address.pin_code = pin_code
         profile_address.save()
-        messages.success(request, "successful")
+        messages.success(request, "Address edit successful \U0001F44D")
         return redirect('address')
     return render(request, 'edit_address.html', {"profile_address": profile_address})
 
@@ -171,13 +193,12 @@ def forgot(request):
     return render(request, 'login.html')  # Render the template for password reset
 
 
-
-
 def add_address(request):
     user = request.user
     if request.method == 'POST':
         name = request.POST.get('name')
         phone_number = request.POST.get('phone_number')
+        address=request.POST.get('address')
         house_no = request.POST.get('house_no')
         street = request.POST.get('street')
         city = request.POST.get('city')
@@ -187,6 +208,7 @@ def add_address(request):
 
         profile_address = User_Profile(user=user)
         profile_address.name = name
+        profile_address.address = address
         profile_address.phone_number = phone_number
         profile_address.house_no = house_no
         profile_address.street = street
@@ -196,14 +218,52 @@ def add_address(request):
         profile_address.pin_code = pin_code
         profile_address.save()
         messages.success(request, "successful")
-        return redirect('address')
+
+        referring_page = request.GET.get('referring_page', 'checkout')
+        print(referring_page,'1111111111111111111111111111111111111111')
+        if referring_page == 'checkout':
+            return HttpResponseRedirect('/cart/checkout')  # Redirect to checkout page
+        else:
+            return HttpResponseRedirect('/address/')  # Redirect to a default page
+
+        # return redirect('address')
     return render(request, 'add_address.html')
+
+
+
+
+# def add_address(request):
+#     user = request.user
+#     if request.method == 'POST':
+#         name = request.POST.get('name')
+#         phone_number = request.POST.get('phone_number')
+#         house_no = request.POST.get('house_no')
+#         street = request.POST.get('street')
+#         city = request.POST.get('city')
+#         state = request.POST.get('state')
+#         country = request.POST.get('country')
+#         pin_code = request.POST.get('pin_code')
+
+#         profile_address = User_Profile(user=user)
+#         profile_address.name = name
+#         profile_address.phone_number = phone_number
+#         profile_address.house_no = house_no
+#         profile_address.street = street
+#         profile_address.city = city
+#         profile_address.state = state
+#         profile_address.country = country
+#         profile_address.pin_code = pin_code
+#         profile_address.save()
+#         messages.success(request, "successful")
+#         return redirect('address')
+#     return render(request, 'add_address.html')
 
 
 @login_required
 def user_profile(request):
     user = request.user
     user_profile = User_Profile.objects.filter(user=user)
+    order = OrderItem.objects.filter(order_no__user=user).count()
     if user_profile.exists():
         user_profile = user_profile.all()
     else:
@@ -211,7 +271,8 @@ def user_profile(request):
 
     context = {
         'user': user,
-        'user_profile': user_profile
+        'user_profile': user_profile,
+        'order':order,
     }
     return render(request, 'profile.html', context)
 
@@ -251,11 +312,29 @@ def loginpage(request):
                 is_cart_item_exists=CartItem.objects.filter(cart=cart).exists()
                 if is_cart_item_exists:
                     cart_item=CartItem.objects.filter(cart=cart)
-                    for item in cart_item:
-                        item.user=user
-                        item.save()
+                    try:
+                        user_cart=CartItem.objects.filter(user=user)
+                        if user_cart.exists():
+                            current_user_cart=user_cart[0].cart
+                            for item in cart_item:
+                                matching_user_item=user_cart.filter(product=item.product).first()
+                                if matching_user_item:
+                                    matching_user_item.quantity += item.quantity
+                                    matching_user_item.save()
+                                    item.delete()
+                                else:
+                                    item.user=user
+                                    item.cart=current_user_cart
+                                    item.save()
+                        else:
+                            raise ObjectDoesNotExist
+                    except ObjectDoesNotExist:
+                        for item in cart_item:
+                            item.user=user
+                            item.cart=cart
+                            item.save()
             except:
-                return render(request,'404.html')
+                pass
             if user.is_active:
                 auth.login(request, user)
                 return redirect("/")
@@ -279,8 +358,6 @@ def product_details(request, product_id):
         all_categories = Category.objects.all()
         strap = Strap.objects.all()
         cart=CartItem.objects.filter(user=request.user)
-        
-       
         context = {
             'product': product,
             "category": all_categories,
@@ -289,7 +366,6 @@ def product_details(request, product_id):
             'cart':cart,
         }
         return render(request, "product_details.html", context)
-
     else:
         product = Product.objects.get(id=product_id)
         all_categories = Category.objects.all()
@@ -355,9 +431,6 @@ def blogdetailspage(request):
 def contactpage(request):
     all_category=Category.objects.all()
     return render(request, 'contact.html',{'all_category':all_category})
-
-
-
 
 
 def elementspage(request):

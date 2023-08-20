@@ -8,7 +8,6 @@ from django.contrib.auth import authenticate,login,logout
 from psycopg2 import IntegrityError
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 import razorpay
@@ -75,13 +74,12 @@ def add_cart(request, product_id):
 
 def cart_plus(request,strap_id):
     strap=get_object_or_404(Strap,id=strap_id)
-    try :
-        if request.user.is_authenticated:
-            cart_item = CartItem.objects.get(strap = strap,user = request.user)
-            if cart_item.quantity >= 1:
-                cart_item.quantity += 1
-                cart_item.save()
-    except:
+    if request.user.is_authenticated:
+        cart_item = CartItem.objects.get(strap = strap,user = request.user)
+        if cart_item.quantity >= 1:
+            cart_item.quantity += 1
+            cart_item.save()
+    else:
         cart = Cart.objects.get(cart_id = _cart_id(request))
         cart_item = CartItem.objects.get(strap = strap,cart= cart)
         if cart_item.quantity >= 1:
@@ -90,33 +88,23 @@ def cart_plus(request,strap_id):
     return redirect('cart')
 
 def cart_minus(request,strap_id):
-    print('524465656533333333')
-    print(strap_id,'111111111111111111111111111111111111111111')
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        print(data.cartid,'gfgdfg')
-        print(data.quantity,'dfgfdgfd')
-        print(data,'dfgdfgdg')
-
-
-
-        strap=get_object_or_404(Strap,id=strap_id)
-        try :
-            if request.user.is_authenticated:
-                cart_item = CartItem.objects.get(strap = strap,user = request.user)
-                if cart_item.quantity > 1:
-                    cart_item.quantity -= 1
-                    cart_item.save()
-                else:
-                    cart_item.delete()
-        except:
-            cart = Cart.objects.get(cart_id = _cart_id(request))
-            cart_item = CartItem.objects.get(strap = strap,cart= cart)
-            if cart_item.quantity > 1:
+    strap=get_object_or_404(Strap,id=strap_id)
+    try :
+        if request.user.is_authenticated:
+            cart_item = CartItem.objects.get(strap = strap,user = request.user)
+            if cart_item.quantity >= 1:
                 cart_item.quantity -= 1
                 cart_item.save()
             else:
                 cart_item.delete()
+    except:
+        cart = Cart.objects.get(cart_id = _cart_id(request))
+        cart_item = CartItem.objects.get(strap = strap,cart= cart)
+        if cart_item.quantity >= 1:
+            cart_item.quantity -= 1
+            cart_item.save()
+        else:
+            cart_item.delete()
     return redirect('cart')
 
 
@@ -152,11 +140,73 @@ def cartpage(request, total=0, quantity=0, cart_items=None):
         }
     return render(request, 'cart.html', context)
 
+@login_required(login_url='login')
+def checkout(request, total=0, quantity=0, cart_items=None):
+    tax = 0
+    grand_total = 0
+    org_tot = 0
+    tot = 0
+    try:
+        if request.user.is_authenticated:
+            cart_items = CartItem.objects.filter(user=request.user,is_active=True)
+        else:
+            cart = Cart.objects.get(cart_id=_cart_id(request))
+            cart_items = CartItem.objects.filter(cart=cart,is_active=True)
+      
+        for cart_item in cart_items:
+            total += (cart_item.product.offer_price * cart_item.quantity)
+            quantity += cart_item.quantity
+            amount=cart_item.total() * 10
+            shp=cart_item.shipping_charge()
+            qwe=cart_item.qwe()
+            tax=cart_item.tax()
+            coup=cart_item.coupon_discount()
+            amount=cart_item.total()
+            off=cart_item.offer_sub_total()
+            price=cart_item.sub_total()
+            tot=cart_item.tot()
+        user_profile=User_Profile.objects.filter(user=request.user)
+
+    except ObjectDoesNotExist:
+        return render(request,'404.html')
+    client = razorpay.Client(auth=(settings.RAZOR_PAY_KEY_ID,settings.KEY_SECRET))
+    payment=client.order.create({"amount":float(amount),"currency": "INR","payment_capture" : 1})
+    # cart_items.razor_pay_order_id=payment['id']
+    # cart_items.save()
+    context = {
+        'quantity': quantity,
+        'cart_items': cart_items,
+        'tax': tax,
+        'grand_total': grand_total,
+        'org_tot': org_tot,
+        'user_profile':user_profile,
+        # "payment":payment,
+        'shp':shp,
+        'qwe':qwe,
+        'tax':tax,
+        'coup':coup,
+        'amount':amount,
+        'off':off,
+        'price':price,
+        'tot':tot,
+    }
+    return render(request, 'checkout.html', context)
+
 
 
 def delete_cart_item(request, product_id):
-    cart_item = get_object_or_404(CartItem, id=product_id)
-    cart_item.delete()
+    if request.user.is_authenticated:
+        cart_item = get_object_or_404(CartItem, id=product_id)
+        cart_item.delete()
+
+    else:
+        print('11111111111111111111111111111')
+        cart = Cart.objects.get(cart_id=_cart_id(request))
+        print(cart)
+        product = get_object_or_404(Product, id=product_id)
+        print(product)
+        cart_item = CartItem.objects.get(product=product, cart=cart)
+        cart_item.delete()
     return redirect('cart')
     
 
@@ -187,64 +237,6 @@ def invoice(request,id):
         return redirect('shop')
 
 
-@login_required(login_url='login')
-def checkout(request, total=0, quantity=0, cart_items=None):
-    tax = 0
-    grand_total = 0
-    org_tot = 0
-    tot = 0
-    try:
-        if request.user.is_authenticated:
-            cart_items = CartItem.objects.filter(user=request.user,is_active=True)
-        else:
-            cart = Cart.objects.get(cart_id=_cart_id(request))
-            cart_items = CartItem.objects.filter(cart=cart,is_active=True)
-      
-        for cart_item in cart_items:
-            total += (cart_item.product.offer_price * cart_item.quantity)
-            quantity += cart_item.quantity
-            amount=cart_item.total() * 10
-            shp=cart_item.shipping_charge()
-            qwe=cart_item.qwe()
-            tax=cart_item.tax()
-            coup=cart_item.coupon_discount()
-            amount=cart_item.total()
-            off=cart_item.offer_sub_total()
-            price=cart_item.sub_total()
-        tax = (3 * total)//100
-        grand_total = total + tax
-        tot = (cart_item.product.price * cart_item.quantity)
-        org_tot = grand_total - tot
-        user_profile=User_Profile.objects.filter(user=request.user)
-
-    except ObjectDoesNotExist:
-        return render(request,'404.html')
-    amount=500*100
-    client = razorpay.Client(auth=(settings.RAZOR_PAY_KEY_ID,settings.KEY_SECRET))
-    payment=client.order.create({"amount":float(amount),"currency": "INR","payment_capture" : 1})
-    # cart_items.razor_pay_order_id=payment['id']
-    # cart_items.save()
-    context = {
-        'quantity': quantity,
-        'cart_items': cart_items,
-        'tax': tax,
-        'grand_total': grand_total,
-        'org_tot': org_tot,
-        'user_profile':user_profile,
-        # "payment":payment,
-        'shp':shp,
-        'qwe':qwe,
-        'tax':tax,
-        'coup':coup,
-        'amount':amount,
-        'off':off,
-        'price':price,
-    }
-    return render(request, 'checkout.html', context)
-
-# def success(request):
-#     messages.success(request,'Payment Successful now you can place order.')
-#     return redirect('checkout')
 
 def myorders(request):
     user=request.user
@@ -262,13 +254,17 @@ def myorders(request):
 def create_order(request):
     if request.method == 'POST':
         address_id = request.POST.get('address')
-        print(address_id,'7894561236651585296')
         request.session['address_id'] = address_id
 
     cart_items = CartItem.objects.filter(user=request.user)
+    for cart_item in cart_items:
+        amount=cart_item.total()*100
+
+
     address = get_object_or_404(User_Profile, id=address_id)  
     context = {
         "address": address,
+        "amount":amount,
     }
     return render(request, 'payment.html', context)
 
@@ -286,7 +282,6 @@ def confirmation(request):
         price1=cart_item.sub_total()
         payment_amount1=cart_item.total()
         shipping_charge=cart_item.shipping_charge()
-
     order=Order.objects.create(
         user=request.user,
         address=address,

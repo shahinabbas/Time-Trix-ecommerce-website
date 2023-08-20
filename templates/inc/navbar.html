@@ -163,7 +163,9 @@
               <li class="mt-2">
                 <a href="{% url 'cart' %}"
                   ><span class="flaticon-shopping-cart"></span
-                ></a>
+                >          <span class="rounded-badge">{{cart_count}}</span>
+              </a>
+          
               </li>
               <li class="mt-2">
                 <a href="{% url 'wishlist' %}"
@@ -184,6 +186,8 @@
 </header>
 
 <style>
+ 
+  
   
   /* Reduce the button height */
   .btn-secondary {

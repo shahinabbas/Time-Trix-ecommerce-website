@@ -280,9 +280,12 @@
 
               <div class="card mb-4" id="addAddressCard">
                 <div class="card-body dotted-box">
+                    <a href="{% url 'add_address' %}?referring_page=checkout">
+                      <div class="text-center">
+                        <h5 class="card-title">Add Address</h5>
+                      </div>
+                    </a>
                   {% comment %} <a href="{% url 'add_address' %}" class="stretched-link"> {% endcomment %}
-                    <a href="{% url 'add_address' %}?referring_page=checkout">Add Address from Checkout</a>
-
                     {% comment %} <div class="text-center">
                       <h5 class="card-title">Add Address</h5>
                     </div>

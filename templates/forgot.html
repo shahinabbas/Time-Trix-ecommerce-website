@@ -1,122 +1,68 @@
-{% extends 'layouts/main.html' %}
-{% load static %} 
- {% block body %}
+{% extends 'layouts/main.html' %} {% load static %} {% block body %}
 
- <div class="mt-5 mb-5" style="padding-left: 100px;">
-  <div class="row">
-    {% include 'inc/sidebar.html' %}
-    
-    <!-- User Profile Card -->
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">
-        </div>
-        <div class="p-3 py-5 d-flex justify-content-center align-items-center">
-          <div>
-            {% for message in messages %}
-    <div
-      class="alert alert-{{message.tags}} alert-dismissible fade show"
-      role="alert"
-    >
-      {{message}}
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="alert"
-        aria-label="Close"
-      ></button>
-    </div>
-    {% endfor %}
-            <h4 class="text-center mb-3">Reset Password</h4>
-            <form action="{% url 'reset' %}" method="post">
-              {% csrf_token %}
-              <div class="row mt-3 justify-content-center align-items-center">
-                {% comment %} <div class="col-md-8">
-                  <label class="labels">Enter old password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    placeholder="enter old password"
-                    value=""
-                    name="password"
-                    required
-                  >
-                </div> {% endcomment %}
-                <div class="col-md-8">
-                  <label class="labels">Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    placeholder="enter new password"
-                    value=""
-                    name="password"
-                    required
-                  >
-                </div>
-                <div class="col-md-8">
-                  <label class="labels">Confirm Password</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    placeholder="confirm password"
-                    value=""
-                    name="confirm_password"
-                    required
-                  >
-                </div>
-              </div>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-              <div class="mt-5 text-center">
-                <button class="btn btn-primary ">Save Password</button>
-              </div>
-            </form>
-          </div>
-        </div>
+<link
+  rel="stylesheet"
+  href="{% static 'assets/s_fonts/material-design-iconic-font/css/material-design-iconic-font.min.css' %}"
+/>
+<link rel="stylesheet" href="{% static 'assets/s_css/style.css' %}" />
+
+
+<div
+  class="wrapper"
+  style="
+    background-image: url('{% static 'assets/img/s_images/croped1.png' %}');
+  "
+>
+{% for message in messages %}
+<div
+  class="alert alert-{{message.tags}} alert-dismissible fade show"
+  role="alert"
+>
+  {{message}}
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+{% endfor %}
+  <div class="inner">
+    <form action="{% url 'forgot' %}" method="post" style="padding-top: 120px">
+      {% csrf_token %}
+      <h3>Reset Password</h3>
+      <div class="form-wrapper">
+        <input
+          type="password"
+          placeholder="password"
+          class="form-control"
+          name="password"
+          required
+        />
+        <i class="zmdi zmdi-email"></i>
       </div>
+      <div class="form-wrapper">
+        <input
+          type="password"
+          placeholder="confirm Password"
+          class="form-control"
+          name="confirm_password"
+          required
+        />
+        <i class="zmdi zmdi-lock"></i>
+      </div>
+    
+      <button type="submit">
+        Save
+        <i class="zmdi zmdi-arrow-right"></i>
+      </button>
+    </form>
+    <div class="image-holder">
+      <img src="{% static 'assets/img/s_images/post-4.png' %}" alt="" />
     </div>
   </div>
 </div>
-<style>
-.form-control:focus {
-  box-shadow: none;
-  border-color: #BA68C8
-}
-
-.profile-button {
-  background: rgb(99, 39, 120);
-  box-shadow: none;
-  border: none
-}
-
-.profile-button:hover {
-  background: #682773
-}
-
-.profile-button:focus {
-  background: #682773;
-  box-shadow: none
-}
-
-.profile-button:active {
-  background: #682773;
-  box-shadow: none
-}
-
-.back:hover {
-  color: #682773;
-  cursor: pointer
-}
-
-.labels {
-  font-size: 11px
-}
-
-.add-experience:hover {
-  background: #BA68C8;
-  color: #fff;
-  cursor: pointer;
-  border: solid 1px #BA68C8
-}</style>
-
 
 {% endblock body%}

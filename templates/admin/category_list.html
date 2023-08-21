@@ -186,31 +186,7 @@
     font-weight: normal;
   }
 </style>
-{% comment %} <script>
-  $(document).ready(function () {
-    // Activate tooltip
-    $('[data-toggle="tooltip"]').tooltip();
 
-    // Select/Deselect checkboxes
-    var checkbox = $('table tbody input[type="checkbox"]');
-    $("#selectAll").click(function () {
-      if (this.checked) {
-        checkbox.each(function () {
-          this.checked = true;
-        });
-      } else {
-        checkbox.each(function () {
-          this.checked = false;
-        });
-      }
-    });
-    checkbox.click(function () {
-      if (!this.checked) {
-        $("#selectAll").prop("checked", false);
-      }
-    });
-  });
-</script> {% endcomment %}
 <script>
   $(document).ready(function() {
     $('#deletecategoryModal').on('show.bs.modal', function(e) {
@@ -222,10 +198,24 @@
 </script>
 
 
-      <div class="row">
-        <div class="col-sm-6">
+      <div class="row ">
+        <div class="col-sm-6 mt-4">
           <h2><b>Category</b></h2>
         </div>
+        {% for message in messages %}
+        <div
+          class="alert alert-{{message.tags}} alert-dismissible fade show"
+          role="alert"
+        >
+          {{message}}
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+        {% endfor %}
         <div class="col-sm-6" style="padding-top: 120px;">
           <a
             href="#addEmployeeModal"
@@ -280,14 +270,20 @@
                 <td>{{s.id}}</td>
                 <td>{{s.categories}}</td>
                 <td>
-                  <a href="#editEmployeeModal" class="edit" data-toggle="modal"
+                  {% comment %} <a href="#editEmployeeModal" class="edit" data-toggle="modal"
                     ><i
                       class="material-icons"
                       data-toggle="tooltip"
                       title="Edit"
                       >&#xE254;</i
                     ></a
-                  >
+                  > {% endcomment %}
+                  <a href="{% url 'edit_category' s.id %}"><i
+                    class="material-icons"
+                    data-toggle="tooltip"
+                    title="Edit"
+                    >&#xE254;</i
+                  > </a>
                   <a
                     href="#deletecategoryModal"
                     class="delete"
@@ -366,7 +362,7 @@
     </div>
   </div>
 </div>
-
+{% comment %} 
 <!-- Edit Modal HTML -->
 <div id="editEmployeeModal" class="modal fade">
   <div class="modal-dialog">
@@ -408,7 +404,7 @@
     </div>
   </div>
   </div>
-</div>
+</div> {% endcomment %}
 <!-- Delete Modal HTML -->
 <div id="deletecategoryModal" class="modal fade">
   <div class="modal-dialog">

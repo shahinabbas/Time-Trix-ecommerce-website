@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect, get_object_or_404,HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from app.models import CustomUser, Category, Product,User_Profile
+from app.models import CustomUser, Category, Product
 from cart.models import Order, OrderItem, Strap
 from django.contrib.auth.models import auth
 from django.views.decorators.cache import never_cache
@@ -10,12 +10,9 @@ from django.http import HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from coupon.models import Coupon
 from django.db.models import Sum
-from datetime import timedelta,datetime,date
-from django.db.models import Q
+from datetime import timedelta,datetime
 from django.db.models.functions import TruncMonth
 from django.db.models import Count
-from django.views import View
-from django.http import JsonResponse
 from django.core.serializers import serialize
 import json
 from django.db.models.functions import TruncDate,TruncYear
@@ -57,6 +54,8 @@ def admin_index(request):
     }
     return render(request, 'admin/admin_index.html', context)
 
+@never_cache
+@login_required(login_url='admin_signin')
 def yearly(request):
     yearly_order_data=Order.objects.annotate(year=TruncYear('order_date')).values('year').annotate(order_count=Count('id')).order_by('year')
     labels = [item['year'].strftime('%Y') for item in yearly_order_data]
@@ -67,6 +66,8 @@ def yearly(request):
     }
     return render(request,'admin/yearly_chart.html',context)
 
+@never_cache
+@login_required(login_url='admin_signin')
 def monthly(request):
     monthly_order_data = Order.objects.annotate(month=TruncMonth('order_date')).values('month').annotate(order_count=Count('id')).order_by('month')
     labels = [item['month'].strftime('%Y-%m') for item in monthly_order_data]
@@ -77,6 +78,8 @@ def monthly(request):
     }
     return render(request,'admin/monthly_chart.html',context)
 
+@never_cache
+@login_required(login_url='admin_signin')
 def chart(request):
     end_date = datetime.now()
     start_date = end_date - timedelta(days=30)
@@ -98,8 +101,11 @@ def chart(request):
     return render(request, 'admin/chart.html', context)
 
 
+@never_cache
+@login_required(login_url='admin_signin')
 def sales_report(request):
     order=OrderItem.objects.all()
+    
     context={
         'order':order,
     }
@@ -107,6 +113,8 @@ def sales_report(request):
 
 
 
+@never_cache
+@login_required(login_url='admin_signin')
 def cancel_report(request):
     cancelled_orders = OrderItem.objects.filter(order_status='Cancelled')
     context={
@@ -116,6 +124,8 @@ def cancel_report(request):
 
 
 
+@never_cache
+@login_required(login_url='admin_signin')
 def stock_report(request):
     strap=Strap.objects.all()
     context={
@@ -134,6 +144,8 @@ def stock_report(request):
 # def edit_varient(request):
 #     return render(request,'admin/edit_varient.html')
 
+@never_cache
+@login_required(login_url='admin_signin')
 def admin_order_details(request,id):
     order = get_object_or_404(Order, order_id=id)
     product = OrderItem.objects.filter(order_no=order)
@@ -149,34 +161,12 @@ def admin_order_details(request,id):
 
 
 
+@never_cache
+@login_required(login_url='admin_signin')
 def delete_coupon(request,id):
     coupon=get_object_or_404(Coupon,pk=id)
     coupon.delete()
     return redirect('coupon_list')
-
-def edit_coupon(request,id):
-    coupon=Coupon.objects.get(pk=id)
-    if request.method=='POST':
-        coupon_code=request.POST.get('coupon_code')
-        description=request.POST.get('description')
-        minimum_amount=request.POST.get('minimum_amount')
-        discount_type=request.POST.get('discount_type')
-        discount=request.POST.get('discount')
-        valid_from=request.POST.get('valid_from')
-        valid_to=request.POST.get('valid_to')
-        
-        coupon.coupon_code=coupon_code
-        coupon.description=description
-        coupon.minimum_amount=minimum_amount
-        coupon.discount_type=discount_type
-        coupon.discount=discount
-        coupon.valid_from=valid_from
-        coupon.valid_to=valid_to
-        
-        coupon.save()
-        messages.success(request,'coupon edit success')
-        return redirect('coupon_list')
-    return render(request,'admin/edit_coupon.html',{'coupon':coupon})
 
 def update_order_status(request,id):
     if request.method=='POST':
@@ -186,6 +176,8 @@ def update_order_status(request,id):
         edit.save()
         return redirect('orders')
 
+@never_cache
+@login_required(login_url='admin_signin')
 def cancel_order(request,id):
     if request.method == 'POST':
         order_item = OrderItem.objects.get(pk=id)
@@ -197,6 +189,8 @@ def cancel_order(request,id):
             strap.save()    
         return redirect('myorders')
 
+@never_cache
+@login_required(login_url='admin_signin')
 def add_coupon(request):
     if request.method=='POST':
         coupon_code=request.POST.get('coupon_code')
@@ -223,6 +217,8 @@ def add_coupon(request):
 
 
 
+@never_cache
+@login_required(login_url='admin_signin')
 def coupon_list(request):
     coupon = Coupon.objects.all()
     context = {
@@ -232,6 +228,8 @@ def coupon_list(request):
     return render(request,"admin/coupon_list.html",context)
 
 
+@never_cache
+@login_required(login_url='admin_signin')
 def orders(request):
     use=CustomUser.objects.all()
     order=Order.objects.all()
@@ -246,7 +244,7 @@ def orders(request):
  
 
 @never_cache
-# @login_required(login_url='admin_signin')
+@login_required(login_url='admin_signin')
 def add_product(request):
     categories = Category.objects.all()
 
@@ -288,7 +286,7 @@ def add_product(request):
 
 
 @never_cache
-# @login_required(login_url='admin_signin')
+@login_required(login_url='admin_signin')
 def edit_productpage(request, id):
     try:
         product = Product.objects.get(pk=id)
@@ -347,13 +345,13 @@ def admin_logout(request):
 
 
 @never_cache
-# @login_required(login_url='admin_signin')
+@login_required(login_url='admin_signin')
 def userspage(request):
     stu = CustomUser.objects.all()
     return render(request, "admin/users.html", {'stu': stu})
 
 
-# @login_required(login_url='admin_signin')
+@login_required(login_url='admin_signin')
 def user_blockpage(request, id):
     if request.method == 'POST':
         user = CustomUser.objects.get(pk=id)
@@ -362,7 +360,7 @@ def user_blockpage(request, id):
     return redirect('users')
 
 
-# @login_required(login_url='admin_signin')
+@login_required(login_url='admin_signin')
 def user_unblockpage(request, id):
     if request.method == 'POST':
         user = CustomUser.objects.get(pk=id)
@@ -377,11 +375,11 @@ def add_category(request):
         category_name = request.POST.get('categoryname')
         ctg=Category.objects.filter(categories=category_name)
         if ctg.exists():
-            # error_message = 'Category name already exists.'
-            return render(request, 'admin/category_list.html')
+            messages.info(request,'category already exist')
+            return render   (request, 'admin/category_list.html')
         else:
             category = Category.objects.create(categories=category_name)
-            # stu = category.objects.all()
+            messages.success(request,'New category added successfully')
             return redirect('category_list')
     return render(request, "admin/category_list.html")
 
@@ -390,6 +388,33 @@ def add_category(request):
 def category_listpage(request):
     stu = Category.objects.all()
     return render(request, "admin/category_list.html", {'stu': stu})
+
+@never_cache
+@login_required(login_url='admin_signin')
+def edit_coupon(request,id):
+    coupon=Coupon.objects.get(pk=id)
+    if request.method=='POST':
+        coupon_code=request.POST.get('coupon_code')
+        description=request.POST.get('description')
+        minimum_amount=request.POST.get('minimum_amount')
+        discount_type=request.POST.get('discount_type')
+        discount=request.POST.get('discount')
+        valid_from=request.POST.get('valid_from')
+        valid_to=request.POST.get('valid_to')
+        
+        coupon.coupon_code=coupon_code
+        coupon.description=description
+        coupon.minimum_amount=minimum_amount
+        coupon.discount_type=discount_type
+        coupon.discount=discount
+        coupon.valid_from=valid_from
+        coupon.valid_to=valid_to
+        
+        coupon.save()
+        messages.success(request,'coupon edit success')
+        return redirect('coupon_list')
+    return render(request,'admin/edit_coupon.html',{'coupon':coupon})
+
 
 @never_cache
 def edit_category(request,id):
@@ -403,16 +428,14 @@ def edit_category(request,id):
             catgry.categories = categories
             catgry.save()
             messages.success(request,'edit successful')
-        return redirect('category_list')
-    return render(request,'admin/category_list.html',{'category':categories})
+            return redirect('category_list')
+    return render(request,'admin/edit_category.html',{'catgry':catgry})
 
 
 @never_cache
 @login_required(login_url='admin_signin')
 def delete_category(request, id):
-    # if request.method == 'POST':
     co = get_object_or_404(Category,id=id)
-    print('11111111111111111111111111111111111111111111111111111111111111111')
     co.delete()
     return redirect('category_list')
 
@@ -455,12 +478,11 @@ def admin_signin(request):
         password = request.POST.get('password')
         user = authenticate(request, email=email, password=password)
         if user is not None and user.is_superuser:
-
             auth.login(request, user)
             return redirect('admin_index')
         else:
             messages.error(request, "User email or password is incorrect")
-            return redirect('/admin_signin')
+            return render(request, 'admin/admin_signin.html') 
     return render(request, 'admin/admin_signin.html')
 
 

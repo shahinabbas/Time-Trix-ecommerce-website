@@ -34,9 +34,13 @@
                 <li>
                   <a href="#">Categories</a>
                   <ul class="submenu">
-                    {% for cat in all_category %}
-                    <li><a href="{% url 'user_category' cat.id %}">{{ cat.categories }}</a></li>
-                    {% endfor %}
+
+                      {% for category in categories %}
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'user_category' category.id %}">{{ category.categories }}</a>
+                      </li>
+                      {% endfor %}
+                  
                     
                   </ul>
                 </li>
@@ -162,10 +166,10 @@
               </li>
               <li class="mt-2">
                 <a href="{% url 'cart' %}"
-                  ><span class="flaticon-shopping-cart"></span
-                >          <span class="rounded-badge">{{cart_count}}</span>
-              </a>
-          
+                  ><span class="flaticon-shopping-cart"></span>
+                {% comment %}           <span class="rounded-badge">{{cart_count}}</span> {% endcomment %}
+              </a> 
+              
               </li>
               <li class="mt-2">
                 <a href="{% url 'wishlist' %}"

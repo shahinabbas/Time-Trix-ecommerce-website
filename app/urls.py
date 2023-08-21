@@ -2,6 +2,7 @@ from django.urls import path
 from app import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls import handler404
 
 urlpatterns = [
 
@@ -49,7 +50,9 @@ urlpatterns = [
     path('blog-details/',views.blogdetailspage,name='blog-details'),
     path('elements/',views.elementspage,name='elements'),
     
-    path('404',views.error,name='404')
+    path('error',views.error,name='error')
 
    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'app.views.error'

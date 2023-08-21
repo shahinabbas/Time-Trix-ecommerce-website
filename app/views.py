@@ -99,7 +99,7 @@ def remove_wishlist(request, product_id):
 
 
 @login_required(login_url='login')
-@csrf_exempt  # Add this decorator to exempt CSRF protection for this view
+@csrf_exempt 
 def add_to_wishlist(request, product_id):
     if request.method == "POST" and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         user = request.user
@@ -121,7 +121,8 @@ def wishlist(request):
     wishlist = Wishlist.objects.filter(user=request.user)
     return render(request, 'wishlist.html', {"wishlist": wishlist})
 
-
+@login_required(login_url='login')
+@never_cache
 def edit_address(request, id):
     user = request.user
     profile_address = get_object_or_404(User_Profile, pk=id)
@@ -151,6 +152,8 @@ def edit_address(request, id):
     return render(request, 'edit_address.html', {"profile_address": profile_address})
 
 
+@login_required(login_url='login')
+@never_cache
 def delete_address(request, id):
     user = request.user
     profile = get_object_or_404(User_Profile, pk=id, user=user)
@@ -189,10 +192,12 @@ def forgot(request):
             return redirect('login')  # Redirect to the same view after successful password change
         else:
             messages.error(request, 'Entered passwords do not match')
-            return redirect('reset')
-    return render(request, 'login.html')  # Render the template for password reset
+            return redirect('forgot')
+    return render(request, 'forgot.html')  # Render the template for password reset
 
 
+@login_required(login_url='login')
+@never_cache
 def add_address(request):
     user = request.user
     if request.method == 'POST':
@@ -259,7 +264,9 @@ def add_address(request):
 #     return render(request, 'add_address.html')
 
 
-@login_required
+
+@login_required(login_url='login')
+@never_cache
 def user_profile(request):
     user = request.user
     user_profile = User_Profile.objects.filter(user=user)
@@ -281,6 +288,8 @@ def edit_profile(request):
     return render(request, 'edit_profile.html')
 
 
+
+@login_required(login_url='login')
 @never_cache
 def address(request):
     user = request.user
@@ -368,12 +377,10 @@ def product_details(request, product_id):
         return render(request, "product_details.html", context)
     else:
         product = Product.objects.get(id=product_id)
-        all_categories = Category.objects.all()
         strap = Strap.objects.all()
  
         context = {
             'product': product,
-            "category": all_categories,
             'strap': strap,
         }
 
@@ -466,6 +473,8 @@ def signuppage(request):
     return render(request, "signup.html")
 
 
+@login_required(login_url='login')
+@never_cache
 def logoutpage(request):
     logout(request)
     request.session.flush()
@@ -526,7 +535,7 @@ def enter_otppage(request):
                     user.save()
                     # del request.session['phone_number']
                     auth.login(request, user)
-                    return redirect('/')
+                    return redirect('forgot')
                 else:
                     messages.error(request, 'Invalid OTP')
         else:
@@ -535,10 +544,6 @@ def enter_otppage(request):
     return render(request, 'enter_otp.html', {'phone_number': phone_number})
 
 
-def confirmationpage(request):
-    all_category=Category.objects.all()
-    return render(request, 'confirmation.html',{'all_category':all_category})
-
-def error(request):
-    return render(request,'404.html')
+def error(request,exception):
+    return render(request,'error.html',status=404)
      

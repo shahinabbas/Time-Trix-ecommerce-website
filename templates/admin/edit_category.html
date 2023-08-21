@@ -1,0 +1,97 @@
+{% extends 'admin/navbar.html' %} 
+{% block body %}
+
+<div class="container rounded bg-white mt-5 mb-5">
+  <div class="row justify-content-center">
+    <!-- Center-align the content -->
+
+    <div class="col-md-5 border-right">
+      <div class="p-3 py-5">
+        <div class="d-flex justify-content-between align-items-center">
+            {% for message in messages %}
+            <div
+              class="alert alert-{{message.tags}} alert-dismissible fade show"
+              role="alert"
+            >
+              {{message}}
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              ></button>
+            </div>
+            {% endfor %}
+          <h1 class="text-right mt-5">Edit Category</h1>
+        </div>
+    <form action="{% url 'edit_category' catgry.id %}" method="post">
+            {% csrf_token %} 
+
+          <div class="row mt-5">
+            <div class="col-md-6">
+              <label class="labels"> Category </label
+              ><input
+                type="text"
+                class="form-control"
+                placeholder=""
+                value="{{catgry.categories}}"
+                name="category"
+              />
+            </div>
+            
+          </div>
+          <div class="mt-5 text-center">
+            <button  type="submit" class="btn btn-primary profile-button">
+              Save Profile
+            </button>
+          </div>
+         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #ba68c8;
+  }
+
+  .profile-button {
+    background: rgb(99, 39, 120);
+    box-shadow: none;
+    border: none;
+  }
+
+  .profile-button:hover {
+    background: #682773;
+  }
+
+  .profile-button:focus {
+    background: #682773;
+    box-shadow: none;
+  }
+
+  .profile-button:active {
+    background: #682773;
+    box-shadow: none;
+  }
+
+  .back:hover {
+    color: #682773;
+    cursor: pointer;
+  }
+
+  .labels {
+    font-size: 11px;
+  }
+
+  .add-experience:hover {
+    background: #ba68c8;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #ba68c8;
+  }
+</style>
+
+{% endblock body%}

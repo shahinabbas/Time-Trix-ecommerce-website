@@ -110,6 +110,7 @@ def cart_minus(request,strap_id):
 
 
 def cartpage(request, total=0, quantity=0, cart_items=None):
+    shp = qwe = tax = coup = amount = 0  # Initialize variables with default values
     try:
         if request.user.is_authenticated:
             cart_items = CartItem.objects.filter(user=request.user,is_active=True)
@@ -195,20 +196,20 @@ def checkout(request, total=0, quantity=0, cart_items=None):
 
 
 def delete_cart_item(request, product_id):
-    if request.user.is_authenticated:
-        cart_item = get_object_or_404(CartItem, id=product_id)
-        cart_item.delete()
-
-    else:
-        print('11111111111111111111111111111')
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-        print(cart)
-        product = get_object_or_404(Product, id=product_id)
-        print(product)
-        cart_item = CartItem.objects.get(product=product, cart=cart)
-        cart_item.delete()
+    cart_item = get_object_or_404(CartItem, id=product_id)
+    cart_item.delete()
     return redirect('cart')
-    
+
+# def delete_cart_item(request,product_id):
+#     product=get_object_or_404(Strap,id=product_id)
+#     if request.user.is_authenticated:
+#         cart_item=CartItem.objects.get(product=product,user=request.user)
+#     else:
+#         cart=Cart.objects.get(cart_id=_cart_id(request))
+#         cart_item=CartItem.objects.get(product=product,cart=cart)
+#     cart_item.delete()
+#     return redirect('cart')
+
 
 def order_details(request,id):
     order = get_object_or_404(Order, order_id=id)
@@ -278,6 +279,9 @@ def confirmation(request):
     cart_item=CartItem.objects.filter(user=request.user)
     address=get_object_or_404(User_Profile,id=address_id)
 
+    price1 = 0
+    payment_amount1 = 0
+    shipping_charge = 0
     for cart_item in cart_item:
         price1=cart_item.sub_total()
         payment_amount1=cart_item.total()
@@ -313,4 +317,6 @@ def confirmation(request):
         'payment_method':payment_method,
         'order_id':order.order_id,
         }
+    context['payment_successful'] = True
+
     return render(request,'confirmation.html',context)

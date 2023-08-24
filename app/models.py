@@ -98,6 +98,23 @@ class User_Profile(models.Model):
     def __str__(self):
         return self.user.name
 
+
+class OrderAddress(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    name = models.CharField(_('name'), max_length=100)
+    address=models.CharField(_('address'),max_length=180)
+    phone_number = models.BigIntegerField(_('phone_number'))
+    house_no = models.CharField(_('house number'), max_length=10)
+    street = models.CharField(_('street'), max_length=100)
+    city = models.CharField(_('city'), max_length=100)
+    state = models.CharField(_('state'), max_length=100)
+    country = models.CharField(_('country'), max_length=100)
+    pin_code = models.CharField(_('pin code'), max_length=10)
+
+    def __str__(self):
+        return self.user.name
+
+
 class Wishlist(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product=models.ForeignKey(Product, on_delete=models.CASCADE)

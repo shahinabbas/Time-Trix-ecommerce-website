@@ -172,6 +172,7 @@
 <script>
   $(document).ready(function () {
     $(".wishlist-button").click(function () {
+      console.log("Button clicked");
       var product_id = $(this).data("product-id");
       var url = "{% url 'add_to_wishlist' 0 %}".replace("0", product_id);
       var csrf_token = $("input[name='csrfmiddlewaretoken']").val(); // Fetch the CSRF token
@@ -181,9 +182,13 @@
         url: url,
         headers: {
           "X-CSRFToken": csrf_token, // Add the CSRF token to the headers
+        cache: false,
+
         },
         dataType: "json",
         success: function (response) {
+          console.log("Response:", response);
+
           if (response.success) {
             // Update button text and action based on response
             var buttonText = response.message.includes("Added")

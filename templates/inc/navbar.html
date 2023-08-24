@@ -8,176 +8,122 @@
 />
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<header>
-  <!-- Header Start -->
-  <div class="header-area">
-    <div class="main-header header-sticky">
-      <div class="container-fluid">
-        <div class="menu-wrapper">
-          <!-- Logo -->
-          <a href="{% url 'index' %}">
-            <h2>
-              <img
-                src="{% static 'assets/img/logo/time.png' %}"
-                alt=""
-                width="45"
-                height="45"
-              />TIME TRIX
-            </h2>
-          </a>
+<!-- Header Start -->
+<div class="header-area">
+  <div class="main-header header-sticky">
+    <div class="container-fluid">
+      <div class="menu-wrapper">
+        <!-- Logo -->
+        <a href="{% url 'index' %}">
+          <h2>
+            <img
+              src="{% static 'assets/img/logo/time.png' %}"
+              alt=""
+              width="45"
+              height="45"
+            />TIME TRIX
+          </h2>
+        </a>
 
-          <div class="main-menu d-none d-lg-block">
-            <nav>
-              <ul id="navigation">
-                <li><a href="{% url 'index' %}">Home</a></li>
-                <li><a href="{% url 'shop' %}">shop</a></li>
-                <li>
-                  <a href="#">Categories</a>
-                  <ul class="submenu">
-
-                      {% for category in categories %}
-                      <li class="nav-item">
-                          <a class="nav-link" href="{% url 'user_category' category.id %}">{{ category.categories }}</a>
-                      </li>
-                      {% endfor %}
-                  
-                    
-                  </ul>
-                </li>
-                <li><a href="{% url 'about' %}">About</a></li>
-                <li><a href="{% url 'blog' %}">Blog</a></li>
-
-                <li>
-                  <a href="#">Pages</a>
-                  <ul class="submenu">
-                    <li><a href="{% url 'send_otp' %}">Login</a></li>
-                    <li><a href="{% url 'signup' %}">Sign Up</a></li>
-                    <li><a href="{% url 'admin_index' %}">Cart</a></li>
-                    <li><a href="{% url 'wishlist' %}">wishlist</a></li>
-                    {% comment %} <li><a href="{% url 'confirmation' %}">Confirmation</a></li> {% endcomment %}
-                    <li><a href="{% url 'checkout' %}">Product Checkout</a></li>
-                  </ul>
-                </li>
-                <li><a href="{% url 'contact' %}">Contact</a></li>
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'logout' %}">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                  </a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'login' %}">Login</a>
-                </li>
-                {% endif %}
-              </ul>
-            </nav>
-          </div>
-          <!-- Header Right -->
-          <div class="header-right">
-            <ul>
+        <div class="main-menu d-none d-lg-block">
+          <nav>
+            <ul id="navigation">
+              <li><a href="{% url 'index' %}">Home</a></li>
+              <li><a href="{% url 'shop' %}">shop</a></li>
               <li>
-                <div class="input-group">
-                  <div class="form-outline">
-                    <form
-                      action="{% url 'search' %}"
-                      class="search"
-                      method="GET"
-                      onsubmit="handleSearchForm(event)"
+                <a href="#">Categories</a>
+                <ul class="submenu">
+                  {% for category in categories %}
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="{% url 'user_category' category.id %}"
+                      >{{ category.categories }}</a
                     >
-                      
-                  </div>
-                  <div class="search-box">
-                    <button class="btn-search"><i class="fas fa-search"></i></button>
-                    <input
+                  </li>
+                  {% endfor %}
+                </ul>
+              </li>
+              <li><a href="{% url 'about' %}">About</a></li>
+              <li><a href="{% url 'blog' %}">Blog</a></li>
+
+              <li>
+                <a href="#">Pages</a>
+                <ul class="submenu">
+                  <li><a href="{% url 'coupons' %}">Coupons</a></li>
+
+                  <li><a href="{% url 'send_otp' %}">Login</a></li>
+                  <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                  <li><a href="{% url 'admin_index' %}">Cart</a></li>
+                  <li><a href="{% url 'wishlist' %}">wishlist</a></li>
+                  {% comment %}
+                  <li><a href="{% url 'confirmation' %}">Confirmation</a></li>
+                  {% endcomment %}
+                  <li><a href="{% url 'checkout' %}">Product Checkout</a></li>
+                </ul>
+              </li>
+              <li><a href="{% url 'contact' %}">Contact</a></li>
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">
+                  <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+        <!-- Header Right -->
+        <div class="header-right">
+          <ul>
+            <li>
+              <div class="input-group">
+                <div class="form-outline">
+                  <form
+                    action="{% url 'search' %}"
+                    class="search"
+                    method="GET"
+                    onsubmit="handleSearchForm(event)"
+                  >
+                    <div class="search-box">
+                      <button class="btn-search">
+                        <i class="fas fa-search"></i>
+                      </button>
+                      <input
                         type="text"
                         name="query"
                         value=""
                         id="form1"
-                        class="input-search" placeholder="Type to Search..."
+                        class="input-search"
+                        placeholder="Type to Search..."
                       />
-                  </div>
-                </form>
-
+                    </div>
+                  </form>
                 </div>
-              </li>
-              <style>
-              
-              .search-box{
-                width: fit-content;
-                height: fit-content;
-                position: relative;
-              }
-              .input-search{
-                height: 40px;
-                width: 40px;
-                border-style: none;
-                padding: 10px;
-                font-size: 18px;
-                letter-spacing: 2px;
-                outline: none;
-                border-radius: 20px;
-                transition: all .5s ease-in-out;
-                background-color: #22a6b3;
-                padding-right: 40px;
-                color:black;
-              }
-              .input-search::placeholder{
-                color:rgba(0,0,0,.5);
-                font-size: 18px;
-                letter-spacing: 2px;
-                font-weight: 100;
-              }
-              .btn-search{
-                width: 40px;
-                height: 40px;
-                border-style: none;
-                font-size: 20px;
-                font-weight: bold;
-                outline: none;
-                cursor: pointer;
-                border-radius: 50%;
-                position: absolute;
-                right: 0px;
-                color:black;
-                background-color:#ffffff;
-                pointer-events: painted;  
-              }
-              .btn-search:focus ~ .input-search{
-                width: 300px;
-                border-radius: 0px;
-                background-color: black;
-                border-bottom:1px solid rgba(0,0,0,.5);
-                transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
-              }
-              .input-search:focus{
-                width: 300px;
-                border-radius: 0px;
-                background-color: #ffffff;
-                border-bottom:1px solid rgba(0,0,0,.5);
-                transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
-              }
-              
-              </style>
-              <li class="mt-2">
-                <a href="{% url 'user_profile' %}"
-                  ><span class="flaticon-user"></span
-                ></a>
-              </li>
-              <li class="mt-2">
-                <a href="{% url 'cart' %}"
-                  ><span class="flaticon-shopping-cart"></span>
-                {% comment %}           <span class="rounded-badge">{{cart_count}}</span> {% endcomment %}
-              </a> 
-              
-              </li>
-              <li class="mt-2">
-                <a href="{% url 'wishlist' %}"
-                  ><span class="flaticon-heart"></span
-                ></a>
-              </li>
-            </ul>
-          </div>
+              </div>
+            </li>
+
+            <li class="mt-2">
+              <a href="{% url 'user_profile' %}"
+                ><span class="flaticon-user"></span
+              ></a>
+            </li>
+            <li class="mt-2">
+              <a href="{% url 'cart' %}"
+                ><span class="flaticon-shopping-cart"></span> 
+                {% comment %}<span class="rounded-badge">{{cart_count}}</span> {% endcomment%}
+              </a>
+            </li>
+            <li class="mt-2">
+              <a href="{% url 'wishlist' %}"
+                ><span class="flaticon-heart"></span
+              ></a>
+            </li>
+          </ul>
         </div>
         <!-- Mobile Menu -->
         <div class="col-12">
@@ -187,35 +133,77 @@
     </div>
   </div>
   <!-- Header End -->
-</header>
+  <style>
+    .search-box {
+      width: fit-content;
+      height: fit-content;
+      position: relative;
+    }
+    .input-search {
+      height: 40px;
+      width: 40px;
+      border-style: none;
+      padding: 10px;
+      font-size: 18px;
+      letter-spacing: 2px;
+      outline: none;
+      border-radius: 20px;
+      transition: all 0.5s ease-in-out;
+      background-color: #22a6b3;
+      padding-right: 40px;
+      color: black;
+    }
+    .input-search::placeholder {
+      color: rgba(0, 0, 0, 0.5);
+      font-size: 18px;
+      letter-spacing: 2px;
+      font-weight: 100;
+    }
+    .btn-search {
+      width: 40px;
+      height: 40px;
+      border-style: none;
+      font-size: 20px;
+      font-weight: bold;
+      outline: none;
+      cursor: pointer;
+      border-radius: 50%;
+      position: absolute;
+      right: 0px;
+      color: black;
+      background-color: #ffffff;
+      pointer-events: painted;
+    }
+    .btn-search:focus ~ .input-search {
+      width: 300px;
+      border-radius: 0px;
+      background-color: black;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+      transition: all 500ms cubic-bezier(0, 0.11, 0.35, 2);
+    }
+    .input-search:focus {
+      width: 300px;
+      border-radius: 0px;
+      background-color: #ffffff;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+      transition: all 500ms cubic-bezier(0, 0.11, 0.35, 2);
+    }
+  </style>
+  <style>
+    /* Reduce the button height */
+    .btn-secondary {
+      height: 37px;
+      background-color: #ff0000; /* Set the initial button background color */
+    }
 
-<style>
- 
-  
-  
-  /* Reduce the button height */
-  .btn-secondary {
-    height: 37px;
-    background-color: #ff0000; /* Set the initial button background color */
-  }
+    /* Change button background color and border color on hover */
+    .btn-secondary:hover {
+      background-color: #ff0062; /* Set the button background color on hover */
+    }
 
-  /* Change button background color and border color on hover */
-  .btn-secondary:hover {
-    background-color: #ff0062; /* Set the button background color on hover */
-  }
-
-  /* Adjust the position of the "Search" label */
-  .form-outline {
-    position: relative;
-  }
-</style>
-
-{% comment %} <script>
-  $(function () {
-    $("#form1").autocomplete({
-      source: "{% url 'autocomplete' %}",
-    });
-  });
-</script> {% endcomment %}
-
-
+    /* Adjust the position of the "Search" label */
+    .form-outline {
+      position: relative;
+    }
+  </style>
+</div>

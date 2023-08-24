@@ -16,8 +16,6 @@ class Coupon(models.Model):
     discount=models.DecimalField(max_digits=5,decimal_places=2)
     valid_from=models.DateField()
     valid_to=models.DateField()
-    # applicable_type=models.CharField(max_length=50)
-    # category=models.CharField(max_length=100)
     active=models.BooleanField(default=True)
      
     def __str__(self):

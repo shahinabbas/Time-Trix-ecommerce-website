@@ -41,7 +41,8 @@ urlpatterns = [
     path('delete_address/<int:id>',views.delete_address,name='delete_address'),
 
    
-    
+    path('coupons/',views.coupons,name="coupons"),
+
 
     path('about/',views.aboutpage,name='about'),
     path('blog/',views.blogpage,name='blog'),

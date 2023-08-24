@@ -1,6 +1,6 @@
 
 import json
-from app.models import CustomUser, Product,User_Profile,Category
+from app.models import CustomUser, Product,User_Profile,Category,OrderAddress
 from .models import Cart, CartItem,Strap,Order,OrderItem
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
@@ -76,15 +76,20 @@ def cart_plus(request,strap_id):
     strap=get_object_or_404(Strap,id=strap_id)
     if request.user.is_authenticated:
         cart_item = CartItem.objects.get(strap = strap,user = request.user)
-        if cart_item.quantity >= 1:
+        if cart_item.quantity < strap.quantity:
             cart_item.quantity += 1
-            cart_item.save()
+        else:
+            messages.error(request,'Product out of stock')
+            cart_item.quantity = strap.quantity
+        cart_item.save()
     else:
         cart = Cart.objects.get(cart_id = _cart_id(request))
         cart_item = CartItem.objects.get(strap = strap,cart= cart)
-        if cart_item.quantity >= 1:
+        if cart_item.quantity < strap.quantity:
             cart_item.quantity += 1
-            cart_item.save()
+        else:
+            cart_item.quantity = strap.quantity
+        cart_item.save()
     return redirect('cart')
 
 def cart_minus(request,strap_id):
@@ -275,10 +280,26 @@ def create_order(request):
 def confirmation(request):
     if request.method == 'POST':
         payment_method = request.POST.get('pay-method')
+        if not payment_method:
+            messages.error(request,'Select a payment method...')
+            return render(request, 'payment.html')
+
     address_id= request.session.get('address_id', None)
     cart_item=CartItem.objects.filter(user=request.user)
     address=get_object_or_404(User_Profile,id=address_id)
 
+    order_address=OrderAddress.objects.create(
+        user=request.user,
+        name=address.name,
+        address=address.address,
+        phone_number=address.phone_number,
+        house_no=address.house_no,
+        street=address.street,
+        city=address.city,
+        state=address.state,
+        country=address.country,
+        pin_code=address.pin_code,
+    )
     price1 = 0
     payment_amount1 = 0
     shipping_charge = 0
@@ -286,15 +307,17 @@ def confirmation(request):
         price1=cart_item.sub_total()
         payment_amount1=cart_item.total()
         shipping_charge=cart_item.shipping_charge()
+
     order=Order.objects.create(
         user=request.user,
-        address=address,
+        address=order_address,
         payment_method=payment_method,
         price=price1,
         offer_price=payment_amount1,
         payment_amount=payment_amount1,
         shipping_charge=shipping_charge,
         )
+    
     if payment_method == "razorpay":
         order.payment_status = 'Completed'
         order.save()
@@ -312,8 +335,10 @@ def confirmation(request):
         strap.save()
    
     cart_item.delete()
+
+
     context={
-        "address":address,
+        "address":order_address,
         'payment_method':payment_method,
         'order_id':order.order_id,
         }

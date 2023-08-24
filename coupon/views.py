@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
 from django.contrib import messages
+from cart.models import CartItem
+from cart.views import _cart_id
 from cart.models import Cart
 from .models import Coupon, UserCoupon
 # Create your views here.
@@ -27,9 +29,11 @@ class CouponView(View):
                 messages.warning(
                     request, "Try another coupon it's already used")
                 return redirect(reverse('cart'))
-            cart, created = Cart.objects.get_or_create(user=user)
-
-            if cart.total() < coupon.minimum_amount:
+            cart = Cart.objects.get(cart_id=_cart_id(request))
+            cart_item=CartItem.objects.all()
+            for cart_item in cart_item:
+                cart_items=cart_item.total()
+            if cart_items < coupon.minimum_amount:
                 messages.warning(request, 'Minimum amount not met')
                 return redirect(reverse('cart'))
             else:

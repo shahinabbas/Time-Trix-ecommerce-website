@@ -1,6 +1,6 @@
 
 from django.db import models
-from app.models import CustomUser, Product, User_Profile
+from app.models import CustomUser, Product, User_Profile,OrderAddress
 import uuid
 from decimal import Decimal
 from coupon.models import Coupon
@@ -129,7 +129,7 @@ class Order(models.Model):
     payment_status = models.CharField(
         max_length=50, choices=PAYMENT_STATUS, default="Pending")
     payment_method = models.CharField(max_length=50)
-    address = models.ForeignKey(User_Profile, on_delete=models.DO_NOTHING)
+    address = models.ForeignKey(OrderAddress, on_delete=models.DO_NOTHING)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     offer_price = models.DecimalField(max_digits=10, decimal_places=2)
     coupon_discount = models.DecimalField(

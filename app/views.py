@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
+from coupon.models import Coupon
 
 # from cart.views import _cart_id
 
@@ -37,13 +38,15 @@ def user_category(request,id):
     return render(request,'user_category.html',context)
 
 
-
+def coupons(request):
+    coupon = Coupon.objects.all()
+    return render(request,'coupons.html',{'coupon':coupon})
 
 def search(request):
     if request.method=='GET':
         query=request.GET.get('query')
         if query:
-            product=Product.objects.filter(Q(price__icontains=query)|Q(offer_price__icontains=query)|Q(product_name__icontains=query)|Q(shape__icontains=query))
+            product=Product.objects.filter(Q(price__icontains=query)|Q(offer_price__icontains=query)|Q(product_name__icontains=query)|Q(shape__icontains=query)|Q(category__categories__icontains=query))
             return render(request,'search.html',{'product':product})
         else:
             print("No information to show")
@@ -225,7 +228,6 @@ def add_address(request):
         messages.success(request, "successful")
 
         referring_page = request.GET.get('referring_page', 'checkout')
-        print(referring_page,'1111111111111111111111111111111111111111')
         if referring_page == 'checkout':
             return HttpResponseRedirect('/cart/checkout')  # Redirect to checkout page
         else:

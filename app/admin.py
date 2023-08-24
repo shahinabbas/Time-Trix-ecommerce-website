@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app.models import CustomUser,Category,Product,User_Profile,Wishlist
+from app.models import CustomUser,Category,Product,User_Profile,Wishlist,OrderAddress
 
 class CustomUserAdmin(admin.ModelAdmin):
     # Customize the way the model is displayed in the admin site
@@ -14,6 +14,8 @@ admin.site.register(Category)
 admin.site.register(Product,ProductAdmin)
 admin.site.register(User_Profile, UserProfileAdmin)
 admin.site.register(Wishlist)
+admin.site.register(OrderAddress)
+
 
 
 

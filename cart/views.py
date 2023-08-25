@@ -166,11 +166,11 @@ def checkout(request, total=0, quantity=0, cart_items=None):
             shp=cart_item.shipping_charge()
             qwe=cart_item.qwe()
             tax=cart_item.tax()
-            coup=cart_item.coupon_discount()
             amount=cart_item.total()
             off=cart_item.offer_sub_total()
             price=cart_item.sub_total()
             tot=cart_item.tot()
+        coup=cart_item.coupon_discount()
         user_profile=User_Profile.objects.filter(user=request.user)
 
     except ObjectDoesNotExist:

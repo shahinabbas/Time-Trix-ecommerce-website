@@ -14,18 +14,22 @@ class Coupon(models.Model):
     minimum_amount=models.IntegerField()
     discount_type=models.CharField(max_length=20,choices=DISCOUNT_TYPE_CHOICES)
     discount=models.DecimalField(max_digits=5,decimal_places=2)
-    valid_from=models.DateField()
-    valid_to=models.DateField()
+    valid_from=models.DateTimeField()
+    valid_to=models.DateTimeField()
     active=models.BooleanField(default=True)
      
     def __str__(self):
         return self.coupon_code
     
+
     def is_valid(self):
-        # now=timezone.now()
-        # return self.active and self.valid_from <= now and self.valid_to >= now
-        now = date.today()  # Convert datetime.datetime to datetime.date
+        now = timezone.now()
         return self.active and self.valid_from <= now and self.valid_to >= now
+    # def is_valid(self):
+    #     # now=timezone.now()
+    #     # return self.active and self.valid_from <= now and self.valid_to >= now
+    #     now = date.today()  # Convert datetime.datetime to datetime.date
+    #     return self.active and self.valid_from <= now and self.valid_to >= now
 
 class UserCoupon(models.Model):
     user=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True) 

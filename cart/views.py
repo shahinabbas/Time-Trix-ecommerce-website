@@ -278,6 +278,7 @@ def create_order(request):
 
 
 def confirmation(request):
+    payment_method='cod'
     if request.method == 'POST':
         payment_method = request.POST.get('pay-method')
         if not payment_method:

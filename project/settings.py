@@ -83,10 +83,10 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'project1',
-        'USER': 'sha',
-        'PASSWORD': '123',
-        'HOST': 'localhost',
+        'NAME': 'timetrix',
+        'USER': 'postgres',
+        'PASSWORD': 'project1',
+        'HOST': 'project1.cmdnbixvjkhj.ap-southeast-2.rds.amazonaws.com',
         'PORT': '5432',
 
     }

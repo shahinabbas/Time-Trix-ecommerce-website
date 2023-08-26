@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-=ru#m4m+cve0eow9z0udcv@bc4-=h!1=tawk25v&trihh!674_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -84,7 +84,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'project1',
-        'USER': 'postgres',
+        'USER': 'sha',
         'PASSWORD': '123',
         'HOST': 'localhost',
         'PORT': '5432',
@@ -127,9 +127,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = ['app/static',]
+# STATIC_ROOT = BASE_DIR/'static'
+
 STATIC_URL = '/static/'
-STATICFILES_DIRS = ['app/static',]
-STATIC_ROOT = BASE_DIR/'static'
+import os
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')

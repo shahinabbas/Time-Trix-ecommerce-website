@@ -234,6 +234,7 @@ def invoice(request,id):
     try:
         order=Order.objects.get(order_id=id)
         order_item=OrderItem.objects.filter(order_no=order)
+        print(order_item)
         context={
             'order':order,
             'order_item':order_item,
@@ -337,7 +338,7 @@ def confirmation(request):
    
     cart_item.delete()
 
-
+    
     context={
         "address":order_address,
         'payment_method':payment_method,

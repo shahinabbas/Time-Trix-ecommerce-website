@@ -4,19 +4,61 @@
       
     <main>
         <!--? Hero Area Start-->
-        <div class="slider-area ">
-            <div class="single-slider slider-height2 d-flex align-items-center">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="hero-cap text-center">
-                                <h2>Blog</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+ <!-- Hero Area Start-->
+ <style>
+    .video-area {
+      position: relative;
+      text-align: center;
+      overflow: hidden; /* Add overflow hidden */
+    }
+
+    .video-area img {
+      width: 100%;
+      opacity: 0.8;
+      filter: blur(2px);
+    }
+
+    .video-area h2 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 66px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Add a text shadow for better visibility */
+    }
+
+    /* Add media queries for responsive font size */
+    @media (max-width: 768px) {
+      /* For smaller screens, reduce the font size */
+      .video-area h2 {
+        font-size: 40px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      /* For even smaller screens, further reduce the font size */
+      .video-area h2 {
+        font-size: 30px;
+      }
+    }
+  </style>
+
+  <div class="video-area">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-lg-12">
+          <img
+            src="{% static 'assets/img/logo/1233.png' %}"
+            alt="Image"
+            class="img-fluid"
+          />
+          <h2>Blog</h2>
         </div>
+      </div>
+    </div>
+  </div>
         <!--? Hero Area End-->
         <!--================Blog Area =================-->
         <section class="blog_area section-padding">

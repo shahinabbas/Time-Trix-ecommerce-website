@@ -259,11 +259,16 @@ def myorders(request):
 
 @login_required(login_url='login')
 def create_order(request):
-    if request.method == 'POST':
+    address_id = None
+    if request.method == 'POST': 
         address_id = request.POST.get('address')
         request.session['address_id'] = address_id
+        if not address_id:
+            messages.error(request, 'Please select an address.')
+            return redirect('checkout')  
 
     cart_items = CartItem.objects.filter(user=request.user)
+    amount=0
     for cart_item in cart_items:
         amount=cart_item.total()*100
 

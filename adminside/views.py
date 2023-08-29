@@ -307,9 +307,7 @@ def edit_productpage(request, id):
         price = request.POST.get('price')
         offer_price = request.POST.get('offer_price')
         product_image = request.FILES.get('image')
-        print('22222222222222222222222222222222222222222')
         selected_category = get_object_or_404(Category, categories=selected_category_name)
-        print('22222222222222222222222222222222222222222')
 
         product.product_name = product_name
         product.category = selected_category
@@ -317,19 +315,16 @@ def edit_productpage(request, id):
         product.price = price
         product.offer_price = offer_price
         product.shape = shape
-        print('22222222222222222222222222222222222222222')
 
         if product_image:
             product.product_Image = product_image
         product.save()  
-        print('22222222222222222222222222222222222222222')
 
         for strap_s in strap:
             strap=strap_s.strap
             quantity=request.POST.get('quantity')
             strap_s.quantity = quantity
             strap_s.save()
-            print('llllllllllllllllllllllllllllllllllllllllllllllllllll')
             return redirect('products')
     return render(request, "admin/edit_product.html", context)
 
@@ -472,7 +467,8 @@ def undo_productpage(request, id):
 
 def admin_signin(request):
     if request.user.is_authenticated:
-        return redirect('admin_index')
+        if request.user.is_superuser:
+            return redirect('admin_index')
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')

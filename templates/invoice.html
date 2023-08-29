@@ -51,18 +51,16 @@
                         <!-- end col -->
                         <div class="col-sm-6">
                             <div class="text-muted text-sm-end">
-                                <div>
-                                    <h5 class="font-size-15 mb-1">Invoice No:</h5>
-                                    <p>#{{order.order_id}}</p>
-                                </div>
-                                <div class="mt-4">
-                                    <h5 class="font-size-15 mb-1">Invoice Date:</h5>
-                                    <p>12 Oct, 2020</p>
-                                </div>
-                                <div class="mt-4">
-                                    <h5 class="font-size-15 mb-1">Order No:</h5>
-                                    <p>#{{order.order_id}}</p>
-                                </div>
+                              <div class="mt-4">
+                                <h5 class="font-size-15 mb-1">Order No:</h5>
+                                <p>#{{order.order_id}}</p>
+                            </div>
+                            <div class="mt-4">
+                              <h5 class="font-size-15 mb-1">Invoice Date:</h5>
+                              <p>{{ now|date:"d M, Y" }}</p>
+                          </div>
+                          
+                               
                             </div>
                         </div>
                         <!-- end col -->

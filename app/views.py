@@ -406,7 +406,7 @@ def product_details(request, product_id):
 
 def shoppage(request):
     all_category=Category.objects.all()    
-    product = Product.objects.all().filter(is_deleted=False)
+    product = Product.objects.filter(is_deleted=False, strap__is_active=True)
     items_per_page = 10
     paginator = Paginator(product, items_per_page)
     page_number = request.GET.get('page')

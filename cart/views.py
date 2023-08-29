@@ -14,6 +14,7 @@ import razorpay
 from django.conf import settings
 from django.http import Http404
 import uuid
+from datetime import datetime
 
 # Create your views here.
 
@@ -238,6 +239,8 @@ def invoice(request,id):
         context={
             'order':order,
             'order_item':order_item,
+            'now': datetime.now()
+
         }
         return render(request,'invoice.html',context)
     except Order.DoesNotExist:
@@ -284,7 +287,7 @@ def create_order(request):
 
 
 def confirmation(request):
-    payment_method='cod'
+    payment_method='razorpay'
     if request.method == 'POST':
         payment_method = request.POST.get('pay-method')
         if not payment_method:

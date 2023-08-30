@@ -1,21 +1,14 @@
-{% extends 'layouts/main.html' %} {% load static %} {% block additional_styles%}
-.product-image { max-width: 100%; height: auto; } {% endblock %} {% block body%}
+{% extends 'layouts/main.html' %} {% load static %} {% block additional_styles%} .product-image { max-width: 100%; height: auto; } {% endblock %} {% block body%}
 
 <!-- Product section-->
-{% for message in messages %}
-<div
-  class="alert alert-{{message.tags}} alert-dismissible fade show"
-  role="alert"
->
-  {{message}}
-  <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="alert"
-    aria-label="Close"
-  ></button>
+<div id="message-area" class="alert alert-dismissible fade show" role="alert" style="display: none;">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <span id="message-text"></span>
 </div>
-{% endfor %}
+
+
 <section class="py-5">
   <div class="container px-4 px-lg-5 my-5" style="max-width: 1000px">
     <div class="row gx-4 gx-lg-5 align-items-center rounded-3">
@@ -81,8 +74,7 @@
                     <button type="submit" class="btn hero-btn">
                       Add to Cart<i class="flaticon-shopping-cart"></i>
                     </button>
-                    {% endif %} {% endif %} 
-                    {% comment %} {% if wishlist %}
+                    {% endif %} {% endif %} {% comment %} {% if wishlist %}
                     <a
                       href="{% url 'add_to_wishlist' product.id %}"
                       class="btn hero-btn"
@@ -94,20 +86,20 @@
                       class="btn hero-btn"
                       >Add to wishlist<i class="flaticon-heart"></i
                     ></a>
-                    {% endif %} {% endcomment %} 
-                    {% if wishlist %}
+                    {% endif %} {% endcomment %} {% if wishlist %}
                     <a
                       href="javascript:void(0);"
                       class="btn1 hero-btn wishlist-button"
                       data-product-id="{{ product.id }}"
-                      >Remove from wishlist
-                       <i class="flaticon-heart"></i></a>
+                      >Remove from wishlist <i class="flaticon-heart"></i
+                    ></a>
                     {% else %}
                     <a
                       href="javascript:void(0);"
                       class="btn1 hero-btn wishlist-button"
                       data-product-id="{{ product.id }}"
-                      >Add to wishlist <i class="flaticon-heart"></i></a>
+                      >Add to wishlist <i class="flaticon-heart"></i
+                    ></a>
                     {% endif %}
                   </div>
                 </div>
@@ -168,7 +160,7 @@
 {% comment %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endcomment %}
-
+{% comment %} 
 <script>
   $(document).ready(function () {
     $(".wishlist-button").click(function () {
@@ -182,14 +174,15 @@
         url: url,
         headers: {
           "X-CSRFToken": csrf_token, // Add the CSRF token to the headers
-        cache: false,
-
+          cache: false,
         },
         dataType: "json",
         success: function (response) {
           console.log("Response:", response);
 
           if (response.success) {
+            var message = response.message;
+            $("#message-area").text(message);
             // Update button text and action based on response
             var buttonText = response.message.includes("Added")
               ? "Remove from wishlist"
@@ -205,5 +198,50 @@
       });
     });
   });
+</script> {% endcomment %}
+<script>
+  $(document).ready(function () {
+    $(".wishlist-button").click(function () {
+      console.log("Button clicked");
+      var product_id = $(this).data("product-id");
+      var url = "{% url 'add_to_wishlist' 0 %}".replace("0", product_id);
+      var csrf_token = $("input[name='csrfmiddlewaretoken']").val(); // Fetch the CSRF token
+
+      $.ajax({
+        type: "POST",
+        url: url,
+        headers: {
+          "X-CSRFToken": csrf_token, // Add the CSRF token to the headers
+          cache: false,
+        },
+        dataType: "json",
+        success: function (response) {
+          console.log("Response:", response);
+
+          if (response.success) {
+            var message = response.message;
+            $("#message-text").text(message);
+            $("#message-area").removeClass("alert-success alert-danger").addClass(response.success ? "alert-success" : "alert-danger");
+            $("#message-area").fadeIn();
+
+            // Update button text and action based on response
+            var buttonText = response.message.includes("Added")
+              ? "Remove from wishlist"
+              : "Add to wishlist";
+            $(".wishlist-button[data-product-id='" + product_id + "']").text(buttonText);
+          }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+          console.error("Error: " + errorThrown);
+        },
+      });
+    });
+
+    // Dismiss the alert when the close button is clicked
+    $(".alert .close").click(function () {
+      $(this).parent().fadeOut();
+    });
+  });
 </script>
+
 {% endblock body %}

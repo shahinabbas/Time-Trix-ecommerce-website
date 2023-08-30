@@ -350,7 +350,9 @@ def loginpage(request):
                 auth.login(request, user)
                 return redirect("/")
             else:
-                messages.error(request, "User name or password is incorect")
+                messages.error(request, "User is nort active")
+        else:
+            messages.error(request, "User name or password is incorect")
     return render(request, 'login.html')
 
 

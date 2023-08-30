@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-=ru#m4m+cve0eow9z0udcv@bc4-=h!1=tawk25v&trihh!674_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -83,11 +83,11 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'timetrix',
-        'USER': 'shahin',
-        'PASSWORD': 'shahin771',
-        'HOST' : 'database-1.cmdnbixvjkhj.ap-southeast-2.rds.amazonaws.com',
-        'PORT' : '5432',
+        'NAME': 'project1',
+        'USER': 'postgres',
+        'PASSWORD': '123',
+        'HOST': 'localhost',
+        'PORT': '5432',
 
     }
 }
@@ -102,7 +102,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },    {
+    },
+    {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
@@ -126,11 +127,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-#STATIC_URL = '/static/'
-#STATICFILES_DIRS = ['app/static',]
-#STATIC_ROOT = BASE_DIR/'static'
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATICFILES_DIRS = ['app/static',]
+STATIC_ROOT = BASE_DIR/'static'
 
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -165,4 +164,3 @@ MESSAGE_TAGS={
 
 RAZOR_PAY_KEY_ID = 'rzp_test_7GTB3BFF432GgI'
 KEY_SECRET = 'vjVpPD8hsPwTOaLBzc4btkil'
-#

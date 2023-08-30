@@ -44,7 +44,7 @@ class CustomUser(AbstractUser):
     otp = models.CharField(_('OTP'), max_length=6, blank=True)
     is_otp_verified = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()

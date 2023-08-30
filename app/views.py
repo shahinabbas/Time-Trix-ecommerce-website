@@ -10,7 +10,7 @@ import os
 from django.core.paginator import Paginator
 from django.contrib.auth.models import auth
 from django.views.decorators.cache import never_cache
-from django.http import HttpResponseNotFound, JsonResponse,HttpResponseRedirect
+from django.http import JsonResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
@@ -201,7 +201,6 @@ def forgot(request):
             return redirect('forgot')
     return render(request, 'forgot.html')  # Render the template for password reset
 
-
 @login_required(login_url='login')
 @never_cache
 def add_address(request):
@@ -229,18 +228,13 @@ def add_address(request):
         profile_address.pin_code = pin_code
         profile_address.save()
         messages.success(request, "successful")
-
         referring_page = request.GET.get('referring_page', 'checkout')
         if referring_page == 'checkout':
             return HttpResponseRedirect('/cart/checkout')  # Redirect to checkout page
         else:
             return HttpResponseRedirect('/address/')  # Redirect to a default page
-
         # return redirect('address')
     return render(request, 'add_address.html')
-
-
-
 
 # def add_address(request):
 #     user = request.user
@@ -267,8 +261,6 @@ def add_address(request):
 #         messages.success(request, "successful")
 #         return redirect('address')
 #     return render(request, 'add_address.html')
-
-
 
 @login_required(login_url='login')
 @never_cache

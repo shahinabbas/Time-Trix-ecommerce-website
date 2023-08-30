@@ -227,8 +227,9 @@ def add_address(request):
         profile_address.country = country
         profile_address.pin_code = pin_code
         profile_address.save()
-        messages.success(request, "successful")
+        messages.success(request, "Address added successfully")
         referring_page = request.GET.get('referring_page', 'checkout')
+        
         if referring_page == 'checkout':
             return HttpResponseRedirect('/cart/checkout')  # Redirect to checkout page
         else:
@@ -451,14 +452,23 @@ def signuppage(request):
         phone_number = request.POST.get('phone_number')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
+
+       
+
         if not name:
             messages.error(request, "Name field cannot be empty")
             return redirect('/signup')
         if CustomUser.objects.filter(name=name):
             messages.error(request, "Username already Registered!!")
             return redirect('/signup')
-        if len(phone_number) < 13 or len(phone_number) > 14:
+        if CustomUser.objects.filter(email=email):
+            messages.error(request, "email already Registered!!")
+            return redirect('/signup')
+        if len(phone_number) < 13 or len(phone_number) >= 14:
             messages.error(request, 'Phone number is wrong')
+            return redirect('/signup')
+        if len(password) < 6:
+            messages.error(request, 'Password should be at least 6 characters long')
             return redirect('/signup')
         if password == confirm_password:
             myuser = CustomUser.objects.create_user(

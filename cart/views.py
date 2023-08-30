@@ -98,7 +98,7 @@ def cart_minus(request,strap_id):
     try :
         if request.user.is_authenticated:
             cart_item = CartItem.objects.get(strap = strap,user = request.user)
-            if cart_item.quantity >= 1:
+            if cart_item.quantity > 1:
                 cart_item.quantity -= 1
                 cart_item.save()
             else:

@@ -4,7 +4,7 @@
     <ul class="list-group">
       <a class="list-group-item" href="{% url 'user_profile' %}"> Account </a>
       <a class="list-group-item" href="{% url 'myorders' %}"> My Orders </a>
-      <a class="list-group-item" href="{% url 'add_address' %}"> Add Address </a>
+      <a class="list-group-item" href="{% url 'add_address' %}?referring_page=add_address"> Add Address </a>
       <a class="list-group-item" href="{% url 'address' %}"> Manage Address </a>
       <a class="list-group-item" href="{% url 'reset' %}"> Reset Password </a>  
     </ul>

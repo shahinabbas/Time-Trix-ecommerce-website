@@ -101,21 +101,24 @@ def remove_wishlist(request, product_id):
 
 
 
-@login_required(login_url='login')
 @csrf_exempt 
 def add_to_wishlist(request, product_id):
-    if request.method == "POST" and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-        user = request.user
-        pro = get_object_or_404(Product, id=product_id)
-        wishlist = Wishlist.objects.filter(user=user)
-        
-        if not wishlist.filter(product=pro).exists():
-            Wishlist.objects.create(user=user, product=pro)
-            response_data = {'success': True, 'message': 'Added product to wishlist'}
-        else:
-            wishlist_item = Wishlist.objects.get(user=user, product=pro)
-            wishlist_item.delete()
-            response_data = {'success': True, 'message': 'Removed product from wishlist'}
+    if request.user.is_authenticated:
+        if request.method == "POST" and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            user = request.user
+            pro = get_object_or_404(Product, id=product_id)
+            wishlist = Wishlist.objects.filter(user=user)
+            
+            if not wishlist.filter(product=pro).exists():
+                Wishlist.objects.create(user=user, product=pro)
+                response_data = {'success': True, 'message': 'Added product to wishlist'}
+            else:
+                wishlist_item = Wishlist.objects.get(user=user, product=pro)
+                wishlist_item.delete()
+                response_data = {'success': True, 'message': 'Removed product from wishlist'}
+            return JsonResponse(response_data)
+    else:
+        response_data = {'Error': True, 'message': 'You need to login'}
         return JsonResponse(response_data)
     return redirect('product_details', product_id=product_id)
 

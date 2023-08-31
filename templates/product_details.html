@@ -51,8 +51,10 @@
               >
                 <option value="" selected>Select</option>
                 {% for i in product.strap_set.all %}
-                <option value="{{i.id}}">{{i.strap | capfirst }}</option>
+                {% if i.is_active %}
 
+                <option value="{{i.id}}">{{i.strap | capfirst }}</option>
+{% endif %}
                 {% endfor %}
               </select>
             </div>

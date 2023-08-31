@@ -365,7 +365,8 @@ def product_details(request, product_id):
         product = Product.objects.get(id=product_id)
         wishlist=Wishlist.objects.filter(user=request.user,product=product).exists()
         all_categories = Category.objects.all()
-        strap = Strap.objects.all()
+        strap = Strap.objects.filter(product_id=product,is_active=True)
+        print(strap,'111111111111111')
         cart=CartItem.objects.filter(user=request.user)
         context = {
             'product': product,
@@ -377,7 +378,7 @@ def product_details(request, product_id):
         return render(request, "product_details.html", context)
     else:
         product = Product.objects.get(id=product_id)
-        strap = Strap.objects.all()
+        strap = Strap.objects.filter(product_id=product,is_active=True)
  
         context = {
             'product': product,
@@ -385,7 +386,7 @@ def product_details(request, product_id):
         }
 
         return render(request, "product_details.html", context)
-    return redirect('shop')
+    # return redirect('shop')
     # try:
     #     product = Product.objects.get(pk=product_id)
     #     in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request),product=product).exists()

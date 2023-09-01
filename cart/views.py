@@ -149,9 +149,6 @@ def cartpage(request, total=0, quantity=0, cart_items=None):
 
 @login_required(login_url='login')
 def checkout(request, total=0, quantity=0, cart_items=None):
-    tax = 0
-    grand_total = 0
-    org_tot = 0
     tot = 0
     try:
         if request.user.is_authenticated:
@@ -183,9 +180,6 @@ def checkout(request, total=0, quantity=0, cart_items=None):
     context = {
         'quantity': quantity,
         'cart_items': cart_items,
-        'tax': tax,
-        'grand_total': grand_total,
-        'org_tot': org_tot,
         'user_profile':user_profile,
         # "payment":payment,
         'shp':shp,

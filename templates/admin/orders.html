@@ -10,7 +10,6 @@
           <th>Order Date</th>
           <th>Product name</th>
           <th>Strap</th>
-          <th>Prices</th>
           <th>Quantity</th>
           <th>Payment</th>
           <th>Status</th>
@@ -34,9 +33,9 @@
             <p class="fw-bold mb-1">{{order_item.strap.strap}}</p>
           </td>
 
-          <td>
+          {% comment %} <td>
             <p class="fw-bold mb-1">{{order_item.amount}}</p>
-          </td>
+          </td> {% endcomment %}
           <td>
             <p class="fw-bold mb-1">{{order_item.quantity}}</p>
           </td>

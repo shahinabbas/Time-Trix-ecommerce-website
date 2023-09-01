@@ -46,20 +46,31 @@
           <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
             {% if order_item.order_status == 'Delivered' %}
             <p class="text-muted mb-0 small">{{ order_item.order_status }}</p>&nbsp&nbsp
-            <form method="post" action="{% url 'cancel_order' order_item.id %}">
+
+
+            {% comment %} <form method="post" action="{% url 'cancel_order' order_item.id %}">
               {% csrf_token %}
               <input type="hidden" name="order_id" value="{{ order_item.id }}">
               <button type="submit" class="btn-info">Return</button>
-            </form>
+            </form> {% endcomment %}
+
+
             {% elif order_item.order_status == 'Cancelled' %}
             <p class="text-muted mb-0 small">{{ order_item.order_status }}</p>&nbsp&nbsp
+            {% elif order_item.order_status == 'Shipped' %}
+            <p class="text-muted mb-0 small">{{ order_item.order_status }}</p>&nbsp&nbsp
+            {% elif order_item.order_status == 'Out for Delivery' %}
+            <p class="text-muted mb-0 small">{{ order_item.order_status }}</p>&nbsp&nbsp
+
             {% else %}
+
               <p class="text-muted mb-0 small">{{ order_item.order_status }}</p>&nbsp&nbsp
               <form method="post" action="{% url 'cancel_order' order_item.id %}">
                 {% csrf_token %}
                 <input type="hidden" name="order_id" value="{{ order_item.id }}">
                 <button type="submit" class="btn-danger">Cancel</button>
               </form>
+              
             {% endif %}
           </div>
           <div

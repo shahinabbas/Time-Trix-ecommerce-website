@@ -233,7 +233,7 @@ def coupon_list(request):
 def orders(request):
     use=CustomUser.objects.all()
     order=Order.objects.all()
-    order_item=OrderItem.objects.all()
+    order_item=OrderItem.objects.all().order_by('-order_no__order_date')
     order_status_choices=OrderItem.ORDER_STATUS
     context={
         'order': order,

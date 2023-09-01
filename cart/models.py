@@ -1,6 +1,6 @@
 
 from django.db import models
-from app.models import CustomUser, Product, User_Profile,OrderAddress
+from app.models import CustomUser, Product, User_Profile, OrderAddress
 import uuid
 from decimal import Decimal
 from coupon.models import Coupon
@@ -41,13 +41,11 @@ class CartItem(models.Model):
     def sub_total(self):
         return self.product.price * self.quantity
 
-
     def total_price(self):
         return sum(item.sub_total() for item in self.cart_items.all())
 
     def offer_total_price(self):
         return sum(item.offer_sub_total() for item in self.cart_items.all())
-
 
     def shipping_charge(self):
         ship_tot = self.sub_total()
@@ -56,12 +54,12 @@ class CartItem(models.Model):
         else:
             return 140
 
-
     def qwe(self):
         return self.sub_total() - self.offer_sub_total()
 
     def tax(self):
-        taxes = sum(item.offer_sub_total() for item in self.cart.cart_items.all())
+        taxes = sum(item.offer_sub_total()
+                    for item in self.cart.cart_items.all())
         return (2 * taxes)//100
 
     def coupon_discount(self):
@@ -74,16 +72,19 @@ class CartItem(models.Model):
             return 0
 
     def tot(self):
-        total_price = sum(item.offer_sub_total() for item in self.cart.cart_items.all())
+        total_price = sum(item.offer_sub_total()
+                          for item in self.cart.cart_items.all())
         return total_price
-    
+
     def total(self):
-        total_price = sum(item.offer_sub_total() for item in self.cart.cart_items.all())
+        total_price = sum(item.offer_sub_total()
+                          for item in self.cart.cart_items.all())
         shipping_charge = self.shipping_charge()
         coupon_discount = self.coupon_discount() or Decimal('0.0')
         taxss = self.tax()
-        amounts=(total_price+shipping_charge+taxss)-coupon_discount
+        amounts = (total_price+shipping_charge+taxss)-coupon_discount
         return amounts
+
 
 class Strap(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -160,5 +161,3 @@ class OrderItem(models.Model):
     strap = models.ForeignKey(Strap, on_delete=models.CASCADE)
     quantity = models.IntegerField(null=False)
     amount = models.IntegerField(null=False)
-
-   

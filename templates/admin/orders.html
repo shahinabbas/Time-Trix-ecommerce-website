@@ -45,13 +45,13 @@
             {% if order_item.order_status == 'Confirmed' %}
             <td><span class="badge badge-danger" style="background-color: green; color: black">{{order_item.order_status}}</span></td>
             {% elif order_item.order_status == 'Pending' %}
-            <td><span class="badge badge-danger" style="background-color: #d1635d; color: white">{{order_item.order_status}}</span></td>
+            <td><span class="badge badge-danger" style="background-color: grey; color: black">{{order_item.order_status}}</span></td>
             {% elif order_item.order_status == 'Shipped' %}
             <td><span class="badge badge-danger" style="background-color: yellow; color: black">{{order_item.order_status}}</span></td>
             {% elif order_item.order_status == 'Out for Delivery' %}
             <td><span class="badge badge-primary" style="background-color:#bcba36; color: black">{{order_item.order_status}}</span></td>
             {% else %}
-            <td><span class="badge badge-danger" style="background-color:red; color: black">{{order_item.order_status}}</span></td>
+            <td><span class="badge badge-danger" style="background-color:cyan; color: black">{{order_item.order_status}}</span></td>
             {% endif %} 
           <td>
             <form class="update-status-form" method="post" action="{% url 'update_order_status' id=order_item.id %}">

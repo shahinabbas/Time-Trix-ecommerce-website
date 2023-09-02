@@ -1,11 +1,9 @@
-{% load static %} 
-{% include 'admin/navbar.html' %}
- {% block title %}products{%endblock %} {% block additional_styles %} .mt-5{ margin-top:6rem!important; }nav
-{ background-color: rgb(255 238 7 / 70%); } 
-{% endblock %} {% block body %}
+{% load static %} {% include 'admin/navbar.html' %} {% block title
+%}products{%endblock %} {% block additional_styles %} .mt-5{
+margin-top:6rem!important; }nav { background-color: rgb(255 238 7 / 70%); } {%
+endblock %} {% block body %}
 
 <div class="container mt-5">
- 
   <div style="text-align: center; padding-top: 10px">
     <h2>Products</h2>
   </div>
@@ -47,7 +45,8 @@
 
               <div class="ms-3">
                 <p class="fw-bold mb-1">{{strap.product_id.product_name}}</p>
-                {% comment %} <p class="text-muted mb-0">
+                {% comment %}
+                <p class="text-muted mb-0">
                   <i
                     class="fa fa-star warning"
                     style="color: gold"
@@ -69,7 +68,8 @@
                     aria-hidden="true"
                   ></i
                   ><i class="fa fa-star" aria-hidden="true"></i>
-                </p> {% endcomment %}
+                </p>
+                {% endcomment %}
               </div>
             </div>
           </td>
@@ -102,21 +102,27 @@
             <p class="fw-bold mb-1">{{strap.quantity}}</p>
             <br />
           </td>
-        </td>
-        <td>
-          {% if strap.is_active %}
-          <span class="badge badge-danger rounded-pill d-inline" style="color: white; background-color: green"
-            >Available</span
-          >
-          {% else %}
-          <span class="badge badge-success rounded-pill d-inline" style="color: black; background-color: red"
-            >Un Available</span
-          >
-          {% endif %}
-        </td>
+          <td>
+            {% if strap.is_active %}
+            <span
+              class="badge badge-danger rounded-pill d-inline"
+              style="color: white; background-color: green"
+              >Available</span
+            >
+            {% else %}
+            <span
+              class="badge badge-success rounded-pill d-inline"
+              style="color: black; background-color: red"
+              >Un Available</span
+            >
+            {% endif %}
+          </td>
 
           <td>
-            <form action="{% url 'edit_product' strap.product_id.id %}" class="d-inline">
+            <form
+              action="{% url 'edit_product' strap.product_id.id %}"
+              class="d-inline"
+            >
               {% csrf_token %}
               <button type="submit" class="btn btn-success">
                 <i class="fas fa-edit"></i>Edit

@@ -34,7 +34,7 @@
               </div>
 
               <div class="row">
-                <div class="form-group mb-3 col-xs-12 col-sm-3">
+                <div class="form-group mb-3 col-xs-12 col-sm-6">
                   <label for="category">Category</label>
                   <select class="form-select" id="category" name="selected_category" >
                     <option value="{{product.category}}" selected>{{product.category}}</option>
@@ -45,7 +45,7 @@
                 </div>
                     
                   
-                <div class="form-group mb-3 col-xs-12 col-sm-3">
+                <div class="form-group mb-3 col-xs-12 col-sm-6">
                   <label for="shape">Shape</label>
                   <select
                   class="form-control validate"
@@ -58,7 +58,7 @@
                     <option value="Round">Round</option>
                   </select>
                 </div>
-
+{% comment %} 
 {% for strap in strap %}
 {% if forloop.counter == 1 %}
 
@@ -89,7 +89,7 @@
                 </div>
               </div> 
               {% endif %}
-{%endfor%}
+{%endfor%} {% endcomment %}
               <div class="row">
                 <div class="form-group mb-3 col-xs-12 col-sm-6">
                   <label for="price">Price</label>

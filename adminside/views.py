@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404,reverse
 from django.contrib import messages
 from app.models import CustomUser, Category, Product
 from cart.models import Order, OrderItem, Strap
@@ -17,6 +17,73 @@ from django.core.serializers import serialize
 import json
 from django.db.models.functions import TruncDate,TruncYear
 # Create your views here.
+
+
+def varient(request,id):
+    product=get_object_or_404(Product,pk=id)
+    strap=Strap.objects.filter(product_id=product)
+    context={
+        'strap':strap,
+        'product':product,
+    }
+    return render(request,'admin/varient.html',context)
+
+def add_varient(request,id):
+    product=get_object_or_404(Product,pk=id)
+    if request.method=='POST':
+        strap=request.POST.get('name')
+        qty=request.POST.get('qty')
+        if Strap.objects.filter(product_id=product, strap=strap):
+            messages.error(request,'Strap already exists')
+        else:
+            straps=Strap.objects.create(strap=strap,quantity=qty,product_id=product)
+            # return redirect(reverse('add_varient',args=[product.id]))
+            messages.success(request,'New varient added successfully 👍')
+            return redirect(varient,id=product.id)
+    context={
+        'product':product,
+    }
+    return render(request,'admin/add_varient.html',context)
+
+
+def edit_varient(request,id):
+    strap=get_object_or_404(Strap,pk=id)
+    product=strap.product_id
+    if request.method=='POST':
+        qty=request.POST.get('name')
+        strap=request.POST.get('qty')
+        strap.quantity=qty
+        strap.strap=strap
+        strap.save()
+        messages.success(request,'Variant edited successfully')
+        return redirect('variants' ,product.id)
+    context={
+        'strap':strap,
+    }
+    return render(request,'admin/edit_varient.html')
+
+
+@never_cache
+@login_required(login_url='admin_signin')
+def delete_varient(request, id):
+    strap = get_object_or_404(Strap,id=id)
+    strap.delete()
+    return redirect('category_list')
+
+
+
+@never_cache
+@login_required(login_url='admin_signin')
+def productspage(request):
+    stu = Category.objects.all()
+    product = Product.objects.all()
+    strap=Strap.objects.all()
+    context={
+        'product': product,
+        'strap': strap
+    }
+
+    return render(request, 'admin/products.html', context)
 
 
 
@@ -133,16 +200,6 @@ def stock_report(request):
     }
     return render(request,'admin/stock_report.html',context)
 
-
-# def varient(request):
-#     strap=Strap.objects.all()
-#     return render(request,'admin/varient.html',{'strap':strap})
-
-# def add_varient(request):
-#     return render(request,'admin/add_varient.html')
-
-# def edit_varient(request):
-#     return render(request,'admin/edit_varient.html')
 
 @never_cache
 @login_required(login_url='admin_signin')
@@ -434,33 +491,20 @@ def delete_category(request, id):
     co.delete()
     return redirect('category_list')
 
-@never_cache
-@login_required(login_url='admin_signin')
-def productspage(request):
-    stu = Category.objects.all()
-    products = Product.objects.all()
-    strap=Strap.objects.all()
-    context={
-        'products': products,
-        'strap': strap
-    }
-
-    return render(request, 'admin/products.html', context)
-
 
 @login_required(login_url='admin_signin')
 def delete_product(request, id):
     if request.method == 'POST':
-        strap = get_object_or_404(Strap, pk=id)
-        strap.soft_delete()
+        product = get_object_or_404(Product, pk=id)
+        product.soft_delete()
         return redirect('products')
 
 
 @login_required(login_url='admin_signin')
 def undo_productpage(request, id):
     if request.method == 'POST':
-        strap = get_object_or_404(Strap, pk=id)
-        strap.undo()
+        product = get_object_or_404(Product, pk=id)
+        product.undo()
         return redirect('products')
         
 

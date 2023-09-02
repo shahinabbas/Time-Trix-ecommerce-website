@@ -1,7 +1,5 @@
-{% load static %} {% include 'admin/navbar.html' %} {% block title
-%}products{%endblock %} {% block additional_styles %} .mt-5{
-margin-top:6rem!important; }nav { background-color: rgb(255 238 7 / 70%); } {%
-endblock %} {% block body %}
+{% load static %} {% include 'admin/navbar.html' %} {% block title%}products{%endblock %} {% block additional_styles %} 
+.mt-5{margin-top:6rem!important; }nav { background-color: rgb(255 238 7 / 70%); } {%endblock %} {% block body %}
 
 <div class="container mt-5">
   <div style="text-align: center; padding-top: 10px">
@@ -16,23 +14,21 @@ endblock %} {% block body %}
           <th>Category</th>
           <th>Discription</th>
           <th>Shape</th>
-          <th>Strap</th>
           <th>Prices</th>
           <th>Offer Prices</th>
-          <th>Quantity</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        {% for strap in strap %}
+        {% for product in product %}
         <tr>
-          <td>{{strap.id}}</td>
+          <td>{{product.id}}</td>
           <td>
             <div class="d-flex align-items-center">
-              {% if strap.product_id.product_Image %}
+              {% if product.product_Image %}
               <img
-                src="{{strap.product_id.product_Image.url}}"
+                src="{{product.product_Image.url}}"
                 alt=""
                 style="
                   width: 45px;
@@ -44,7 +40,7 @@ endblock %} {% block body %}
               {% endif %}
 
               <div class="ms-3">
-                <p class="fw-bold mb-1">{{strap.product_id.product_name}}</p>
+                <p class="fw-bold mb-1">{{product.product_name}}</p>
                 {% comment %}
                 <p class="text-muted mb-0">
                   <i
@@ -75,33 +71,33 @@ endblock %} {% block body %}
           </td>
           <td>
             <p class="fw-normal mb-1">
-              {{strap.product_id.category.categories}}
+              {{product.category.categories}}
             </p>
             <p class="text-muted mb-0"></p>
           </td>
           <td>
-            <p>{{strap.product_id.description}}<br /></p>
+            <p>{{product.description}}<br /></p>
           </td>
           <td>
-            <p class="fw-bold mb-1">{{strap.product_id.shape}}</p>
+            <p class="fw-bold mb-1">{{product.shape}}</p>
           </td>
 
-          <td>
+          {% comment %} <td>
             <p class="fw-bold mb-1">{{strap.strap}}</p>
+          </td> {% endcomment %}
+
+          <td>
+            <p class="fw-bold mb-1">{{product.price}}</p>
           </td>
 
           <td>
-            <p class="fw-bold mb-1">{{strap.product_id.price}}</p>
+            <p class="fw-bold mb-1">{{product.offer_price}}</p>
           </td>
 
-          <td>
-            <p class="fw-bold mb-1">{{strap.product_id.offer_price}}</p>
-          </td>
-
-          <td>
+          {% comment %} <td>
             <p class="fw-bold mb-1">{{strap.quantity}}</p>
             <br />
-          </td>
+          </td> {% endcomment %}
           <td>
             {% if strap.is_active %}
             <span
@@ -119,8 +115,15 @@ endblock %} {% block body %}
           </td>
 
           <td>
+
+            <a href="{% url 'varient' product.id %}" class="btn btn-info">
+              varient <i class="fas fa-arrow-right"></i>
+          </a>
+          
+
+            
             <form
-              action="{% url 'edit_product' strap.product_id.id %}"
+              action="{% url 'edit_product' product.id %}"
               class="d-inline"
             >
               {% csrf_token %}
@@ -129,29 +132,33 @@ endblock %} {% block body %}
               </button>
             </form>
 
-            {% if strap.is_active %}
+            {% if product.is_deleted %}
+           
+          
             <form
-              action="{% url 'delete_product' strap.id %}"
-              method="post"
-              class="d-inline"
-            >
-              {% csrf_token %}
-              <button type="submit" class="btn btn-danger">
-                <i class="fa fa-undo" aria-hidden="true"></i>Delete
-              </button>
-            </form>
-            {% else %}
-            <form
-              action="{% url 'undo_product' strap.id %}"
+              action="{% url 'undo_product' product.id %}"
               method="post"
               class="d-inline"
             >
               {% csrf_token %}
               <button type="submit" class="btn btn-info">
-                <i class="fa fa-ban" aria-hidden="true"></i>Undo
+                <i class="fa fa-undo" aria-hidden="true"></i> Undo
               </button>
             </form>
-            {% endif %}
+            {% else %}
+
+            <form
+            action="{% url 'delete_product' product.id %}"
+            method="post"
+            class="d-inline"
+          >
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">
+              <i class="fa fa-ban" aria-hidden="true"></i> Delete
+            </button>
+          </form>
+
+            {% endif %} 
           </td>
           {% endfor %}
         </tr>

@@ -2,20 +2,8 @@
 <div class="container-fluid">
   <div class="container-fluid">
     <div class="card-body">
-      {% for message in messages %}
-  <div
-    class="alert alert-{{message.tags}} alert-dismissible fade show"
-    role="alert"
-  >
-    {{message}}
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="alert"
-      aria-label="Close"
-    ></button>
-  </div>
-  {% endfor %}
+      {% include 'layouts/messages.html' %}
+
       <h2><b>Add Product</b></h2>
 
       <div class="card">

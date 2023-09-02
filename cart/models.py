@@ -92,13 +92,6 @@ class Strap(models.Model):
     quantity = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
-    def soft_delete(self):
-        self.is_active = False
-        self.save()
-
-    def undo(self):
-        self.is_active = True
-        self.save()
 
     def __unicode__(self):
         return self.product

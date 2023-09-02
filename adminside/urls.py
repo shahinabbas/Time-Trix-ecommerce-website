@@ -24,9 +24,9 @@ urlpatterns = [
     path('edit_category/<int:id>',views.edit_category,name='edit_category'),
     path('add_category/',views.add_category,name='add_category'),
     path('category_list/',views.category_listpage,name='category_list'),
-    # path('varient',views.varient,name='varient'),
-    # path('add_varient',views.add_varient,name='add_varient'),
-    # path('edit_varient',views.edit_varient,name='edit_varient'),
+    path('varient/<int:id>',views.varient,name='varient'),
+    path('add_varient/<int:id>',views.add_varient,name='add_varient'),
+    path('edit_varient/<int:id>',views.edit_varient,name='edit_varient'),
 
     path('delete_category/<int:id>/',views.delete_category,name="delete_category"),
 

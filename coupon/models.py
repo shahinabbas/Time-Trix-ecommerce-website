@@ -24,7 +24,7 @@ class Coupon(models.Model):
 
     def is_valid(self):
         now = timezone.now()
-        return self.active and self.valid_from <= now and self.valid_to >= now
+        return self.active and self.valid_to > now
     # def is_valid(self):
     #     # now=timezone.now()
     #     # return self.active and self.valid_from <= now and self.valid_to >= now

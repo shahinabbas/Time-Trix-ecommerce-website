@@ -16,7 +16,7 @@
   const ctx = document.getElementById('myChart2');
 
   new Chart(ctx, {
-    type: 'line',
+    type: 'bar',
     data: {
       labels: {{ labels|safe }}, // Pass the labels from the context
       datasets: [{

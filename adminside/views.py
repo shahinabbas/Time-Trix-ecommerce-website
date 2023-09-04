@@ -111,10 +111,42 @@ def admin_index(request):
     data = [item['order_count'] for item in daily_order_data]
 
     current_year = datetime.now().year
-    query_condition = {'order_status': 'Confirmed'}
-    orders_count = Order.objects.filter(
-        order_date__year=current_year, **query_condition).count()
+    query_condition = {'order_status': 'Delivered'}
 
+@never_cache
+@login_required(login_url='admin_signin')
+def admin_index(request):
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=30)
+    prod = Product.objects.all()
+    orders_within_range = Order.objects.filter(
+        order_date__range=(start_date, end_date))
+    total_payment_amount = orders_within_range.aggregate(
+        total_payment=Sum('payment_amount'))['total_payment']
+    order_item = OrderItem.objects.all()
+    total_order_items = OrderItem.objects.count()
+    order = Order.objects.all().order_by('-order_date')[:5]
+    daily_order_data = Order.objects.annotate(date=TruncDate('order_date')).values(
+        'date').annotate(order_count=Count('id')).order_by('date')
+    labels = [item['date'].strftime('%Y-%m-%d') for item in daily_order_data]
+    data = [item['order_count'] for item in daily_order_data]
+
+    current_year = datetime.now().year
+    orders_count = OrderItem.objects.filter(order_status='Delivered').count()
+    print(orders_count,'555555555555555555555555')
+    context = {
+        'orders_count': orders_count,
+        'order_item': order_item,
+        'total_order_items': total_order_items,
+        'prod': prod,
+        'total_payment_amount': total_payment_amount,
+        'labels': labels,
+        'data': data,
+        'order': order,
+
+    }
+    return render(request, 'admin/admin_index.html', context)
+    print(orders_count,'555555555555555555555555')
     context = {
         'orders_count': orders_count,
         'order_item': order_item,

@@ -67,11 +67,14 @@ def edit_varient(request,strap_id):
 @login_required(login_url='admin_signin')
 def delete_varient(request, id):
     strap = get_object_or_404(Strap,id=id)
+    product_id = strap.product_id.id  
+
     print(strap,'11111111111111')
-    message = f'Strap "{strap.strap}" with ID {strap.id} deleted successfully.'
+    message = f'Strap "{strap.strap}" with ID {strap.id} deleted.'
     messages.success(request, message)    
     strap.delete()
-    return redirect('varient')
+    return redirect('varient', id=product_id)
+  
 
 
 

@@ -27,7 +27,7 @@ urlpatterns = [
     path('varient/<int:id>',views.varient,name='varient'),
     path('add_varient/<int:id>',views.add_varient,name='add_varient'),
     path('edit_varient/<int:strap_id>',views.edit_varient,name='edit_varient'),
-    path('delete_varient/<int:id>',views.delete_varient,name='delete_varient'),
+    path('delete_varient/<int:id>/', views.delete_varient, name='delete_varient'),
 
     path('delete_category/<int:id>/',views.delete_category,name="delete_category"),
 

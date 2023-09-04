@@ -67,8 +67,11 @@ def edit_varient(request,strap_id):
 @login_required(login_url='admin_signin')
 def delete_varient(request, id):
     strap = get_object_or_404(Strap,id=id)
+    print(strap,'11111111111111')
+    message = f'Strap "{strap.strap}" with ID {strap.id} deleted successfully.'
+    messages.success(request, message)    
     strap.delete()
-    return redirect('category_list')
+    return redirect('varient')
 
 
 

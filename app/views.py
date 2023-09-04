@@ -21,7 +21,8 @@ from coupon.models import Coupon
 
 def index(request):
     all_category=Category.objects.all()
-    return render(request, 'index.html', {'all_category':all_category})
+    product = Product.objects.filter(is_deleted=False)[:6]
+    return render(request, 'index.html', {'all_category':all_category,'product':product})
 
 from django.shortcuts import render
 from .models import Product, Category

@@ -46,21 +46,21 @@ def add_varient(request,id):
     return render(request,'admin/add_varient.html',context)
 
 
-def edit_varient(request,id):
-    strap=get_object_or_404(Strap,pk=id)
+def edit_varient(request,strap_id):
+    strap=get_object_or_404(Strap,id=strap_id)
     product=strap.product_id
     if request.method=='POST':
-        qty=request.POST.get('name')
-        strap=request.POST.get('qty')
+        qty=request.POST.get('qty')
+        str=request.POST.get('name')
         strap.quantity=qty
-        strap.strap=strap
+        strap.strap=str
         strap.save()
-        messages.success(request,'Variant edited successfully')
-        return redirect('variants' ,product.id)
+        messages.success(request,'Varient edited successfully')
+        return redirect('varient' ,product.id)
     context={
         'strap':strap,
     }
-    return render(request,'admin/edit_varient.html')
+    return render(request,'admin/edit_varient.html',context)
 
 
 @never_cache

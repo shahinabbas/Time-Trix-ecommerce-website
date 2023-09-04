@@ -39,6 +39,8 @@ def add_cart(request, product_id):
             try:
                 cart_item = CartItem.objects.get(product=product, user=user,strap_id=strap_id)
                 cart_item.quantity += 1
+                if cart_item.quantity > cart_item.strap.quantity:
+                    cart_item.quantity=cart_item.strap.quantity
                 cart_item.save()
             except CartItem.DoesNotExist:
                 cart_item = CartItem.objects.create(
@@ -114,7 +116,6 @@ def cart_minus(request,strap_id):
     return redirect('cart')
 
 
-
 def cartpage(request, total=0, quantity=0, cart_items=None):
     shp = qwe = tax = coup = amount = 0  # Initialize variables with default values
     try:
@@ -123,8 +124,11 @@ def cartpage(request, total=0, quantity=0, cart_items=None):
         else:
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_items = CartItem.objects.filter(cart=cart,is_active=True)
-            
+        
         for cart_item in cart_items:
+            if cart_item.quantity > cart_item.strap.quantity:
+                cart_item.quantity=cart_item.strap.quantity
+                cart_item.save()
             total += (cart_item.product.offer_price * cart_item.quantity)
             quantity += cart_item.quantity
             shp=cart_item.shipping_charge()
@@ -158,6 +162,9 @@ def checkout(request, total=0, quantity=0, cart_items=None):
             cart_items = CartItem.objects.filter(cart=cart,is_active=True)
       
         for cart_item in cart_items:
+            if cart_item.quantity > cart_item.strap.quantity:
+                cart_item.quantity=cart_item.strap.quantity
+                messages.info(request,'Sorry selected quantity not available')
             total += (cart_item.product.offer_price * cart_item.quantity)
             quantity += cart_item.quantity
             amount=cart_item.total() * 10

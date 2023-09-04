@@ -137,7 +137,7 @@ def cartpage(request, total=0, quantity=0, cart_items=None):
             coup=cart_item.coupon_discount()
             amount=cart_item.total()
     except ObjectDoesNotExist:
-        return render(request,'404.html')
+        return render(request,'error.html')
 
     context = {
         'total': total,

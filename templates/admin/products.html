@@ -99,18 +99,19 @@
             <br />
           </td> {% endcomment %}
           <td>
-            {% if strap.is_active %}
+            {% if product.is_deleted %}
+            <span
+            class="badge badge-success rounded-pill d-inline"
+            style="color: black; background-color: red"
+            >Un Available</span
+          >
+          {% else %}
             <span
               class="badge badge-danger rounded-pill d-inline"
               style="color: white; background-color: green"
               >Available</span
             >
-            {% else %}
-            <span
-              class="badge badge-success rounded-pill d-inline"
-              style="color: black; background-color: red"
-              >Un Available</span
-            >
+         
             {% endif %}
           </td>
 

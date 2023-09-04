@@ -53,9 +53,19 @@
         />
         <i class="zmdi zmdi-lock"></i>
       </div>
-      <a href="{% url 'send_otp' %}"
-        ><p style="font-size: 10px; text-align: right">Login with OTP?</p></a
-      >
+      <div class="row">
+        <div class="col-md-6 text-md-end mb-2">
+          <a href="{% url 'send_otp' %}">
+            <p style="font-size: 10px;">Login with OTP?</p>
+          </a>
+        </div>
+        <div class="col-md-6 text-md-start">
+          <a href="{% url 'signup' %}">
+            <p style="font-size: 10px;">Don't have an account?</p>
+          </a>
+        </div>
+      </div>
+      
       <button>
         Login
         <i class="zmdi zmdi-arrow-right"></i>

@@ -367,7 +367,6 @@ def product_details(request, product_id):
         wishlist=Wishlist.objects.filter(user=request.user,product=product).exists()
         all_categories = Category.objects.all()
         strap = Strap.objects.filter(product_id=product,is_active=True)
-        print(strap,'111111111111111')
         cart=CartItem.objects.filter(user=request.user)
         context = {
             'product': product,

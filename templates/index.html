@@ -242,7 +242,9 @@
         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
           <div class="single-popular-items mb-50 text-center">
             <div class="popular-img">
+              <a href="{% url 'product_details' p.id %}">
               <img src="{{p.product_Image.url}}" alt="" />
+              </a>
             </div>
             <div class="popular-caption">
               <h3>

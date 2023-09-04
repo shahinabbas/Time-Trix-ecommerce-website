@@ -55,7 +55,55 @@
 </p>
 </div>
 <h5>Order summary:</h5>
+<div class="table-responsive">
+  <table
+    class="table align-middle table-nowrap table-centered mb-0"
+  >
+    <thead>
+      <tr>
+        <th style="width: 70px">No.</th>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <!-- end thead -->
+    <tbody>
+      {% for order_item in orderss %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>
+          <div>
+            <h5 class="text-truncate font-size-14 mb-1">
+              {{order_item.product.product_name}}
+            </h5>
+            <p class="text-muted mb-0">
+              {{order_item.strap.strap}}
+            </p>
+          </div>
+        </td>
+        <td>{{order_item.quantity}}</td>
+        <td>₹ {{order_item.product.offer_price}}</td>
 
+      </tr>
+      {% endfor %}
+      
+      <tr>
+        <th scope="row" colspan="4" class="border-0 text-end">
+          Total
+        </th>
+        <td class="border-0 text-end">
+          <h4 class="m-0 fw-semibold">
+            {{order.payment_amount}}
+          </h4>
+        </td>
+      </tr>
+      <!-- end tr -->
+    </tbody>
+    <!-- end tbody -->
+  </table>
+  <!-- end table -->
+</div>
 
 
   </div>
@@ -78,7 +126,7 @@
       padding: 20px;
       width: 80%; /* Set a relative width */
       max-width: 1300px; /* Set a maximum width */
-      height: 600px;
+      height: auto;
       margin: 0 auto; /* Center the div horizontally */
     }
     .video {
@@ -86,7 +134,7 @@
       padding: 20px;
       width: 80%; /* Set a relative width */
       max-width: 1300px; /* Set a maximum width */
-      height: 300px;
+      height: auto;
       margin: 0 auto; /* Center the div horizontally */
     }
   </style>

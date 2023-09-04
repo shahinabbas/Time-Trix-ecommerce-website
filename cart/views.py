@@ -30,6 +30,13 @@ def add_cart(request, product_id):
     product = Product.objects.get(id=product_id)
     if request.method=='POST':
         strap_id=request.POST.get('strap_id')
+        varient = get_object_or_404(Strap, id=strap_id)
+
+        print(strap_id)
+        if varient.quantity==0:
+            messages.info(request,"selected strap not available")
+            return redirect('product_details',product_id=product.id)
+
     if user.is_authenticated:
             try:
                 cart = Cart.objects.get(cart_id=_cart_id(request))
@@ -38,10 +45,15 @@ def add_cart(request, product_id):
             cart.save()
             try:
                 cart_item = CartItem.objects.get(product=product, user=user,strap_id=strap_id)
+                # if cart_item.strap.quantity == 0:
+                #     messages.info(request,"selected strap not available")
+                #     return redirect('product_details',product_id=product.id)
                 cart_item.quantity += 1
                 if cart_item.quantity > cart_item.strap.quantity:
                     cart_item.quantity=cart_item.strap.quantity
                 cart_item.save()
+
+            
             except CartItem.DoesNotExist:
                 cart_item = CartItem.objects.create(
                     product=product,
@@ -165,6 +177,8 @@ def checkout(request, total=0, quantity=0, cart_items=None):
             if cart_item.quantity > cart_item.strap.quantity:
                 cart_item.quantity=cart_item.strap.quantity
                 messages.info(request,'Sorry selected quantity not available')
+            elif cart_item.quantity == 0:
+                return redirect('cart') 
             total += (cart_item.product.offer_price * cart_item.quantity)
             quantity += cart_item.quantity
             amount=cart_item.total() * 10
@@ -347,11 +361,14 @@ def confirmation(request):
    
     cart_item.delete()
 
-    
+    orderss=OrderItem.objects.filter(order_no=order.id)
+    print(order.payment_amount)
     context={
         "address":order_address,
         'payment_method':payment_method,
         'order_id':order.order_id,
+        'orderss':orderss,
+        'order':order,
         }
     context['payment_successful'] = True
 

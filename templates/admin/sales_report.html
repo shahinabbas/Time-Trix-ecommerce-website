@@ -1,9 +1,11 @@
-{% include 'admin/navbar.html' %} {% block body %}
+{% include 'admin/navbar.html' %} {% block body %} {% comment %}
 <script>
   function printFunction() {
     print();
   }
 </script>
+{% endcomment %}
+
 <script>
   function exportToExcel() {
     var data = [
@@ -44,7 +46,12 @@
     <div class="card-body p-4">
       <h5 class="card-title fw-semibold mb-4 mt-5">Sales Report</h5>
 
+      {% comment %}
       <button class="btn btn-primary" onclick="printFunction()">
+        PDF &nbsp<i class="far fa-file text-light"></i>
+      </button>
+      {% endcomment %}
+      <button class="btn btn-primary" id="pdfButton">
         PDF &nbsp<i class="far fa-file text-light"></i>
       </button>
       <button class="btn btn-primary" onclick="exportToExcel()">
@@ -116,5 +123,23 @@
     </div>
   </div>
 </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+<script>
+  document.getElementById("pdfButton").addEventListener("click", function () {
+    const table = document.querySelector(".table");
+    const pdfOptions = {
+      margin: 8,
+      filename: 'table.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 1 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().from(table).set(pdfOptions).save();
+  });
+</script>
 
 {% endblock body %}

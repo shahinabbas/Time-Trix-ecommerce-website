@@ -92,7 +92,6 @@ class Strap(models.Model):
     quantity = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
-
     def __unicode__(self):
         return self.product
 

@@ -37,14 +37,19 @@
             <div class="row">
               <div class="form-group mb-3 col-xs-12 col-sm-6">
                 <label for="category">Category</label>
-                <select class="form-select" id="category" name="category" required >
+                <select
+                  class="form-select"
+                  id="category"
+                  name="category"
+                  required
+                >
                   <option value="" selected>Select category</option>
                   {% for s in categories %}
                   <option value="{{ s.categories }}">{{ s.categories }}</option>
                   {% endfor %}
                 </select>
               </div>
-              <div class="form-group mb-3 col-xs-12 col-sm-6 ">
+              <div class="form-group mb-3 col-xs-12 col-sm-6">
                 <label for="shape">Shape</label>
                 <select class="form-select" id="shape" name="shape" required>
                   <option value="" selected>Select Shape</option>
@@ -53,9 +58,6 @@
                   <option value="Round">Round</option>
                 </select>
               </div>
-
-             
-
             </div>
 
             <div class="row">

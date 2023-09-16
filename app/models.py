@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager, Group, Per
 from django.db import models
 from django.utils.translation import gettext as _
 
+
 class CustomUserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
 
@@ -91,7 +92,7 @@ class Product(models.Model):
 class User_Profile(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(_('name'), max_length=100)
-    address=models.CharField(_('address'),max_length=180)
+    address = models.CharField(_('address'), max_length=180)
     phone_number = models.BigIntegerField(_('phone_number'))
     house_no = models.CharField(_('house number'), max_length=10)
     street = models.CharField(_('street'), max_length=100)
@@ -107,7 +108,7 @@ class User_Profile(models.Model):
 class OrderAddress(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(_('name'), max_length=100)
-    address=models.CharField(_('address'),max_length=180)
+    address = models.CharField(_('address'), max_length=180)
     phone_number = models.BigIntegerField(_('phone_number'))
     house_no = models.CharField(_('house number'), max_length=10)
     street = models.CharField(_('street'), max_length=100)
@@ -122,6 +123,4 @@ class OrderAddress(models.Model):
 
 class Wishlist(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    product=models.ForeignKey(Product, on_delete=models.CASCADE)
-
-  
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)

@@ -30,9 +30,9 @@ class CouponView(View):
                     request, "Try another coupon it's already used")
                 return redirect(reverse('cart'))
             cart = Cart.objects.get(cart_id=_cart_id(request))
-            cart_item=CartItem.objects.all()
+            cart_item = CartItem.objects.all()
             for cart_item in cart_item:
-                cart_items=cart_item.total()
+                cart_items = cart_item.total()
             if cart_items < coupon.minimum_amount:
                 messages.warning(request, 'Minimum amount not met')
                 return redirect(reverse('cart'))

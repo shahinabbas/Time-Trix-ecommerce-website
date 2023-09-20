@@ -19,6 +19,14 @@ from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from coupon.models import Coupon
 
+def price_sort(request):
+    all_category = Category.objects.all()
+    product = Product.objects.filter(is_deleted=False).order_by('offer_price')
+    context = {
+        'product': product,
+        'all_category': all_category,
+    }
+    return render(request,'sort.html',context)
 
 def index(request):
     all_category = Category.objects.all()
